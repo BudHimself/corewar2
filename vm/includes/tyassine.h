@@ -116,7 +116,7 @@ void				core(t_env *env);
 t_op				return_op_tab(unsigned char *memory, t_env *env);
 t_params			*fill_struct_param(t_params *params, t_op *op, unsigned char *memory);
 void				size_params(t_params *params, t_op op, int nb_arg);
-void				ft_int_to_char(char reg[REG_SIZE], unsigned int nb);
+void				ft_int_to_reg(char reg[REG_SIZE], unsigned int nb);
 unsigned int		ft_conv_to_int(unsigned char *s, unsigned int i);
 unsigned int		ft_conv_to_int_memod(unsigned char *s, unsigned int i);
 unsigned int		ft_conv_to_int_nomod(unsigned char *s, unsigned int i);

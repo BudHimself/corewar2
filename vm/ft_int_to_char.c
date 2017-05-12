@@ -12,30 +12,18 @@
 
 #include "tyassine.h"
 
-// unsigned char		*ft_int_to_char(unsigned int n)
-// {
-// 	int	i;
-// 	unsigned char	*s1;
-//
-// 	i = sizeof(unsigned int);
-// 	s1 = (unsigned char*)malloc(sizeof(unsigned char) * i);
-// 	while (n)
-// 	{
-// 		s1[i - 1] = n & 0xff;
-// 		n = n >> 8;
-// 		i--;
-// 	}
-// 	return (s1);
-// }
-
-void ft_int_to_char(char reg[REG_SIZE], unsigned int nb)
+unsigned char		*ft_int_to_char(unsigned int n)
 {
-	int i;
+	int	i;
+	unsigned char	*s1;
 
-	i = REG_SIZE;
-	while (nb)
+	i = sizeof(unsigned int);
+	s1 = (unsigned char*)malloc(sizeof(unsigned char) * i);
+	while (n)
 	{
-		reg[--i] = nb & 0xff;
-		nb = nb >> 8;
+		s1[i - 1] = n & 0xff;
+		n = n >> 8;
+		i--;
 	}
+	return (s1);
 }

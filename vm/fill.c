@@ -109,10 +109,10 @@ void 						ft_init_proc(t_env *env,int start, int nb)
 
 	if (!(proc = ft_memalloc(sizeof(t_proc))))
 		exit(0);
-	ft_int_to_char(proc->reg[0], nb);
+	ft_int_to_reg(proc->reg[0], nb);
 	i = 1;
 	while (i < REG_NUMBER)
-		ft_int_to_char(proc->reg[i++], 0);
+		ft_int_to_reg(proc->reg[i++], 0);
 	proc->pc = start;
 	proc->params.carry = 0;
 	proc->num_players = nb;

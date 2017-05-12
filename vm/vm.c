@@ -62,5 +62,6 @@ int			main(int argc, char *argv[])
 	core(&env);
 	// ft_print_procs(&env); // you can see all processes !!!!
 	ft_putendl("\n*********        fin        *********");
+	(env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
 	return (0);
 }

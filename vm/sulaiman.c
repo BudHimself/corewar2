@@ -263,6 +263,7 @@ static int		ft_fill_sti(unsigned char *s, t_proc *proc1, t_params *params1, t_st
 	}
 	if (params1->type[0] == T_REG && params1->type[1] == T_IND && params1->type[2] == T_DIR)
 	{
+		si = (unsigned char*)malloc(sizeof(unsigned char) * IND_SIZE);
 		s2 = (unsigned char*)malloc(sizeof(unsigned char) * i);
 		ft_cp(IND_SIZE, si, params1->arg[1] , 0);
 		ft_cp(i, s2, s ,ft_get_index(si, IND_SIZE, pc));

@@ -14,7 +14,7 @@ t_op		return_op_tab(unsigned char *memory, t_env *env)
  	if (number_op < 1 || number_op > 15)
 	{
 		env->proc->pc += 1;
-		ft_putendl("ICI");
+		// ft_putendl("ICI");
 		return (g_op_tab[16]);
 	}
 	else

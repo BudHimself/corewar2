@@ -129,18 +129,14 @@ void			update_proc(t_env *env)
 
 void			forward_pc(t_env *env, t_proc *begin)
 {
-	// ft_printf("PC : %d\n", env->players[env->no].proc.pc);
 	if (env->proc->cycle_to_exec == env->cycle % MEM_SIZE)
 	{
 		if (env->proc->op.name)
 		{
 			if (ft_strcmp(env->proc->op.name, "st") == 0)
-			{
-				ft_print_proc(env->proc);
 				ft_do_st(env->mem, env->proc);
-				ft_print_proc(env->proc);
-				exit(0);
-			}
+			if (ft_strcmp(env->proc->op.name, "sti") == 0)
+				ft_do_sti(env->mem, env->proc);
 		}
 		if (env->proc->params.size_total > 0)
 			env->proc->pc += env->proc->params.size_total;
@@ -148,8 +144,6 @@ void			forward_pc(t_env *env, t_proc *begin)
 			env->proc->pc = env->proc->pc % MEM_SIZE;
 		update_proc(env);
 	}
-	// ft_printf("cycle %d\n ", env->cycle);
-	// ft_printf("Processus: %d PC: %d\n ", env->proc->num_players   ,env->proc->pc);
 	if (env->proc->next)
 		env->proc = env->proc->next;
 	else
@@ -157,6 +151,7 @@ void			forward_pc(t_env *env, t_proc *begin)
 		env->cycle += 1;
 		env->proc = begin;
 	}
+
 }
 
 void			core(t_env *env)
@@ -165,19 +160,15 @@ void			core(t_env *env)
 	t_proc		*begin;
 
 	cycle_to_die = CYCLE_TO_DIE;
-	// ft_print_procs(env); // you can see all processes !!!!
 	begin = env->proc;
 	while (env->proc)
 	{
-	// 	ft_print_register(env->proc->reg);
-	// sleep(5);
 		update_proc(env);
 		env->proc = env->proc->next;
 	}
 	env->proc = begin;
 	while (env->cycle < MEM_SIZE + 70)
 	{
-		// test_params(&env->proc->params);
 		forward_pc(env, begin);
 	}
 }

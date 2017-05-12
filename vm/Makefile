@@ -9,6 +9,7 @@ FILES = fill \
 		draw_border \
 		francois \
 		ft_int_to_char\
+		ft_int_to_reg\
 		op \
 		ft_conv_to_int \
 		ft_powmod \
