@@ -24,7 +24,8 @@ unsigned int		ft_get_nbafter(char *argv[], int i) // A deplacer autre fichier
 	if (ft_atoi(argv[(i + 1)]) > 0)
 	{
 		res = ft_atoi(argv[(i + 1)]);
-		i++;
+		if (res > INT_MAX)
+			res = 0;
 	}
 	return (res);
 }

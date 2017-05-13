@@ -17,6 +17,7 @@
 # include "fcntl.h"
 # include <ncurses.h>
 # include <string.h>
+# include <limits.h>
 
 # define CEM	COREWAR_EXEC_MAGIC
 # define CEM_1	(char)(CEM >> 16)
@@ -57,7 +58,7 @@ typedef struct		s_params
 {
 	unsigned char	*arg[3];
 	unsigned char	type[3];
-	size_t			size_params[10];
+	size_t			size_params[3];
 	size_t			nb_arg;
 	unsigned int	sign;
 	size_t			size_total;
@@ -77,9 +78,9 @@ typedef struct		s_proc
 
 typedef struct		s_players
 {
+	// int				num_players;
 	t_header		header;
 	unsigned int	mem_size;
-	// t_proc			proc;
 }					t_players;
 
 typedef struct		s_env
@@ -93,6 +94,7 @@ typedef struct		s_env
 	unsigned char	*mem;
 	unsigned int	nb_live;
 	unsigned int	cycle;
+	unsigned int	nbp;
 	int				nbplayer; // Option -n
 	t_proc			*proc; //!!! add in here
 	t_arena			arena;

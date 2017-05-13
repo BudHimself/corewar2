@@ -55,8 +55,6 @@ void			ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
 
 	i = -1;
 	printf("\n%20s\n", "Registers :");
-	// printf("%02x\n", reg[0][3]);
-	// exit(0);
 	while (++i < REG_NUMBER)
 	{
 		j = -1;
