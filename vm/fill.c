@@ -115,7 +115,7 @@ void 						ft_init_proc(t_env *env,int start, int nb)
 		ft_int_to_char(proc->reg[i++], 0);
 	proc->pc = start;
 	proc->params.carry = 0;
-	proc->num_players = nb;
+	// proc->num_players = nb;
 	proc->next = NULL;
 	if (env->proc == NULL)
 		env->proc = proc;

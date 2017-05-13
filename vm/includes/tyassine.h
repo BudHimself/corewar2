@@ -49,15 +49,14 @@ typedef struct		s_arena
 {
 	WINDOW			*win;
 	char			*name;
-	int				xmax;
-	int				ymax;
+	char			*status;
 }					t_arena;
 
 typedef struct		s_params
 {
 	unsigned char	*arg[3];
 	unsigned char	type[3];
-	size_t			size_params[10];
+	size_t			size_params[3];
 	size_t			nb_arg;
 	unsigned int	sign;
 	size_t			size_total;
@@ -67,7 +66,6 @@ typedef struct		s_params
 typedef struct		s_proc
 {
 	t_params		params;
-	int				num_players;
 	int				pc;
 	unsigned char	reg[REG_NUMBER][REG_SIZE];
 	unsigned int	cycle_to_exec;
@@ -79,7 +77,7 @@ typedef struct		s_players
 {
 	t_header		header;
 	unsigned int	mem_size;
-	// t_proc			proc;
+	int				num_players;
 }					t_players;
 
 typedef struct		s_env
@@ -93,6 +91,7 @@ typedef struct		s_env
 	unsigned char	*mem;
 	unsigned int	nb_live;
 	unsigned int	cycle;
+	unsigned int	cycle_s;
 	int				nbplayer; // Option -n
 	t_proc			*proc; //!!! add in here
 	t_arena			arena;

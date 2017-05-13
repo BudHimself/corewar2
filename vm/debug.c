@@ -90,7 +90,7 @@ void			test_params2(t_params *params)
 void	ft_print_proc(t_proc *proc)
 {
 	ft_putendl("\n\n********* print PROC *********\n");
-	ft_printf("    num du player :%5d\n", proc->num_players);
+	// ft_printf("    num du player :%5d\n", proc->num_players);
 	test_params2(&proc->params);
 	printf("       PC        :%5d\n", proc->pc);
 	ft_print_register(proc->reg);

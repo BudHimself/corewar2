@@ -1,26 +1,5 @@
 #include "fhenry.h"
 
-void		print_memory(t_env *env, unsigned char *arena)
-{
-	unsigned int	i;
-	int				line;
-	int				col;
-
-	i = 0;
-	line = 1;
-	while (i < MEM_SIZE)
-	{
-		col = 3;
-		while (col < MID_COLS)
-		{
-			mvwprintw(env->arena.win, line, col, "%02x ", arena[i]);
-			i++;
-			col += 3;
-		}
-		line++;
-	}
-}
-
 void	draw_header(WINDOW *win, char **header)
 {
     int line;
@@ -74,11 +53,9 @@ void	draw_column(WINDOW *win)
     {
         col = -1;
         while (++col <= MAX_COLS)
-        {
             if (line > 0 && line < MAX_LINES - 1)
                 if (col == 0 || col == MID_COLS || col == MAX_COLS - 2)
                     mvwprintw(win, line, col, "  ");
-        }
     }
 }
 
@@ -128,5 +105,4 @@ void	draw_border(t_env *env)
     draw_column(env->arena.win);
     load_header(env->arena.win);
 	wattroff(env->arena.win, A_STANDOUT);
-	print_memory(env, env->mem);
 }
