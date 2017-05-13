@@ -73,60 +73,6 @@ void			update_proc(t_env *env)
 	}
 }
 
-// static void st_opcode(t_proc *proc)
-// {
-//     unsigned int i;
-// 	unsigned int pr1;
-// 	unsigned int pr2;
-// 	// unsigned char r1[REG_SIZE];
-//     // unsigned char r2[REG_SIZE];
-//     // unsigned char i[IND_SIZE];
-//     // unsigned int reg;
-//
-//    	i = 0;
-//     pr1 = ft_conv_to_int_nomod(proc->params.arg[0], proc->params.size_params[0]);
-// 	// ft_printf("pr1 = %d    proc nb =%d\n",pr1, proc->num_players);
-// 	ft_printf("TESTING\n");
-//     if (proc->params.type[1] == T_REG)
-//     {
-// 		pr2 = ft_conv_to_int_nomod(proc->params.arg[1], proc->params.size_params[1]);
-// 		// 	ft_printf("pr2 = %d    proc nb =%d\n",pr2, proc->num_players);
-// 			ft_memcpy(proc->reg[pr2], proc->reg[pr1], REG_SIZE);
-//     }
-// 	else if (proc->params.type[1] == T_IND)
-// 	{
-// 		while (i++ < proc->params.size_params[1])
-// 		{
-// 			proc->params.arg[1][i] = proc->reg[pr1][i];
-// 		}
-// 	}
-// 	// exit(0);
-// }
-
-// static void st_opcode(t_proc *proc)
-// {
-//     unsigned int i;
-//     unsigned int p1;
-//     unsigned int *p2;
-//     unsigned int reg;
-//
-//    	i = 0;
-//     reg = *(proc->params.arg[0]);
-// 	// ft_printf("reg = %d\n",*(proc->params.arg[0]));
-//     p1 = *(proc->reg[reg]);
-//     if (proc->params.type[1] == T_REG)
-//     {
-//       reg = *(proc->params.arg[1]);
-//       p2 = proc->reg[reg];
-//     }
-// 	else
-// 		p2 = proc->params.arg[1];
-//     *p2 = (proc->pc + (p1 % IDX_MOD));
-// 	ft_printf("%d\n", *p2);
-// 	ft_print_register(proc->reg);
-// 	sleep(1);
-// }
-
 void			forward_pc(t_env *env, t_proc *begin)
 {
 	if (env->proc->cycle_to_exec == env->cycle % MEM_SIZE)
@@ -134,9 +80,10 @@ void			forward_pc(t_env *env, t_proc *begin)
 		if (env->proc->op.name)
 		{
 			if (ft_strcmp(env->proc->op.name, "st") == 0)
-				ft_do_st(env->mem, env->proc);
+				ft_st(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "sti") == 0)
-				ft_do_sti(env->mem, env->proc);
+				ft_sti(env->mem, env->proc);
+			ft_print_proc(env->proc);
 		}
 		if (env->proc->params.size_total > 0)
 			env->proc->pc += env->proc->params.size_total;

@@ -1,4 +1,4 @@
 .name	"test"
 .comment "Multipass"
 
-sti r1,1,%5
+sti r1,r1,%1

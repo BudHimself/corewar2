@@ -109,7 +109,7 @@ void		ft_init_players(t_env *env, int argc, char *argv[], unsigned char *mem)
 			if (!is_cor_suffix(argv[i]))
 				ft_exit_error("Incorrect suffix (!.cor)", 4);
 			fd = ft_access(argv[i]);
-			ft_add_player(env, fd, mem, ((env->nbplayer > 0) ? env->nbplayer : env->no +1));
+			ft_add_player(env, fd, mem, ((env->nbplayer > 0) ? env->nbplayer : (env->no +1) * -1));
 			close(fd);
 		}
 		else
