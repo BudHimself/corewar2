@@ -2,8 +2,8 @@
 
 void			test_params(t_params *params)
 {
-	int			i;
-	int			j;
+	size_t			i;
+	size_t			j;
 
 	i = -1;
 	ft_putendl("\n********* print struct param *********\n");
@@ -39,7 +39,7 @@ void			test_op(t_op *op)
 	ft_printf("             op->size : %d\n", op->size);
 }
 
-void			init_params(t_params *params, t_op *op)
+void			init_params(t_params *params)
 {
 	int			i;
 
@@ -62,14 +62,14 @@ void			update_proc(t_env *env)
 	if (env->proc->op.name)
 	{
 		env->proc->cycle_to_exec = env->proc->op.cycle + env->cycle;
-		init_params(&env->proc->params, &env->proc->op);
+		init_params(&env->proc->params);
 		env->proc->params = *fill_struct_param(&env->proc->params, &env->proc->op, &env->mem[env->proc->pc]);
 		// test_op(&env->proc->op);
 	}
 	else
 	{
 		env->proc->cycle_to_exec = env->cycle + 1;
-		init_params(&env->proc->params, &env->proc->op);
+		init_params(&env->proc->params);
 	}
 }
 

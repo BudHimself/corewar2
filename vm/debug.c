@@ -50,8 +50,8 @@ void		ft_exit_error(char *msg, char nb_error)
 
 void			ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
 {
-	int			i;
-	int			j;
+	size_t			i;
+	size_t			j;
 
 	i = -1;
 	printf("\n%20s\n", "Registers :");
@@ -66,8 +66,8 @@ void			ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
 
 void			test_params2(t_params *params)
 {
-	int			i;
-	int			j;
+	size_t			i;
+	size_t			j;
 
 	i = -1;
 	ft_putendl("\n- print PARAMS -\n");

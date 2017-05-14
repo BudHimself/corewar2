@@ -1,6 +1,6 @@
 #include "tyassine.h"
 
-void ft_int_to_reg(char reg[REG_SIZE], unsigned int nb)
+void ft_int_to_reg(unsigned char reg[], unsigned int nb)
 {
 	int i;
 
