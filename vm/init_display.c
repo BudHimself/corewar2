@@ -1,5 +1,75 @@
 #include "fhenry.h"
 
+void	draw_cycle_s(t_env *env)
+{
+	mvwprintw(env->arena.win, HEADER_SIZE + 2, MID_COLS + 3, "Cycle/Sec : %d",
+		env->cycle_s);
+}
+
+void	draw_status(t_env *env)
+{
+	int	len;
+
+	len = (ft_strlen(" ******") * 2) + ft_strlen(env->arena.status) - 1;
+	mvwprintw(env->arena.win, HEADER_SIZE, MID_COLS + 3 + len,
+		"****** %s ******", env->arena.status);
+}
+
+void		control_vm(t_env *env)
+{
+	int		ch;
+
+	keypad(env->arena.win, TRUE);
+	while (1)
+	{
+		ch = wgetch(env->arena.win);
+		if (ch == 27)
+			break;
+		if (ch == 32)
+		{
+			if (env->arena.pause == 0)
+			{
+				ft_strdel(&env->arena.status);
+				env->arena.status = ft_strdup("Start");
+				env->arena.pause = 1;
+			}
+			else
+			{
+				ft_strdel(&env->arena.status);
+				env->arena.status = ft_strdup("Pause");
+				env->arena.pause = 0;
+			}
+			draw_status(env);
+		}
+		if (ch == 113)
+		{
+			if (env->cycle_s > 10)
+				env->cycle_s -= 10;
+			draw_cycle_s(env);
+		}
+		if (ch == 114)
+		{
+			if (env->cycle_s < 90)
+				env->cycle_s += 10;
+			draw_cycle_s(env);
+		}
+		if (ch == 119)
+		{
+			if (env->cycle_s > 1)
+				env->cycle_s -= 1;
+			draw_cycle_s(env);
+		}
+		if (ch == 101)
+		{
+			if (env->cycle_s < 100)
+				env->cycle_s += 1;
+			draw_cycle_s(env);
+		}
+		wrefresh(env->arena.win);
+		// ft_printf("ch = %d\n", ch);
+	}
+}
+
 void		print_memory(t_env *env)
 {
 	unsigned int	i;
@@ -58,29 +128,27 @@ void	slow_machine(t_env *env)
 
 void	load_display(t_env *env)
 {
-	int	y;
-	int	x;
-	int	len;
+	int	line;
+	int	col;
 
-	y = HEADER_SIZE;
-	x = MID_COLS + 3;
-
-	len = (ft_strlen(" ******") * 2) + ft_strlen(env->arena.status) - 1;
-	mvwprintw(env->arena.win, y, x + len, "****** %s ******", env->arena.status);
-	mvwprintw(env->arena.win, y + 2, x, "Cycle/Sec : %d", env->cycle_s);
-	mvwprintw(env->arena.win, y + 4, x, "Cycle : %d", env->cycle);
-	// mvwprintw(env->arena.win, y + 6, x, "Processes : %d", env->proc_num);
-	mvwprintw(env->arena.win, y + 8, x, "CYCLE_TO_DIE : %d", CYCLE_TO_DIE);
-	mvwprintw(env->arena.win, y + 10, x, "CYCLE_DELTA : %d", CYCLE_DELTA);
-	mvwprintw(env->arena.win, y + 12, x, "NBR_LIVE : %d", NBR_LIVE);
-	mvwprintw(env->arena.win, y + 14, x, "MAX_CHECKS : %d", MAX_CHECKS);
-	// mvwprintw(env->arena.win, y + 8, x, "Player : -%d", env->players);
+	line = HEADER_SIZE;
+	col = MID_COLS + 3;
+	draw_status(env);
+	draw_cycle_s(env);
+	mvwprintw(env->arena.win, line + 4, col, "Cycle : %d", env->cycle);
+	// mvwprintw(env->arena.win, line + 6, col, "Processes : %d", env->proc_num);
+	mvwprintw(env->arena.win, line + 8, col, "CYCLE_TO_DIE : %d", CYCLE_TO_DIE);
+	mvwprintw(env->arena.win, line + 10, col, "CYCLE_DELTA : %d", CYCLE_DELTA);
+	mvwprintw(env->arena.win, line + 12, col, "NBR_LIVE : %d", NBR_LIVE);
+	mvwprintw(env->arena.win, line + 14, col, "MAX_CHECKS : %d", MAX_CHECKS);
+	// mvwprintw(env->arena.win, line + 8, col, "Player : -%d", env->players);
 }
 
 void	init_struct(t_env *env, WINDOW *arena)
 {
 	env->arena.win = arena;
 	env->arena.status = ft_strdup("Pause");
+	env->arena.pause = 0;
 }
 
 void	init_window(t_env *env)
@@ -93,29 +161,29 @@ void	init_window(t_env *env)
 	initscr();
 	start_color();
 	arena = subwin(stdscr, MAX_LINES, MAX_COLS, 0, 0);
-	check_window(env, arena);
+	check_window(arena);
 	init_struct(env, arena);
 	draw_border(env);
 	load_display(env);
 	print_memory(env);
+	init_pair(1, COLOR_CYAN, COLOR_BLACK);
+	init_pair(2, COLOR_GREEN, COLOR_BLACK);
+	init_pair(3, COLOR_BLUE, COLOR_BLACK);
+	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 	tmp = env->proc;
-	// init_pair(1, COLOR_CYAN, COLOR_BLACK);
-	// init_pair(2, COLOR_GREEN, COLOR_BLACK);
-	// init_pair(3, COLOR_BLUE, COLOR_BLACK);
-	// init_pair(4, COLOR_YELLOW, COLOR_BLACK);
-	// while (++i < env->no)
-	// {
-	// 	print_champ(env, tmp->pc, env->players[i].mem_size, i + 1);
-	// 	tmp = tmp->next;
-	// }
+	while (++i < env->no)
+	{
+		print_champ(env, tmp->pc, env->players[i].mem_size, i + 1);
+		tmp = tmp->next;
+	}
 	slow_machine(env);
-	wrefresh(env->arena.win);
-	getch();
+	// wrefresh(env->arena.win);
+	control_vm(env);
 	endwin();
 	free(arena);
 }
 
-void	check_window(t_env  *env, WINDOW *arena)
+void	check_window(WINDOW *win)
 {
 	int	y;
 	int	x;
@@ -127,10 +195,10 @@ void	check_window(t_env  *env, WINDOW *arena)
 			mvwprintw(stdscr, y / 2, x / 3, "la fenetre n'est pas suffisament large");
 		if (y < MAX_LINES)
 			mvwprintw(stdscr, y / 2, x / 3, "la fenetre n'est pas suffisament haute");
-		wrefresh(arena);
+		wrefresh(win);
 		getch();
 		endwin();
-		free(arena);
+		free(win);
 		exit(0);
 	}
 }

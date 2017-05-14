@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tyassine.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tyassine <tyassine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:55:48 by tyassine          #+#    #+#             */
-/*   Updated: 2017/04/27 21:55:52 by tyassine         ###   ########.fr       */
+/*   Updated: 2017/05/14 10:51:38 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct		s_arena
 	WINDOW			*win;
 	char			*name;
 	char			*status;
+	int				pause;
 }					t_arena;
 
 typedef struct		s_params

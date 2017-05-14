@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tyassine <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: tyassine <tyassine@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/30 17:55:39 by tyassine          #+#    #+#              #
-#    Updated: 2016/06/20 17:34:04 by tyassine         ###   ########.fr        #
+#    Updated: 2017/05/14 14:55:15 by fhenry           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME):
-		@gcc $(FLAGS) $(SRCS) $(INC)
+		@gcc $(FLAGS) $(SRCS) -I $(INC)
 		@ar rc $(NAME) $(OBJS)
 
 clean:

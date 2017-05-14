@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tyassine <tyassine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:50:51 by tyassine          #+#    #+#             */
-/*   Updated: 2017/04/27 21:50:54 by tyassine         ###   ########.fr       */
+/*   Updated: 2017/05/14 11:01:17 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int			main(int argc, char *argv[])
 		ft_init(mem, &env, argc, argv);
 	else
 		ft_print_option();
-	// (env.ncurses == 1 && env.debug != 1) ? init_window(&env) : 42;
-	(env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
+	(env.ncurses == 1 && env.debug != 1) ? init_window(&env) : 42;
+	// (env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
 
 	// core(&env);
 	// ft_print_procs(&env); // you can see all processes !!!!
