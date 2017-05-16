@@ -177,6 +177,18 @@ static unsigned char		*ft_new_s_on_sizeint(unsigned int i, unsigned char *s, uns
 	return (s1);
 }
 
+void ft_int_to_char(char reg[REG_SIZE], unsigned int nb)
+{
+	int i;
+
+	i = REG_SIZE;
+	while (nb)
+	{
+		reg[--i] = nb & 0xff;
+		nb = nb >> 8;
+	}
+}
+
 static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
@@ -184,6 +196,7 @@ static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 	unsigned int		pc;
 	unsigned int		position;
 	unsigned int		index;
+	unsigned int		ind1;
 
 	pc = proc1->pc;
 	s1 = NULL;
@@ -191,25 +204,24 @@ static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 		s1 = proc1->reg[ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) - 1];
 	else if (proc1->params.type[x] == T_DIR)
 	{
-			position = get_position(proc1, x);
-			s1 = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
+		position = get_position(proc1, x);
+		s1 = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
 	}
+	// st
 	else if (proc1->params.type[x] == T_IND && proc1->op.num == 3)
 	{
 		position = get_position(proc1, x);
 		si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
-		index = ft_get_index_tind(si, sizeof(unsigned int), pc);
-		s1 = ft_int_to_char(index);
+		index = ft_get_index_tdir(si, sizeof(unsigned int), pc);
+		s1 = (unsigned char*)malloc(sizeof(unsigned char) * REG_SIZE);
+		ft_int_to_char((char*)s1, index);
 	}
 	else if (proc1->params.type[x] == T_IND)
 	{
 		position = get_position(proc1, x);
 		si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
-		index = ft_get_index_tind(si, sizeof(unsigned int), pc);
-		si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, index);
-		//verifier ici si ft_get_index_tind ou ft_get_index_tdir
-		index = ft_get_index_tdir(si, sizeof(unsigned int), pc);
-		s1 = ft_int_to_char(index);
+		ind1 = ft_conv_to_int_memod(si, sizeof(unsigned int));
+		s1 = ft_new_s_on_sizeint( REG_SIZE, s, ind1);
 	}
 	return (s1);
 }
@@ -224,8 +236,13 @@ int		ft_st(unsigned char *s, t_proc *proc1)
 	{
 		s1 = ft_get_para(s, proc1, 0);
 		s2 = ft_get_para(s, proc1, 1);
-		ind1 = ft_conv_to_int_memod(s2, sizeof(unsigned int));
-		ft_cp_r_to_stack(REG_SIZE,s, ind1, s1);
+		if (proc1->params.type[1] == T_REG)
+			ft_cp_s_to_s(s2,s1,REG_SIZE,REG_SIZE);
+		else
+		{
+			ind1 = ft_conv_to_int_memod(s2, sizeof(unsigned int));
+			ft_cp_r_to_stack(REG_SIZE,s, ind1, s1);
+		}
 		return (1);
 	}
 	return (0);

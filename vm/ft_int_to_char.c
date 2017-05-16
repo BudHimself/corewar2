@@ -6,12 +6,13 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 17:11:03 by syusof            #+#    #+#             */
-/*   Updated: 2017/04/27 21:27:48 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/16 13:42:46 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tyassine.h"
 
+/*
 unsigned char		*ft_int_to_char(unsigned int n)
 {
 	int	i;
@@ -27,3 +28,4 @@ unsigned char		*ft_int_to_char(unsigned int n)
 	}
 	return (s1);
 }
+*/
