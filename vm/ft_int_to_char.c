@@ -6,26 +6,22 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 17:11:03 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/16 13:42:46 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/16 13:51:26 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tyassine.h"
 
-/*
-unsigned char		*ft_int_to_char(unsigned int n)
+void ft_int_to_char(char reg[REG_SIZE], unsigned int nb)
 {
-	int	i;
-	unsigned char	*s1;
+	int i;
 
-	i = sizeof(unsigned int);
-	s1 = (unsigned char*)malloc(sizeof(unsigned char) * i);
-	while (n)
+	i = REG_SIZE;
+	while (nb)
 	{
-		s1[i - 1] = n & 0xff;
-		n = n >> 8;
-		i--;
+		reg[--i] = nb & 0xff;
+		nb = nb >> 8;
 	}
-	return (s1);
 }
-*/
+
+

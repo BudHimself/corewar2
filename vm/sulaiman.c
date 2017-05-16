@@ -177,6 +177,7 @@ static unsigned char		*ft_new_s_on_sizeint(unsigned int i, unsigned char *s, uns
 	return (s1);
 }
 
+/*
 void ft_int_to_char(char reg[REG_SIZE], unsigned int nb)
 {
 	int i;
@@ -188,7 +189,7 @@ void ft_int_to_char(char reg[REG_SIZE], unsigned int nb)
 		nb = nb >> 8;
 	}
 }
-
+*/
 static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
