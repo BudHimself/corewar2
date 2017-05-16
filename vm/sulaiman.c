@@ -23,7 +23,6 @@ static int		ft_get_sign(unsigned char *s1)
 	return (0);
 }
 
-
 static void		ft_cp_r_to_stack(unsigned int i, unsigned char *s, unsigned int pos, unsigned char *r)
 {
 	while (i > 0)
