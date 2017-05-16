@@ -94,6 +94,7 @@ typedef struct		s_env
 	unsigned char	*mem;
 	unsigned int	nb_live;
 	unsigned int	cycle;
+	unsigned int	cycle_to_die;
 	unsigned int	nbp;
 	int				nbplayer; // Option -n
 	t_proc			*proc; //!!! add in here

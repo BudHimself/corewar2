@@ -101,12 +101,18 @@ void			forward_pc(t_env *env, t_proc *begin)
 
 }
 
+unsigned int check_proc_live(t_proc *proc)
+{
+	return (0);
+}
+
 void			core(t_env *env)
 {
-	int			cycle_to_die;
-	t_proc		*begin;
+	int						cycle_to_die;
+	t_proc				*begin;
+	unsigned int	nb_proc_live;
 
-	cycle_to_die = CYCLE_TO_DIE;
+	env->cycle_to_die = CYCLE_TO_DIE;
 	begin = env->proc;
 	while (env->proc)
 	{
@@ -116,6 +122,12 @@ void			core(t_env *env)
 	env->proc = begin;
 	while (env->cycle < MEM_SIZE + 70)
 	{
+		// if (env->cycle == env->cycle_to_die)
+		// {
+		// 	nb_proc_live = 1;//check_proc_live(begin);
+		// 	if (nb_proc_live > 1)
+		// 		env->cycle_to_die += CYCLE_TO_DIE;
+		// }
 		forward_pc(env, begin);
 	}
 }
