@@ -1,6 +1,6 @@
 Introducing contestants...
 * Player 1, weighing 12 bytes, "test" ("Multipass") !
-* Player 2, weighing 15 bytes, "test2" ("tsimg") !
+* Player 2, weighing 5 bytes, "test2" ("tsimg") !
 It is now cycle 1
 It is now cycle 2
 It is now cycle 3
@@ -11,9 +11,6 @@ It is now cycle 7
 It is now cycle 8
 It is now cycle 9
 It is now cycle 10
-P    2 | live -1
-Player 1 (test) is said to be alive
-ADV 5 (0x0800 -> 0x0805) 01 ff ff ff ff 
 It is now cycle 11
 It is now cycle 12
 It is now cycle 13
@@ -24,32 +21,21 @@ It is now cycle 17
 It is now cycle 18
 It is now cycle 19
 It is now cycle 20
-P    2 | live -2
-Player 2 (test2) is said to be alive
-ADV 5 (0x0805 -> 0x080a) 01 ff ff ff fe 
 It is now cycle 21
 It is now cycle 22
 It is now cycle 23
 It is now cycle 24
 It is now cycle 25
-P    1 | sti r1 4 5
-       | -> store to 4 + 5 = 9 (with pc and mod 9)
-ADV 7 (0x0000 -> 0x0007) 0b 68 01 00 04 00 05 
 It is now cycle 26
 It is now cycle 27
 It is now cycle 28
 It is now cycle 29
 It is now cycle 30
-P    2 | live -3
-ADV 5 (0x080a -> 0x080f) 01 ff ff ff fd 
 It is now cycle 31
 It is now cycle 32
 It is now cycle 33
 It is now cycle 34
 It is now cycle 35
-P    1 | live -1
-Player 1 (test) is said to be alive
-ADV 5 (0x0007 -> 0x000c) 01 ff ff ff ff 
 It is now cycle 36
 It is now cycle 37
 It is now cycle 38
@@ -2096,9 +2082,6 @@ It is now cycle 2078
 It is now cycle 2079
 It is now cycle 2080
 It is now cycle 2081
-P    1 | live -1
-Player 1 (test) is said to be alive
-ADV 5 (0x0800 -> 0x0805) 01 ff ff ff ff 
 It is now cycle 2082
 It is now cycle 2083
 It is now cycle 2084
@@ -2106,15 +2089,9 @@ It is now cycle 2085
 It is now cycle 2086
 It is now cycle 2087
 It is now cycle 2088
-P    2 | sti r1 4 5
-       | -> store to 4 + 5 = 9 (with pc and mod 9)
-ADV 7 (0x0000 -> 0x0007) 0b 68 01 00 04 00 05 
 It is now cycle 2089
 It is now cycle 2090
 It is now cycle 2091
-P    1 | live -2
-Player 2 (test2) is said to be alive
-ADV 5 (0x0805 -> 0x080a) 01 ff ff ff fe 
 It is now cycle 2092
 It is now cycle 2093
 It is now cycle 2094
@@ -2122,14 +2099,9 @@ It is now cycle 2095
 It is now cycle 2096
 It is now cycle 2097
 It is now cycle 2098
-P    2 | live -1
-Player 1 (test) is said to be alive
-ADV 5 (0x0007 -> 0x000c) 01 ff ff ff ff 
 It is now cycle 2099
 It is now cycle 2100
 It is now cycle 2101
-P    1 | live -3
-ADV 5 (0x080a -> 0x080f) 01 ff ff ff fd 
 It is now cycle 2102
 It is now cycle 2103
 It is now cycle 2104
@@ -4173,9 +4145,6 @@ It is now cycle 4141
 It is now cycle 4142
 It is now cycle 4143
 It is now cycle 4144
-P    2 | live -1
-Player 1 (test) is said to be alive
-ADV 5 (0x0800 -> 0x0805) 01 ff ff ff ff 
 It is now cycle 4145
 It is now cycle 4146
 It is now cycle 4147
@@ -4186,32 +4155,21 @@ It is now cycle 4151
 It is now cycle 4152
 It is now cycle 4153
 It is now cycle 4154
-P    2 | live -2
-Player 2 (test2) is said to be alive
-ADV 5 (0x0805 -> 0x080a) 01 ff ff ff fe 
 It is now cycle 4155
 It is now cycle 4156
 It is now cycle 4157
 It is now cycle 4158
 It is now cycle 4159
-P    1 | sti r1 4 5
-       | -> store to 4 + 5 = 9 (with pc and mod 9)
-ADV 7 (0x0000 -> 0x0007) 0b 68 01 00 04 00 05 
 It is now cycle 4160
 It is now cycle 4161
 It is now cycle 4162
 It is now cycle 4163
 It is now cycle 4164
-P    2 | live -3
-ADV 5 (0x080a -> 0x080f) 01 ff ff ff fd 
 It is now cycle 4165
 It is now cycle 4166
 It is now cycle 4167
 It is now cycle 4168
 It is now cycle 4169
-P    1 | live -1
-Player 1 (test) is said to be alive
-ADV 5 (0x0007 -> 0x000c) 01 ff ff ff ff 
 It is now cycle 4170
 It is now cycle 4171
 It is now cycle 4172
@@ -6187,6 +6145,4 @@ It is now cycle 6141
 It is now cycle 6142
 It is now cycle 6143
 It is now cycle 6144
-Process 2 hasn't lived for 1980 cycles (CTD 1536)
-Process 1 hasn't lived for 1975 cycles (CTD 1536)
 Contestant 1, "test", has won !

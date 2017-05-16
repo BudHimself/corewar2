@@ -46,8 +46,8 @@ int			ft_init_options(t_env *env, char *argv[], int i)
 		env->debug = 1;
 	else if (argv[i][1] == 'n' && argv[i][2] == '\0')
 	{
-		env->nbplayer = ft_get_nbafter(argv, i);
-		(env->nbplayer > 0)? i++ : 42;
+		env->nb_option = ft_get_nbafter(argv, i);
+		(env->nb_option > 0)? i++ : 42;
 	}
 	else if (argv[i][1] == 'a' && argv[i][2] == '\0')
 		env->ncurses = 1;
@@ -79,7 +79,7 @@ void		ft_add_player(t_env *env, int fd, unsigned char arena[], unsigned int num_
 	int		i;
 
 	i = 0;
-	env->nbplayer = 0;
+	env->nb_option = 0;
 	n = read(fd, buf, 4);
 	buf[n] = 0;
 	if (buf[1] != CEM_1 || buf[2] != CEM_2 || buf[3] != CEM_3)
@@ -110,7 +110,7 @@ void		ft_init_players(t_env *env, int argc, char *argv[], unsigned char *mem)
 			if (!is_cor_suffix(argv[i]))
 				ft_exit_error("Incorrect suffix (!.cor)", 4);
 			fd = ft_access(argv[i]);
-			ft_add_player(env, fd, mem, ((env->nbplayer > 0) ? env->nbplayer : (env->no +1) * -1));
+			ft_add_player(env, fd, mem, ((env->nb_option > 0) ? env->nb_option : (env->no +1) * -1));
 			close(fd);
 		}
 		else

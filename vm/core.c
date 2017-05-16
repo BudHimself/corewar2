@@ -1,5 +1,24 @@
 #include "tyassine.h"
 
+void ft_live(t_env *e, t_proc *proc)
+{
+	int num_p;
+	int i;
+
+	i = 0;
+	num_p = ft_conv_to_int_nomod(proc->params.arg[0], proc->params.size_params[0]);
+	printf("num player call => %d\n", num_p);
+	e->nb_live++;
+	proc->lives_in_period++;
+	while (i++ < e->no) {
+		if (e->players[i].num_players == num_p)
+		{
+			e->players[i].last_live = e->cycle;
+			break;
+		}
+	}
+}
+
 void			test_params(t_params *params)
 {
 	size_t			i;
@@ -83,6 +102,8 @@ void			forward_pc(t_env *env, t_proc *begin)
 				ft_st(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "sti") == 0)
 				ft_sti(env->mem, env->proc);
+			if (ft_strcmp(env->proc->op.name, "live") == 0)
+				ft_live(env, env->proc);
 			ft_print_proc(env->proc);
 		}
 		if (env->proc->params.size_total > 0)
@@ -101,18 +122,34 @@ void			forward_pc(t_env *env, t_proc *begin)
 
 }
 
-unsigned int check_proc_live(t_proc *proc)
+t_proc *die_proc(t_proc *proc)
 {
-	return (0);
+	t_proc	*tmp;
+
+	tmp = proc->next;
+	free(proc);
+	proc = tmp;
+	return (proc);
 }
 
-void			core(t_env *env)
+
+unsigned int check_proc_live(t_proc *proc)
 {
-	int						cycle_to_die;
-	t_proc				*begin;
 	unsigned int	nb_proc_live;
 
-	env->cycle_to_die = CYCLE_TO_DIE;
+	nb_proc_live = proc->lives_in_period;
+	proc->lives_in_period = 0;
+	return (nb_proc_live);
+}
+
+void				core(t_env *env)
+{
+	t_proc			*begin;
+	unsigned int	cycle_to_inc;
+	unsigned int	nb_proc_live;
+
+	cycle_to_inc = CYCLE_TO_DIE;
+	env->cycle_to_die = cycle_to_inc;
 	begin = env->proc;
 	while (env->proc)
 	{
@@ -120,14 +157,25 @@ void			core(t_env *env)
 		env->proc = env->proc->next;
 	}
 	env->proc = begin;
-	while (env->cycle < MEM_SIZE + 70)
+	while (env->proc != NULL)
 	{
-		// if (env->cycle == env->cycle_to_die)
-		// {
-		// 	nb_proc_live = 1;//check_proc_live(begin);
-		// 	if (nb_proc_live > 1)
-		// 		env->cycle_to_die += CYCLE_TO_DIE;
-		// }
+		if (env->cycle == env->cycle_to_die)
+		{
+			if (check_proc_live(begin) > 0)
+			{
+				begin->lives_in_period = 0;
+				printf("not die\n");
+			}
+			else
+			{
+				begin = die_proc(begin);
+				printf("rm the proc\n");
+			}
+			env->cycle_to_die += cycle_to_inc;
+			// env->cycle_to_die = env->cycle + env->cycle_to_die % CYCLE_DELTA;
+		}
 		forward_pc(env, begin);
+		printf("CYCLE : %d et le CYCLE TO DIE : %d\n", env->cycle, env->cycle_to_die);
 	}
+	ft_print_procs(env);
 }

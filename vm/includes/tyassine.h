@@ -72,6 +72,7 @@ typedef struct		s_proc
 	int				pc;
 	unsigned char	reg[REG_NUMBER][REG_SIZE];
 	unsigned int	cycle_to_exec;
+	unsigned int 	lives_in_period;
 	t_op			op;
 	struct s_proc	*next;
 }					t_proc;
@@ -79,7 +80,7 @@ typedef struct		s_proc
 typedef struct		s_players
 {
 	int				num_players;
-	unsigned int	cycle_where_live;
+	unsigned int	last_live;
 	t_header		header;
 	unsigned int	mem_size;
 }					t_players;
@@ -97,7 +98,7 @@ typedef struct		s_env
 	unsigned int	cycle;
 	unsigned int	cycle_to_die;
 	unsigned int	nbp;
-	int				nbplayer; // Option -n
+	int				nb_option; // Option -n
 	t_proc			*proc; //!!! add in here
 	t_arena			arena;
 }					t_env;

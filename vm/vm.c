@@ -42,7 +42,7 @@ void		ft_init_env(t_env *env)
 	env->ncurses = 0;
 	env->nb_live = 0;
 	env->cycle = 0;
-	env->nbplayer = 0;
+	env->nb_option = 0;
 	env->proc = NULL;
 }
 
