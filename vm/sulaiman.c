@@ -247,7 +247,6 @@ static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 	unsigned int		ind1;
 
 	pc = proc1->pc;
-	printf("pc = %d\n",pc);
 	s1 = NULL;
 	if (proc1->params.type[x] == T_REG)
 		s1 = proc1->reg[ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) - 1];
@@ -275,6 +274,26 @@ static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 	return (s1);
 }
 
+int		ft_add(unsigned char *s, t_proc *proc1)
+{
+	unsigned char	*s1;
+	unsigned char	*s2;
+	unsigned char	*s3;
+	unsigned char	*s4;
+	unsigned int	index;
+
+	if (IND_SIZE <= REG_SIZE)
+	{
+		s1 = ft_get_para(s, proc1, 0);
+		s2 = ft_get_para(s, proc1, 1);
+		s3 = ft_get_para(s, proc1, 2);
+		s4 = ft_add2(s1, s2, REG_SIZE, REG_SIZE);
+		ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+		return (1);
+	}
+	return (0);
+}
+
 int		ft_and(unsigned char *s, t_proc *proc1)
 {
 	unsigned char	*s1;
@@ -289,8 +308,6 @@ int		ft_and(unsigned char *s, t_proc *proc1)
 		s2 = ft_get_para(s, proc1, 1);
 		s3 = ft_get_para(s, proc1, 2);
 		s4 = ft_and2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
-//		index = ft_get_index_tdir(s4, sizeof(unsigned int), proc1->pc);
-//		ft_cp_r_to_stack(REG_SIZE,s, index, s1);
 		ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
 		return (1);
 	}
