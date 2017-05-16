@@ -145,6 +145,7 @@ void						ft_fill_arena(t_env *env, char *buf, int fd, int nb)
 			ft_exit_error("Invalid Champion Size.", 12);
 		++i;
 	}
+	env->players[env->no].num_players = nb;
 	/*
 	**init parametres and processe
 	*/

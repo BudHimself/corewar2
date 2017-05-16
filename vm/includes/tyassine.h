@@ -78,7 +78,8 @@ typedef struct		s_proc
 
 typedef struct		s_players
 {
-	// int				num_players;
+	int				num_players;
+	unsigned int	cycle_where_live;
 	t_header		header;
 	unsigned int	mem_size;
 }					t_players;
