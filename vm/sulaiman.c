@@ -11,7 +11,7 @@ static unsigned int	get_position(t_proc *proc1, int x)
 		res = res + proc1->params.size_params[x];
 		x--;
 	}
-	return (1 + proc1->op.byte_codage + res);
+	return (proc1->pc + 1 + proc1->op.byte_codage + res);
 }
 
 static int		ft_get_sign(unsigned char *s1)
@@ -40,7 +40,7 @@ static void		ft_cp_in_s(unsigned int i, unsigned char *s1, unsigned char *s, uns
 		i--;
 	}
 }
-
+/*
 static unsigned int		ft_get_index_tind(unsigned char *si, unsigned int i, unsigned int pc)
 {
 	int						sign;
@@ -54,6 +54,7 @@ static unsigned int		ft_get_index_tind(unsigned char *si, unsigned int i, unsign
 		return ((pc - conv1 - IDX_MOD) % MEM_SIZE);
 	return (0);
 }
+*/
 
 static unsigned int		ft_get_index_tdir(unsigned char *si, unsigned int i, unsigned int pc)
 {
@@ -124,6 +125,53 @@ static unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb, unsigned int
 	return (sc);
 }
 
+static unsigned char	*ft_and2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned char	*sc;
+	unsigned int k;
+
+	k = (i >= j) ? i : j;
+	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	if (i == j)
+	{
+		while (i > 0)
+		{
+			sc[i - 1] = sa[i - 1] & sb[i - 1];
+			i--;
+		}
+	}
+	else if (i > j)
+	{
+		while (j > 0)
+		{
+			sc[i - 1] = sa[i - 1] & sb[j - 1];
+			i--;
+			j--;
+		}
+		while (i > 0)
+		{
+			sc[i - 1] = 0;
+			i--;
+		}
+	}
+	else if (i < j)
+	{
+		while (i > 0)
+		{
+			sc[j - 1] = sa[i - 1] & sb[j - 1];
+			i--;
+			j--;
+		}
+		while (j > 0)
+		{
+			sc[j - 1] = 0;
+			j--;
+		}
+	}
+	return (sc);
+}
+
+
 static void		ft_cp_s_to_s(unsigned char *s1, unsigned char *s2, unsigned int i, unsigned int j)
 {
 	unsigned int		l;
@@ -177,7 +225,6 @@ static unsigned char		*ft_new_s_on_sizeint(unsigned int i, unsigned char *s, uns
 	return (s1);
 }
 
-/*
 void ft_int_to_char(char reg[REG_SIZE], unsigned int nb)
 {
 	int i;
@@ -189,7 +236,7 @@ void ft_int_to_char(char reg[REG_SIZE], unsigned int nb)
 		nb = nb >> 8;
 	}
 }
-*/
+
 static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
@@ -200,6 +247,7 @@ static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 	unsigned int		ind1;
 
 	pc = proc1->pc;
+	printf("pc = %d\n",pc);
 	s1 = NULL;
 	if (proc1->params.type[x] == T_REG)
 		s1 = proc1->reg[ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) - 1];
@@ -225,6 +273,28 @@ static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 		s1 = ft_new_s_on_sizeint( REG_SIZE, s, ind1);
 	}
 	return (s1);
+}
+
+int		ft_and(unsigned char *s, t_proc *proc1)
+{
+	unsigned char	*s1;
+	unsigned char	*s2;
+	unsigned char	*s3;
+	unsigned char	*s4;
+	unsigned int	index;
+
+	if (IND_SIZE <= REG_SIZE)
+	{
+		s1 = ft_get_para(s, proc1, 0);
+		s2 = ft_get_para(s, proc1, 1);
+		s3 = ft_get_para(s, proc1, 2);
+		s4 = ft_and2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
+//		index = ft_get_index_tdir(s4, sizeof(unsigned int), proc1->pc);
+//		ft_cp_r_to_stack(REG_SIZE,s, index, s1);
+		ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+		return (1);
+	}
+	return (0);
 }
 
 int		ft_st(unsigned char *s, t_proc *proc1)
