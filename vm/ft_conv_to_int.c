@@ -6,7 +6,7 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 17:06:55 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/03 18:58:26 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/16 20:49:27 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ unsigned int	ft_conv_to_int_memod(unsigned char *s, unsigned int i)
 	while (i > 0)
 	{
 		res = res + (s[i - 1] * ft_powmod_mem(2,k));
+//		res = res + (2 * ft_powmod_mem(2,k));
 		res = res % MEM_SIZE;
 		i--;
 		k = k + 8;

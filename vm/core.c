@@ -83,6 +83,8 @@ void			forward_pc(t_env *env, t_proc *begin)
 				ft_st(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "sti") == 0)
 				ft_sti(env->mem, env->proc);
+			if (ft_strcmp(env->proc->op.name, "ld") == 0)
+				ft_ld(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "and") == 0)
 				ft_and(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "add") == 0)
