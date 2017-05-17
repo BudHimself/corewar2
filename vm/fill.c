@@ -6,7 +6,7 @@
 /*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:50:40 by tyassine          #+#    #+#             */
-/*   Updated: 2017/04/27 21:50:45 by tyassine         ###   ########.fr       */
+/*   Updated: 2017/05/17 15:24:13 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void 						ft_init_proc(t_env *env,int start, int nb)
 	proc->pc = start;
 	proc->params.carry = 0;
 	proc->num_players = nb;
-	proc->lives_inperiod = 0;
+	proc->lives_in_period = 0;
 	proc->next = NULL;
 	if (env->proc == NULL)
 		env->proc = proc;

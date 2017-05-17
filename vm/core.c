@@ -98,10 +98,12 @@ void			forward_pc(t_env *env, t_proc *begin)
 	{
 		if (env->proc->op.name)
 		{
-			if (ft_strcmp(env->proc->op.name, "st") == 0)
-				ft_st(env->mem, env->proc);
+//			if (ft_strcmp(env->proc->op.name, "st") == 0)
+//				ft_st(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "sti") == 0)
 				ft_sti(env->mem, env->proc);
+			if (ft_strcmp(env->proc->op.name, "ldi") == 0)
+				ft_ldi(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "live") == 0)
 				ft_live(env, env->proc);
 			ft_print_proc(env->proc);
@@ -175,7 +177,7 @@ void				core(t_env *env)
 			// env->cycle_to_die = env->cycle + env->cycle_to_die % CYCLE_DELTA;
 		}
 		forward_pc(env, begin);
-		printf("CYCLE : %d et le CYCLE TO DIE : %d\n", env->cycle, env->cycle_to_die);
+//		printf("CYCLE : %d et le CYCLE TO DIE : %d\n", env->cycle, env->cycle_to_die);
 	}
 	ft_print_procs(env);
 }
