@@ -646,6 +646,27 @@ int	ft_ldi(unsigned char *s, t_proc *proc1)
 	return (0);
 }
 
+int	ft_lldi(unsigned char *s, t_proc *proc1)
+{
+	unsigned char	*s1;
+	unsigned char	*s2;
+	unsigned char	*s3;
+	unsigned char	*s4;
+	unsigned int	index;
+
+	if (IND_SIZE <= REG_SIZE)
+	{
+		s1 = ft_get_para_whihtout_idxmod(s, proc1, 0);
+		s2 = ft_get_para_whihtout_idxmod(s, proc1, 1);
+		s3 = ft_get_para_whihtout_idxmod(s, proc1, 2);
+		s4 = ft_add2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
+		index = ft_get_index_without_idxmod(s4, sizeof(unsigned int), proc1->pc);
+		ft_cp_in_s(REG_SIZE,s3, s, index);
+		return (1);
+	}
+	return (0);
+}
+
 int		ft_ld(unsigned char *s, t_proc *proc1)
 {
 	unsigned char	*s1;
