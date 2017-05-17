@@ -597,6 +597,24 @@ int		ft_fork(unsigned char *s, t_proc *proc1)
 	return (0);
 }
 
+int		ft_lfork(unsigned char *s, t_proc *proc1)
+{
+	unsigned char	*s1;
+	unsigned int	index;
+
+	if (IND_SIZE <= REG_SIZE)
+	{
+		s1 = ft_get_para(s, proc1, 0);
+		if (s1)
+		{
+			index = ft_get_index_without_idxmod(s1, sizeof(unsigned int), proc1->pc);
+//			proc1->pc = index;
+			return (1);
+		}
+	}
+	return (0);
+}
+
 
 int		ft_st(unsigned char *s, t_proc *proc1)
 {

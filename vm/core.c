@@ -112,6 +112,8 @@ void			forward_pc(t_env *env, t_proc *begin)
 				ft_lldi(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "fork") == 0)
 				ft_fork(env->mem, env->proc);
+			if (ft_strcmp(env->proc->op.name, "lfork") == 0)
+				ft_lfork(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "sub") == 0)
 				ft_sub(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "or") == 0)
