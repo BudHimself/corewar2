@@ -79,6 +79,17 @@ void			forward_pc(t_env *env, t_proc *begin)
 	{
 		if (env->proc->op.name)
 		{
+			unsigned char *s;
+			s = (unsigned char *)malloc(sizeof(unsigned char) * 5);
+			s[0] = 1;
+			s[1] = 2;
+			s[2] = 3;
+			s[3] = 4;
+			s[4] = 5;
+			if (ft_strcmp(env->proc->op.name, "ld") == 0)
+				ft_ld(s, env->proc);
+//				ft_ld(env->mem, env->proc);
+			/*
 			if (ft_strcmp(env->proc->op.name, "st") == 0)
 				ft_st(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "sti") == 0)
@@ -89,6 +100,7 @@ void			forward_pc(t_env *env, t_proc *begin)
 				ft_and(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "add") == 0)
 				ft_add(env->mem, env->proc);
+				*/
 			ft_print_proc(env->proc);
 		}
 		if (env->proc->params.size_total > 0)

@@ -10,7 +10,7 @@ t_op		return_op_tab(unsigned char *memory, t_env *env)
 {
 	int number_op;
 
- 	number_op = ft_conv_to_int((unsigned char *)memory, 1);
+ 	number_op = ft_conv_to_int_nomod((unsigned char *)memory, 1);
  	if (number_op < 1 || number_op > 15)
 	{
 		env->proc->pc += 1;
