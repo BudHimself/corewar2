@@ -108,6 +108,8 @@ void			forward_pc(t_env *env, t_proc *begin)
 				ft_sub(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "or") == 0)
 				ft_or(env->mem, env->proc);
+			if (ft_strcmp(env->proc->op.name, "xor") == 0)
+				ft_xor(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "live") == 0)
 				ft_live(env, env->proc);
 			ft_print_proc(env->proc);
