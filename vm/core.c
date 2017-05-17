@@ -100,6 +100,7 @@ void			forward_pc(t_env *env, t_proc *begin)
 		{
 //			if (ft_strcmp(env->proc->op.name, "st") == 0)
 //				ft_st(env->mem, env->proc);
+			printf("instru = %s\n",env->proc->op.name);
 			if (ft_strcmp(env->proc->op.name, "sti") == 0)
 				ft_sti(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "ld") == 0)
@@ -109,7 +110,12 @@ void			forward_pc(t_env *env, t_proc *begin)
 			if (ft_strcmp(env->proc->op.name, "lld") == 0)
 				ft_lld(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "lldi") == 0)
+			{
 				ft_lldi(env->mem, env->proc);
+			printf("FFFFFFFFFFFFFFFF\n");
+			}
+			if (ft_strcmp(env->proc->op.name, "zjmp") == 0)
+				ft_zjmp(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "fork") == 0)
 				ft_fork(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "lfork") == 0)
@@ -120,6 +126,8 @@ void			forward_pc(t_env *env, t_proc *begin)
 				ft_or(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "xor") == 0)
 				ft_xor(env->mem, env->proc);
+//			if (ft_strcmp(env->proc->op.name, "aff") == 0)
+//				ft_aff(env, env->proc);
 			if (ft_strcmp(env->proc->op.name, "live") == 0)
 				ft_live(env, env->proc);
 			ft_print_proc(env->proc);

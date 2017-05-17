@@ -425,8 +425,16 @@ static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 	pc = proc1->pc;
 	position = get_position(proc1, x);
 	s1 = NULL;
+	printf("x = %d, paramtype = %d,T_REG = %d\n",x,proc1->params.type[x],T_REG);
 	if (proc1->params.type[x] == T_REG)
+	{
+		printf("hhhhhhhhhhh\n");
 		s1 = proc1->reg[ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) - 1];
+		printf("reg = %d\n",s1[0]);
+		printf("r = %d\n",s1[1]);
+		printf("r = %d\n",s1[2]);
+		printf("r = %d\n",s1[3]);
+	}
 	else if (proc1->params.type[x] == T_DIR)
 		s1 = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
 	// st
@@ -579,6 +587,24 @@ int		ft_and(unsigned char *s, t_proc *proc1)
 	return (0);
 }
 
+int		ft_zjmp(unsigned char *s, t_proc *proc1)
+{
+	unsigned char	*s1;
+	unsigned int	index;
+
+	if (IND_SIZE <= REG_SIZE)
+	{
+		s1 = ft_get_para(s, proc1, 0);
+		if (s1)
+		{
+			index = ft_get_index_t(s1, sizeof(unsigned int), proc1->pc);
+//			proc1->pc = index;
+			return (1);
+		}
+	}
+	return (0);
+}
+
 int		ft_fork(unsigned char *s, t_proc *proc1)
 {
 	unsigned char	*s1;
@@ -604,7 +630,7 @@ int		ft_lfork(unsigned char *s, t_proc *proc1)
 
 	if (IND_SIZE <= REG_SIZE)
 	{
-		s1 = ft_get_para(s, proc1, 0);
+		s1 = ft_get_para_whihtout_idxmod(s, proc1, 0);
 		if (s1)
 		{
 			index = ft_get_index_without_idxmod(s1, sizeof(unsigned int), proc1->pc);
@@ -723,7 +749,6 @@ int		ft_ld(unsigned char *s, t_proc *proc1)
 			else 
 			{
 				ind1 = ft_conv_to_int_memod(s1, sizeof(unsigned int));
-				printf("ind1 = %d\n",ind1);
 				ft_cp_in_s(REG_SIZE,s2, s, ind1);
 			}
 			return (1);
@@ -759,6 +784,31 @@ int		ft_lld(unsigned char *s, t_proc *proc1)
 	}
 	return (0);
 }
+/*
+int		ft_aff(unsigned char *s, t_proc *proc1)
+{
+	unsigned char	*s1;
+	unsigned int	ind1;
+
+	if (IND_SIZE <= REG_SIZE)
+	{
+			printf("GGGGGGGGGGGGGGgg\n");
+		s1 = ft_get_para(s, proc1, 0);
+		printf("s = %d\n",s1[0]);
+		printf("s = %d\n",s1[1]);
+		printf("s = %d\n",s1[2]);
+		printf("s = %d\n",s1[3]);
+		if (s1)
+		{
+			ind1 = ft_conv_to_int_nomod(s1, sizeof(unsigned int));
+			printf("ind1 = %d\n",ind1);
+			return (ind1);
+		}
+	}
+	return (0);
+}
+*/
+
 /*
 int		ft_ld(unsigned char *s, t_proc *proc1)
 {
