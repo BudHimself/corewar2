@@ -1,6 +1,6 @@
 .name	"test"
 .comment "Multipass"
 
-live %-1
-live %-2
-live %-3
+ld 2,r8
+st r1,0
+#live %-2

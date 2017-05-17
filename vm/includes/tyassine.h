@@ -97,6 +97,8 @@ typedef struct		s_env
 	unsigned int	nb_live;
 	unsigned int	cycle;
 	unsigned int	cycle_to_die;
+	int				cycle_to_inc;
+	int				checks;
 	unsigned int	nbp;
 	int				nb_option; // Option -n
 	t_proc			*proc; //!!! add in here

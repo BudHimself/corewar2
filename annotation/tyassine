@@ -1,0 +1,6 @@
+to do:
+	-add gestion de checks and MAX_CHECKS.
+	-re verifier gestion de live
+		- live fonction a proteger
+		- NBR_LIVE a bien gere verifier avec le corewar de zaz.
+		

@@ -91,6 +91,7 @@ void	ft_print_proc(t_proc *proc)
 	ft_printf("    num du player :%5d\n", proc->num_players);
 	test_params2(&proc->params);
 	printf("       PC        :%5d\n", proc->pc);
+	printf("  Live in period :%5d\n", proc->lives_in_period);
 	ft_print_register(proc->reg);
 }
 

@@ -1,19 +1,28 @@
 #include "tyassine.h"
 
+
 void ft_live(t_env *e, t_proc *proc)
 {
 	int num_p;
 	int i;
 
-	i = 0;
+	i = -1;
+	// get_position(proc, 0);
 	num_p = ft_conv_to_int_nomod(proc->params.arg[0], proc->params.size_params[0]);
-	printf("num player call => %d\n", num_p);
+	// printf("num player call => %d\n", num_p);
 	e->nb_live++;
+	// if (e->nb_live >= NBR_LIVE)
+	// {
+	// 	e->cycle_to_inc -= CYCLE_DELTA;
+	// 	if (e->cycle_to_inc =< 0)
+	// 		e->cycle_to_inc = 0;
+	// }
 	proc->lives_in_period++;
-	while (i++ < e->no) {
+	while (++i < e->no) {
 		if (e->players[i].num_players == num_p)
 		{
 			e->players[i].last_live = e->cycle;
+			ft_printf("\"un processus dit que le joueur %d(%s) est en vie\"\n", e->players[i].num_players, e->players[i].header.prog_name);
 			break;
 		}
 	}
@@ -94,17 +103,20 @@ void			update_proc(t_env *env)
 
 void			forward_pc(t_env *env, t_proc *begin)
 {
-	if (env->proc->cycle_to_exec == env->cycle % MEM_SIZE)
+	if (env->proc->cycle_to_exec == (env->cycle % MEM_SIZE) && env->proc)
 	{
 		if (env->proc->op.name)
 		{
 			if (ft_strcmp(env->proc->op.name, "st") == 0)
-				ft_st(env->mem, env->proc);
+					ft_st(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "sti") == 0)
 				ft_sti(env->mem, env->proc);
+			if (ft_strcmp(env->proc->op.name, "ld") == 0)
+				ft_ld(env->mem, env->proc);
 			if (ft_strcmp(env->proc->op.name, "live") == 0)
 				ft_live(env, env->proc);
-			ft_print_proc(env->proc);
+			// test_op(&env->proc->op);
+			// ft_print_proc(env->proc);
 		}
 		if (env->proc->params.size_total > 0)
 			env->proc->pc += env->proc->params.size_total;
@@ -113,7 +125,9 @@ void			forward_pc(t_env *env, t_proc *begin)
 		update_proc(env);
 	}
 	if (env->proc->next)
-		env->proc = env->proc->next;
+		{
+			env->proc = env->proc->next;
+		}
 	else
 	{
 		env->cycle += 1;
@@ -122,14 +136,30 @@ void			forward_pc(t_env *env, t_proc *begin)
 
 }
 
-t_proc *die_proc(t_proc *proc)
+t_proc *die_proc(t_proc *proc, t_proc *begin)
 {
 	t_proc	*tmp;
 
-	tmp = proc->next;
-	free(proc);
-	proc = tmp;
-	return (proc);
+	tmp = begin;
+	if (begin == proc)
+	{
+		begin = proc->next;
+		free(proc);
+		proc = begin;
+	}
+	while (begin)
+	{
+		if (begin->next == proc)
+		{
+			begin->next = proc->next;
+			free(proc);
+			proc = begin->next;
+			begin = tmp;
+			break;
+		}
+		begin = begin->next;
+	}
+	return (begin);
 }
 
 
@@ -137,6 +167,7 @@ unsigned int check_proc_live(t_proc *proc)
 {
 	unsigned int	nb_proc_live;
 
+	nb_proc_live = 0;
 	nb_proc_live = proc->lives_in_period;
 	proc->lives_in_period = 0;
 	return (nb_proc_live);
@@ -145,11 +176,9 @@ unsigned int check_proc_live(t_proc *proc)
 void				core(t_env *env)
 {
 	t_proc			*begin;
-	unsigned int	cycle_to_inc;
-	unsigned int	nb_proc_live;
 
-	cycle_to_inc = CYCLE_TO_DIE;
-	env->cycle_to_die = cycle_to_inc;
+	env->cycle_to_inc = CYCLE_TO_DIE;
+	env->cycle_to_die = env->cycle_to_inc;
 	begin = env->proc;
 	while (env->proc)
 	{
@@ -157,25 +186,32 @@ void				core(t_env *env)
 		env->proc = env->proc->next;
 	}
 	env->proc = begin;
-	while (env->proc != NULL)
+	while (begin != NULL || !(env->cycle >= env->cycle_to_die && env->cycle_to_inc == 0))
 	{
 		if (env->cycle == env->cycle_to_die)
 		{
-			if (check_proc_live(begin) > 0)
+			env->checks++;
+			if (check_proc_live(env->proc) > 0)
 			{
-				begin->lives_in_period = 0;
+				env->proc->lives_in_period = 0;
 				printf("not die\n");
 			}
 			else
 			{
-				begin = die_proc(begin);
+				begin = die_proc(env->proc, begin);
 				printf("rm the proc\n");
+				if (begin == NULL)
+				{
+					env->proc = begin;
+					printf("ALLORE\n");
+					break;
+				}
 			}
-			env->cycle_to_die += cycle_to_inc;
+			env->cycle_to_die += env->cycle_to_inc;
 			// env->cycle_to_die = env->cycle + env->cycle_to_die % CYCLE_DELTA;
 		}
-		forward_pc(env, begin);
-		printf("CYCLE : %d et le CYCLE TO DIE : %d\n", env->cycle, env->cycle_to_die);
+		else
+			forward_pc(env, begin);
 	}
 	ft_print_procs(env);
 }
