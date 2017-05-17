@@ -390,6 +390,38 @@ int	ft_sti(unsigned char *s, t_proc *proc1)
 	}
 	return (0);
 }
+/*
+int		ft_ld(unsigned char *s, t_proc *proc1)
+{
+	unsigned char	*s1;
+	unsigned char	*s2;
+	unsigned char	*si;
+	unsigned char	*si2;
+	unsigned int	ind1;
+
+
+	if (IND_SIZE <= REG_SIZE)
+	{
+				printf("vvvvvvvvvvvvvvvv\n");
+		s1 = ft_get_para(s, proc1, 0);
+		s2 = ft_get_para(s, proc1, 1);
+		if (s1 && s2)
+		{
+			if (proc1->params.type[0] == T_DIR)
+				ft_cp_s_to_s(s2,s1,REG_SIZE,REG_SIZE);
+			else 
+			{
+				ind1 = ft_conv_to_int_memod(s1, sizeof(unsigned int));
+				//				printf("ind1 = %d\n",ind1);
+				//				s[(100) % MEM_SIZE] = 2;
+				ft_cp_in_s(REG_SIZE,s2, s, ind1);
+			}
+		}
+		return (1);
+	}
+	return (0);
+}
+*/
 
 int		ft_ld(unsigned char *s, t_proc *proc1)
 {
