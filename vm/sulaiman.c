@@ -125,6 +125,62 @@ static unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb, unsigned int
 	return (sc);
 }
 
+static unsigned char	*ft_sub2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned int	p;
+	unsigned char	*sc;
+	unsigned int k;
+
+	k = (i >= j) ? i : j;
+	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	if (i == j)
+	{
+		p = 0;
+		while (i > 0)
+		{
+			sc[i - 1] = sa[i - 1] - (sb[i - 1] + p);
+			p = (sa[i - 1] < (sb[i - 1] + p)) ? 1 : 0;
+			i--;
+		}
+	}
+	else if (i > j)
+	{
+		p = 0;
+		while (j > 0)
+		{
+			sc[i - 1] = sa[i - 1] - (sb[j - 1] + p);
+			p = (sa[i - 1] < (sb[j - 1] + p)) ? 1 : 0;
+			i--;
+			i--;
+			j--;
+		}
+		while (i > 0)
+		{
+			sc[i - 1] = sa[i - 1] - p;
+			p = (sa[i - 1] < p) ? 1 : 0;
+			i--;
+		}
+	}
+	else if (i < j)
+	{
+		p = 0;
+		while (i > 0)
+		{
+			sc[j - 1] = sa[i - 1] - (sb[j - 1] + p);
+			p = (sa[i - 1] < (sb[j - 1] + p)) ? 1 : 0;
+			i--;
+			j--;
+		}
+		while (j > 0)
+		{
+			sc[j - 1] = - (sb[j - 1] + p);
+			p = (0 < (sb[j - 1] + p)) ? 1 : 0;
+			j--;
+		}
+	}
+	return (sc);
+}
+
 static unsigned char	*ft_and2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
@@ -171,6 +227,51 @@ static unsigned char	*ft_and2(unsigned char *sa, unsigned char *sb, unsigned int
 	return (sc);
 }
 
+static unsigned char	*ft_or2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned char	*sc;
+	unsigned int k;
+
+	k = (i >= j) ? i : j;
+	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	if (i == j)
+	{
+		while (i > 0)
+		{
+			sc[i - 1] = sa[i - 1] | sb[i - 1];
+			i--;
+		}
+	}
+	else if (i > j)
+	{
+		while (j > 0)
+		{
+			sc[i - 1] = sa[i - 1] | sb[j - 1];
+			i--;
+			j--;
+		}
+		while (i > 0)
+		{
+			sc[i - 1] = 0;
+			i--;
+		}
+	}
+	else if (i < j)
+	{
+		while (i > 0)
+		{
+			sc[j - 1] = sa[i - 1] | sb[j - 1];
+			i--;
+			j--;
+		}
+		while (j > 0)
+		{
+			sc[j - 1] = 0;
+			j--;
+		}
+	}
+	return (sc);
+}
 
 static void		ft_cp_s_to_s(unsigned char *s1, unsigned char *s2, unsigned int i, unsigned int j)
 {
@@ -284,6 +385,46 @@ int		ft_add(unsigned char *s, t_proc *proc1)
 		s2 = ft_get_para(s, proc1, 1);
 		s3 = ft_get_para(s, proc1, 2);
 		s4 = ft_add2(s1, s2, REG_SIZE, REG_SIZE);
+		ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+		return (1);
+	}
+	return (0);
+}
+
+int		ft_or(unsigned char *s, t_proc *proc1)
+{
+	unsigned char	*s1;
+	unsigned char	*s2;
+	unsigned char	*s3;
+	unsigned char	*s4;
+	unsigned int	index;
+
+	if (IND_SIZE <= REG_SIZE)
+	{
+		s1 = ft_get_para(s, proc1, 0);
+		s2 = ft_get_para(s, proc1, 1);
+		s3 = ft_get_para(s, proc1, 2);
+		s4 = ft_or2(s1, s2, REG_SIZE, REG_SIZE);
+		ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+		return (1);
+	}
+	return (0);
+}
+
+int		ft_sub(unsigned char *s, t_proc *proc1)
+{
+	unsigned char	*s1;
+	unsigned char	*s2;
+	unsigned char	*s3;
+	unsigned char	*s4;
+	unsigned int	index;
+
+	if (IND_SIZE <= REG_SIZE)
+	{
+		s1 = ft_get_para(s, proc1, 0);
+		s2 = ft_get_para(s, proc1, 1);
+		s3 = ft_get_para(s, proc1, 2);
+		s4 = ft_sub2(s1, s2, REG_SIZE, REG_SIZE);
 		ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
 		return (1);
 	}
