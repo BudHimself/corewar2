@@ -107,14 +107,15 @@ void			forward_pc(t_env *env, t_proc *begin)
 	{
 		if (env->proc->op.name)
 		{
-			if (ft_strcmp(env->proc->op.name, "st") == 0)
-					ft_st(env->mem, env->proc);
-			if (ft_strcmp(env->proc->op.name, "sti") == 0)
-				ft_sti(env->mem, env->proc);
-			if (ft_strcmp(env->proc->op.name, "ld") == 0)
-				ft_ld(env->mem, env->proc);
-			if (ft_strcmp(env->proc->op.name, "live") == 0)
-				ft_live(env, env->proc);
+			f_op[env->proc->op.num - 2](env->mem, env->proc);
+			// if (ft_strcmp(env->proc->op.name, "st") == 0)
+			// 		ft_st(env->mem, env->proc);
+			// if (ft_strcmp(env->proc->op.name, "sti") == 0)
+			// 	ft_sti(env->mem, env->proc);
+			// if (ft_strcmp(env->proc->op.name, "ld") == 0)
+			// 	ft_ld(env->mem, env->proc);
+			// if (ft_strcmp(env->proc->op.name, "live") == 0)
+			// 	ft_live(env, env->proc);
 			// test_op(&env->proc->op);
 			// ft_print_proc(env->proc);
 		}

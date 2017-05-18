@@ -108,6 +108,7 @@ typedef struct		s_env
 /*
 **              DEBUG
 */
+int 				(*f_op[16])(unsigned char *, t_proc *);
 t_op				g_op_tab[17];
 void				ft_print_arena(unsigned char *arena);
 void				ft_print_champion(t_env *env);
