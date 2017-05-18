@@ -495,7 +495,6 @@ int		ft_add(unsigned char *s, t_proc *proc1)
 	unsigned char	*s2;
 	unsigned char	*s3;
 	unsigned char	*s4;
-	unsigned int	index;
 
 	if (IND_SIZE <= REG_SIZE)
 	{
@@ -518,7 +517,6 @@ int		ft_or(unsigned char *s, t_proc *proc1)
 	unsigned char	*s2;
 	unsigned char	*s3;
 	unsigned char	*s4;
-	unsigned int	index;
 
 	if (IND_SIZE <= REG_SIZE)
 	{
@@ -541,7 +539,6 @@ int		ft_xor(unsigned char *s, t_proc *proc1)
 	unsigned char	*s2;
 	unsigned char	*s3;
 	unsigned char	*s4;
-	unsigned int	index;
 
 	if (IND_SIZE <= REG_SIZE)
 	{
@@ -564,7 +561,6 @@ int		ft_sub(unsigned char *s, t_proc *proc1)
 	unsigned char	*s2;
 	unsigned char	*s3;
 	unsigned char	*s4;
-	unsigned int	index;
 
 	if (IND_SIZE <= REG_SIZE)
 	{
@@ -587,7 +583,6 @@ int		ft_and(unsigned char *s, t_proc *proc1)
 	unsigned char	*s2;
 	unsigned char	*s3;
 	unsigned char	*s4;
-	unsigned int	index;
 
 	if (IND_SIZE <= REG_SIZE)
 	{
@@ -760,8 +755,6 @@ int		ft_ld(unsigned char *s, t_proc *proc1)
 {
 	unsigned char	*s1;
 	unsigned char	*s2;
-	unsigned char	*si;
-	unsigned char	*si2;
 	unsigned int	ind1;
 
 	if (IND_SIZE <= REG_SIZE)
