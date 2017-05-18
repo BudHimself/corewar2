@@ -1,5 +1,19 @@
 #include "tyassine.h"
 
+static int		ft_getcarry(unsigned char *r)
+{
+	unsigned int		i;
+
+	i = REG_SIZE;
+	while (i > 0)
+	{
+		if (r[i] != 0)
+			return (0);
+		i--;
+	}
+	return (1);
+}
+
 static unsigned int	get_position(t_proc *proc1, int x)
 {
 	int		res;
@@ -505,50 +519,7 @@ int		ft_add(unsigned char *s, t_proc *proc1)
 		{
 			s4 = ft_add2(s1, s2, REG_SIZE, REG_SIZE);
 			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-			return (1);
-		}
-	}
-	return (0);
-}
-
-int		ft_or(unsigned char *s, t_proc *proc1)
-{
-	unsigned char	*s1;
-	unsigned char	*s2;
-	unsigned char	*s3;
-	unsigned char	*s4;
-
-	if (IND_SIZE <= REG_SIZE)
-	{
-		s1 = ft_get_para(s, proc1, 0);
-		s2 = ft_get_para(s, proc1, 1);
-		s3 = ft_get_para(s, proc1, 2);
-		if (s1 && s2 && s3)
-		{
-			s4 = ft_or2(s1, s2, REG_SIZE, REG_SIZE);
-			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-			return (1);
-		}
-	}
-	return (0);
-}
-
-int		ft_xor(unsigned char *s, t_proc *proc1)
-{
-	unsigned char	*s1;
-	unsigned char	*s2;
-	unsigned char	*s3;
-	unsigned char	*s4;
-
-	if (IND_SIZE <= REG_SIZE)
-	{
-		s1 = ft_get_para(s, proc1, 0);
-		s2 = ft_get_para(s, proc1, 1);
-		s3 = ft_get_para(s, proc1, 2);
-		if (s1 && s2 && s3)
-		{
-			s4 = ft_xor2(s1, s2, REG_SIZE, REG_SIZE);
-			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+			proc1->params.carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -571,6 +542,53 @@ int		ft_sub(unsigned char *s, t_proc *proc1)
 		{
 			s4 = ft_sub2(s1, s2, REG_SIZE, REG_SIZE);
 			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+			proc1->params.carry = ft_getcarry(s3);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+int		ft_or(unsigned char *s, t_proc *proc1)
+{
+	unsigned char	*s1;
+	unsigned char	*s2;
+	unsigned char	*s3;
+	unsigned char	*s4;
+
+	if (IND_SIZE <= REG_SIZE)
+	{
+		s1 = ft_get_para(s, proc1, 0);
+		s2 = ft_get_para(s, proc1, 1);
+		s3 = ft_get_para(s, proc1, 2);
+		if (s1 && s2 && s3)
+		{
+			s4 = ft_or2(s1, s2, REG_SIZE, REG_SIZE);
+			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+			proc1->params.carry = ft_getcarry(s3);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+int		ft_xor(unsigned char *s, t_proc *proc1)
+{
+	unsigned char	*s1;
+	unsigned char	*s2;
+	unsigned char	*s3;
+	unsigned char	*s4;
+
+	if (IND_SIZE <= REG_SIZE)
+	{
+		s1 = ft_get_para(s, proc1, 0);
+		s2 = ft_get_para(s, proc1, 1);
+		s3 = ft_get_para(s, proc1, 2);
+		if (s1 && s2 && s3)
+		{
+			s4 = ft_xor2(s1, s2, REG_SIZE, REG_SIZE);
+			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+			proc1->params.carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -593,6 +611,7 @@ int		ft_and(unsigned char *s, t_proc *proc1)
 		{
 			s4 = ft_and2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
 			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+			proc1->params.carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -638,6 +657,7 @@ int		ft_fork(unsigned char *s, t_proc *proc1)
 int		ft_lfork(unsigned char *s, t_proc *proc1)
 {
 	unsigned char	*s1;
+	unsigned char	*s2;
 	unsigned int	index;
 
 	if (IND_SIZE <= REG_SIZE)
@@ -647,6 +667,7 @@ int		ft_lfork(unsigned char *s, t_proc *proc1)
 		{
 			index = ft_get_index_without_idxmod(s1, sizeof(unsigned int), proc1->pc);
 //			proc1->pc = index;
+			s2 = ft_new_s_on_sizeint( REG_SIZE, s, index);
 			return (1);
 		}
 	}
@@ -721,6 +742,7 @@ int	ft_ldi(unsigned char *s, t_proc *proc1)
 			s4 = ft_add2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
 			index = ft_get_index_t(s4, sizeof(unsigned int), proc1->pc);
 			ft_cp_in_s(REG_SIZE,s3, s, index);
+			proc1->params.carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -745,6 +767,7 @@ int	ft_lldi(unsigned char *s, t_proc *proc1)
 			s4 = ft_add2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
 			index = ft_get_index_without_idxmod(s4, sizeof(unsigned int), proc1->pc);
 			ft_cp_in_s(REG_SIZE,s3, s, index);
+			proc1->params.carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -770,6 +793,7 @@ int		ft_ld(unsigned char *s, t_proc *proc1)
 				ind1 = ft_conv_to_int_memod(s1, sizeof(unsigned int));
 				ft_cp_in_s(REG_SIZE,s2, s, ind1);
 			}
+			proc1->params.carry = ft_getcarry(s2);
 			return (1);
 		}
 	}
@@ -798,6 +822,7 @@ int		ft_lld(unsigned char *s, t_proc *proc1)
 				ind1 = ft_conv_to_int_memod(s1, sizeof(unsigned int));
 				ft_cp_in_s_for_lld(REG_SIZE,s2, s, ind1);
 			}
+			proc1->params.carry = ft_getcarry(s2);
 			return (1);
 		}
 	}
