@@ -70,6 +70,7 @@ typedef struct		s_proc
 	t_params		params;
 	int				num_players;
 	int				pc;
+	char			pc_inc; // bool if pc a ete changer (1) si non (0)
 	unsigned char	reg[REG_NUMBER][REG_SIZE];
 	unsigned int	cycle_to_exec;
 	unsigned int 	lives_in_period;
@@ -98,10 +99,11 @@ typedef struct		s_env
 	unsigned int	cycle;
 	unsigned int	cycle_to_die;
 	int				cycle_to_inc;
-	int				checks;
+	int				checks; // nb de periode if(cycle = cycle to die)checks++;
 	unsigned int	nbp;
 	int				nb_option; // Option -n
 	t_proc			*proc; //!!! add in here
+	t_proc			*begin; // debut des procs
 	t_arena			arena;
 }					t_env;
 

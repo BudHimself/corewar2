@@ -44,6 +44,7 @@ void		ft_init_env(t_env *env)
 	env->cycle = 0;
 	env->nb_option = 0;
 	env->proc = NULL;
+	env->begin = NULL;
 	env->cycle_to_inc = 0;
 	env->checks = 0;
 }

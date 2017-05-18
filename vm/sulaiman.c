@@ -424,7 +424,7 @@ static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 		si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
 		index = ft_get_index_t(si, sizeof(unsigned int), pc);
 		s1 = (unsigned char*)malloc(sizeof(unsigned char) * REG_SIZE);
-		ft_int_to_reg((char*)s1, index);
+		ft_int_to_reg((unsigned char*)s1, index);
 	}
 	else if (proc1->params.type[x] == T_IND)
 	{
@@ -457,7 +457,7 @@ static unsigned char   *ft_get_para_whihtout_idxmod(unsigned char *s, t_proc *pr
 		si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
 		index = ft_get_index_without_idxmod(si, sizeof(unsigned int), pc);
 		s1 = (unsigned char*)malloc(sizeof(unsigned char) * REG_SIZE);
-		ft_int_to_reg((char*)s1, index);
+		ft_int_to_reg((unsigned char*)s1, index);
 	}
 	else if (proc1->params.type[x] == T_IND)
 	{
@@ -778,7 +778,7 @@ int (*f_op[16])(unsigned char *, t_proc *) =
 	ft_zjmp,
 	ft_ldi,
 	ft_sti,
-	ft_fork,
+	// ft_fork,
 	ft_lld,
 	ft_lldi,
 	ft_lfork,

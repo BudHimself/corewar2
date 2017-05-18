@@ -114,13 +114,17 @@ void 						ft_init_proc(t_env *env,int start, int nb)
 	while (i < REG_NUMBER)
 		ft_int_to_reg(proc->reg[i++], 0);
 	proc->pc = start;
+	proc->pc_inc = 0;
 	proc->params.carry = 0;
 	proc->num_players = nb;
 	proc->lives_in_period = 0;
 	proc->cycle_to_exec = 0;
 	proc->next = NULL;
 	if (env->proc == NULL)
+	{
 		env->proc = proc;
+		env->begin = proc;
+	}
 	else
 	{
 		tmp = env->proc;

@@ -103,21 +103,14 @@ void			update_proc(t_env *env)
 
 void			forward_pc(t_env *env, t_proc *begin)
 {
-	if (env->proc->cycle_to_exec == (env->cycle % MEM_SIZE) && env->proc)
+	if (env->proc->cycle_to_exec == env->cycle && env->proc)
 	{
 		if (env->proc->op.name)
 		{
-			f_op[env->proc->op.num - 2](env->mem, env->proc);
-			// if (ft_strcmp(env->proc->op.name, "st") == 0)
-			// 		ft_st(env->mem, env->proc);
-			// if (ft_strcmp(env->proc->op.name, "sti") == 0)
-			// 	ft_sti(env->mem, env->proc);
-			// if (ft_strcmp(env->proc->op.name, "ld") == 0)
-			// 	ft_ld(env->mem, env->proc);
-			// if (ft_strcmp(env->proc->op.name, "live") == 0)
-			// 	ft_live(env, env->proc);
-			// test_op(&env->proc->op);
-			// ft_print_proc(env->proc);
+			if (env->proc->op.num == 1)
+				ft_live(env, env->proc);
+			else
+				f_op[env->proc->op.num - 2](env->mem, env->proc); // -2 a cause live qui est au dessus et qui commence a 1;
 		}
 		if (env->proc->params.size_total > 0)
 			env->proc->pc += env->proc->params.size_total;
@@ -134,7 +127,6 @@ void			forward_pc(t_env *env, t_proc *begin)
 		env->cycle += 1;
 		env->proc = begin;
 	}
-
 }
 
 t_proc *die_proc(t_proc *proc, t_proc *begin)
@@ -176,18 +168,15 @@ unsigned int check_proc_live(t_proc *proc)
 
 void				core(t_env *env)
 {
-	t_proc			*begin;
-
 	env->cycle_to_inc = CYCLE_TO_DIE;
 	env->cycle_to_die = env->cycle_to_inc;
-	begin = env->proc;
 	while (env->proc)
 	{
 		update_proc(env);
 		env->proc = env->proc->next;
 	}
-	env->proc = begin;
-	while (begin != NULL || !(env->cycle >= env->cycle_to_die && env->cycle_to_inc == 0))
+	env->proc = env->begin;
+	while (env->begin != NULL || !(env->cycle >= env->cycle_to_die && env->cycle_to_inc == 0))
 	{
 		if (env->cycle == env->cycle_to_die)
 		{
@@ -199,11 +188,11 @@ void				core(t_env *env)
 			}
 			else
 			{
-				begin = die_proc(env->proc, begin);
+				env->begin = die_proc(env->proc, env->begin);
 				printf("rm the proc\n");
-				if (begin == NULL)
+				if (env->begin == NULL)
 				{
-					env->proc = begin;
+					env->proc = env->begin;
 					printf("ALLORE\n");
 					break;
 				}
@@ -212,7 +201,7 @@ void				core(t_env *env)
 			// env->cycle_to_die = env->cycle + env->cycle_to_die % CYCLE_DELTA;
 		}
 		else
-			forward_pc(env, begin);
+			forward_pc(env, env->begin);
 	}
 	ft_print_procs(env);
 }
