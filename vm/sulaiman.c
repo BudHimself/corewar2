@@ -414,7 +414,7 @@ static unsigned char		*ft_new_s_on_sizeint(unsigned int i, unsigned char *s, uns
 
 	return (s1);
 }
-
+/*
 void ft_int_to_char(char reg[REG_SIZE], unsigned int nb)
 {
 	int i;
@@ -426,7 +426,7 @@ void ft_int_to_char(char reg[REG_SIZE], unsigned int nb)
 		nb = nb >> 8;
 	}
 }
-
+*/
 static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
@@ -454,7 +454,7 @@ static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 		si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
 		index = ft_get_index_t(si, sizeof(unsigned int), pc);
 		s1 = (unsigned char*)malloc(sizeof(unsigned char) * REG_SIZE);
-		ft_int_to_char((char*)s1, index);
+		ft_int_to_reg(s1, index);
 	}
 	else if (proc1->params.type[x] == T_IND)
 	{
@@ -492,7 +492,7 @@ static unsigned char   *ft_get_para_whihtout_idxmod(unsigned char *s, t_proc *pr
 		si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
 		index = ft_get_index_without_idxmod(si, sizeof(unsigned int), pc);
 		s1 = (unsigned char*)malloc(sizeof(unsigned char) * REG_SIZE);
-		ft_int_to_char((char*)s1, index);
+		ft_int_to_reg(s1, index);
 	}
 	else if (proc1->params.type[x] == T_IND)
 	{
@@ -623,7 +623,7 @@ int		ft_zjmp(unsigned char *s, t_proc *proc1)
 	unsigned char	*s1;
 	unsigned int	index;
 
-	if (IND_SIZE <= REG_SIZE)
+	if (IND_SIZE <= REG_SIZE && proc1->params.carry == 1)
 	{
 		s1 = ft_get_para(s, proc1, 0);
 		if (s1)
@@ -828,7 +828,7 @@ int		ft_lld(unsigned char *s, t_proc *proc1)
 	}
 	return (0);
 }
-/*
+
 int		ft_aff(unsigned char *s, t_proc *proc1)
 {
 	unsigned char	*s1;
@@ -836,22 +836,17 @@ int		ft_aff(unsigned char *s, t_proc *proc1)
 
 	if (IND_SIZE <= REG_SIZE)
 	{
-			printf("GGGGGGGGGGGGGGgg\n");
 		s1 = ft_get_para(s, proc1, 0);
-		printf("s = %d\n",s1[0]);
-		printf("s = %d\n",s1[1]);
-		printf("s = %d\n",s1[2]);
-		printf("s = %d\n",s1[3]);
 		if (s1)
 		{
-			ind1 = ft_conv_to_int_nomod(s1, sizeof(unsigned int));
-			printf("ind1 = %d\n",ind1);
+			ind1 = ft_conv_to_int_mod256(s1, sizeof(unsigned int));
+// a voir pour le return le caratere ou le 1 pour bon
 			return (ind1);
+//			return (1);
 		}
 	}
 	return (0);
 }
-*/
 
 /*
 int		ft_ld(unsigned char *s, t_proc *proc1)
