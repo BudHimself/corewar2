@@ -425,15 +425,12 @@ static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 	pc = proc1->pc;
 	position = get_position(proc1, x);
 	s1 = NULL;
-	printf("x = %d, paramtype = %d,T_REG = %d\n",x,proc1->params.type[x],T_REG);
 	if (proc1->params.type[x] == T_REG)
 	{
-		printf("hhhhhhhhhhh\n");
-		s1 = proc1->reg[ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) - 1];
-		printf("reg = %d\n",s1[0]);
-		printf("r = %d\n",s1[1]);
-		printf("r = %d\n",s1[2]);
-		printf("r = %d\n",s1[3]);
+		if (ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) <= REG_NUMBER)
+			s1 = proc1->reg[ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) - 1];
+		else
+			return (NULL);
 	}
 	else if (proc1->params.type[x] == T_DIR)
 		s1 = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
@@ -467,7 +464,12 @@ static unsigned char   *ft_get_para_whihtout_idxmod(unsigned char *s, t_proc *pr
 	position = get_position(proc1, x);
 	s1 = NULL;
 	if (proc1->params.type[x] == T_REG)
-		s1 = proc1->reg[ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) - 1];
+	{
+		if (ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) <= REG_NUMBER)
+			s1 = proc1->reg[ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) - 1];
+		else
+			return (NULL);
+	}
 	else if (proc1->params.type[x] == T_DIR)
 		s1 = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
 	// 3 st, 2 ld, 13 lld
