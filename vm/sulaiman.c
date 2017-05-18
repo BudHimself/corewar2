@@ -502,9 +502,12 @@ int		ft_add(unsigned char *s, t_proc *proc1)
 		s1 = ft_get_para(s, proc1, 0);
 		s2 = ft_get_para(s, proc1, 1);
 		s3 = ft_get_para(s, proc1, 2);
-		s4 = ft_add2(s1, s2, REG_SIZE, REG_SIZE);
-		ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-		return (1);
+		if (s1 && s2 && s3)
+		{
+			s4 = ft_add2(s1, s2, REG_SIZE, REG_SIZE);
+			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -522,9 +525,12 @@ int		ft_or(unsigned char *s, t_proc *proc1)
 		s1 = ft_get_para(s, proc1, 0);
 		s2 = ft_get_para(s, proc1, 1);
 		s3 = ft_get_para(s, proc1, 2);
-		s4 = ft_or2(s1, s2, REG_SIZE, REG_SIZE);
-		ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-		return (1);
+		if (s1 && s2 && s3)
+		{
+			s4 = ft_or2(s1, s2, REG_SIZE, REG_SIZE);
+			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -542,9 +548,12 @@ int		ft_xor(unsigned char *s, t_proc *proc1)
 		s1 = ft_get_para(s, proc1, 0);
 		s2 = ft_get_para(s, proc1, 1);
 		s3 = ft_get_para(s, proc1, 2);
-		s4 = ft_xor2(s1, s2, REG_SIZE, REG_SIZE);
-		ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-		return (1);
+		if (s1 && s2 && s3)
+		{
+			s4 = ft_xor2(s1, s2, REG_SIZE, REG_SIZE);
+			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -562,9 +571,12 @@ int		ft_sub(unsigned char *s, t_proc *proc1)
 		s1 = ft_get_para(s, proc1, 0);
 		s2 = ft_get_para(s, proc1, 1);
 		s3 = ft_get_para(s, proc1, 2);
-		s4 = ft_sub2(s1, s2, REG_SIZE, REG_SIZE);
-		ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-		return (1);
+		if (s1 && s2 && s3)
+		{
+			s4 = ft_sub2(s1, s2, REG_SIZE, REG_SIZE);
+			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -582,9 +594,12 @@ int		ft_and(unsigned char *s, t_proc *proc1)
 		s1 = ft_get_para(s, proc1, 0);
 		s2 = ft_get_para(s, proc1, 1);
 		s3 = ft_get_para(s, proc1, 2);
-		s4 = ft_and2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
-		ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-		return (1);
+		if (s1 && s2 && s3)
+		{
+			s4 = ft_and2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
+			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -682,10 +697,13 @@ int	ft_sti(unsigned char *s, t_proc *proc1)
 		s1 = ft_get_para(s, proc1, 0);
 		s2 = ft_get_para(s, proc1, 1);
 		s3 = ft_get_para(s, proc1, 2);
-		s4 = ft_add2(s2, s3, sizeof(unsigned int), sizeof(unsigned int));
-		index = ft_get_index_t(s4, sizeof(unsigned int), proc1->pc);
-		ft_cp_r_to_stack(REG_SIZE,s, index, s1);
-		return (1);
+		if (s1 && s2 && s3)
+		{
+			s4 = ft_add2(s2, s3, sizeof(unsigned int), sizeof(unsigned int));
+			index = ft_get_index_t(s4, sizeof(unsigned int), proc1->pc);
+			ft_cp_r_to_stack(REG_SIZE,s, index, s1);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -703,10 +721,13 @@ int	ft_ldi(unsigned char *s, t_proc *proc1)
 		s1 = ft_get_para(s, proc1, 0);
 		s2 = ft_get_para(s, proc1, 1);
 		s3 = ft_get_para(s, proc1, 2);
-		s4 = ft_add2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
-		index = ft_get_index_t(s4, sizeof(unsigned int), proc1->pc);
-		ft_cp_in_s(REG_SIZE,s3, s, index);
-		return (1);
+		if (s1 && s2 && s3)
+		{
+			s4 = ft_add2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
+			index = ft_get_index_t(s4, sizeof(unsigned int), proc1->pc);
+			ft_cp_in_s(REG_SIZE,s3, s, index);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -724,10 +745,13 @@ int	ft_lldi(unsigned char *s, t_proc *proc1)
 		s1 = ft_get_para_whihtout_idxmod(s, proc1, 0);
 		s2 = ft_get_para_whihtout_idxmod(s, proc1, 1);
 		s3 = ft_get_para_whihtout_idxmod(s, proc1, 2);
-		s4 = ft_add2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
-		index = ft_get_index_without_idxmod(s4, sizeof(unsigned int), proc1->pc);
-		ft_cp_in_s(REG_SIZE,s3, s, index);
-		return (1);
+		if (s1 && s2 && s3)
+		{
+			s4 = ft_add2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
+			index = ft_get_index_without_idxmod(s4, sizeof(unsigned int), proc1->pc);
+			ft_cp_in_s(REG_SIZE,s3, s, index);
+			return (1);
+		}
 	}
 	return (0);
 }
