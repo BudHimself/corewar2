@@ -101,8 +101,6 @@ void	print_champ(t_env *env, int start, int size, int color)
 	col = ((start % 64) * 3) + 3;
 	line = (start / 64) + 1;
 	i = start;
-	// ft_printf("no : %d", color);
-	// ft_printf("pc : %d", start); // 1372 / 2737
 	while (i < size + start)
 	{
 		while (col < MID_COLS)
@@ -177,6 +175,7 @@ void	init_window(t_env *env)
 	tmp = env->proc;
 	while (++i < env->no)
 	{
+		// mvwprintw(env->arena.win,)
 		print_champ(env, tmp->pc, env->players[i].mem_size, i + 1);
 		tmp = tmp->next;
 	}

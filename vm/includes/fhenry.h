@@ -17,6 +17,6 @@
 void	draw_border(t_env *env);
 void	init_window(t_env *env);
 void	check_window(WINDOW *win);
-void	control_vm(t_env *env, int ch);
+void	draw_cycle_s(t_env *env, int ch);
 
 #endif

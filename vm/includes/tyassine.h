@@ -138,4 +138,9 @@ void				ft_print_procs(t_env *env);
 void				ft_print_proc(t_proc *proc);
 int					ft_do_st(unsigned char *s, t_proc *proc1);
 int					ft_do_sti(unsigned char *s, t_proc *proc1);
+void				control_vm(t_env *env, int ch);
+void				print_champ(t_env *env, int start, int size, int color);
+void				draw_cycle(t_env *env);
+void				slow_machine(t_env *env);
+
 #endif
