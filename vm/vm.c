@@ -77,17 +77,17 @@ int			main(int argc, char *argv[])
 	{
 		env.nbp = get_nbp(argc, argv);
 		ft_init(mem, &env, argc, argv);
-		(env.no > 0) ? core(&env) : ft_exit_error("No Champions input",14);
 	}
 	else
 	{
 		ft_print_option();
 		return (0);
 	}
-	(env.ncurses == 1 && env.debug != 1) ? init_window(&env) : 42;
-	(env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
+	(env.ncurses == 1 && env.debug != 1) ?init_window(&env): 42;
+	(env.no > 0) ? core(&env) : ft_exit_error("No Champions input",14);
+	// (env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
 	// ft_print_procs(&env); // you can see all processes !!!!
-	ft_putendl("\n*********        fin        *********");
-	(env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
+	(env.debug == 1) ? ft_putendl("\n*********        fin        *********"): 42;
+	// (env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
 	return (0);
 }

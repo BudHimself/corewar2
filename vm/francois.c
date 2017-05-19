@@ -70,13 +70,11 @@ t_params	*fill_struct_param(t_params *params, t_op *op, unsigned char *memory)
 			if ((ret_size = return_size_params(params, op, i, bytecode)) == -1)
 			{
 				params->size_total = 0;
-				ft_printf("HOOOOOOOOOoOOOOOOOOOOOOO\n");
 				return (params);
 			}
 			else
 				params->size_total += ret_size;
 			bytecode = bytecode >> 2;
-			printf("%02x\n", bytecode);
 		}
 	}
 	else
@@ -87,6 +85,5 @@ t_params	*fill_struct_param(t_params *params, t_op *op, unsigned char *memory)
 		params->size_total += op->size;
 	}
 	params->nb_arg = op->nb_arg;
-	ft_printf("size total : %zu\n", params->size_total);
 	return (params);
 }

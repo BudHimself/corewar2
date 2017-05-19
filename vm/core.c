@@ -22,7 +22,7 @@ void ft_live(t_env *e, t_proc *proc)
 		if (e->players[i].num_players == num_p)
 		{
 			e->players[i].last_live = e->cycle;
-			ft_printf("\"un processus dit que le joueur %d(%s) est en vie\"\n", e->players[i].num_players, e->players[i].header.prog_name);
+			(e->debug == 1)? ft_printf("\"un processus dit que le joueur %d(%s) est en vie\"\n", e->players[i].num_players, e->players[i].header.prog_name) : 42;
 			break;
 		}
 	}
@@ -109,24 +109,29 @@ void			update_proc(t_env *env)
 
 void			forward_pc(t_env *env, t_proc *begin)
 {
-	ft_printf("PC :%4d\n",env->proc->pc);
+	// ft_printf("PC :%4d\n",env->proc->pc);
+	int			fd;
+
+	fd = 0;
 	if (env->proc->cycle_to_exec == env->cycle && env->proc)
 	{
-		ft_print_procs(env);
-		test_op(&env->proc->op);
-		ft_print_arena(env->mem);
+		// ft_print_procs(env);
+		// test_op(&env->proc->op);
+		// ft_print_arena(env->mem);
 		if (env->proc->op.name)
 		{
 			if (env->proc->op.num == 1)
 				ft_live(env, env->proc);
 			else
+			{
 				f_op[env->proc->op.num - 2](env->mem, env->proc); // -2 a cause live qui est au dessus et qui commence a 1;
+				print_champ(env, env->proc->pc, env->proc->params.size_total, (env->proc->num_players) * -1);
+			}
 		}
 		if (env->proc->params.size_total > 0)
 			env->proc->pc += env->proc->params.size_total;
 		if (env->proc->pc > MEM_SIZE)
 			env->proc->pc = env->proc->pc % MEM_SIZE;
-		print_champ(env, env->proc->pc, env->proc->params.size_total, (env->proc->num_players) * -1);
 		update_proc(env);
 	}
 	if (env->proc->next)
@@ -219,7 +224,7 @@ void				core(t_env *env)
 		}
 		else
 			forward_pc(env, env->begin);
-		ft_printf("we are une cycle :%6d, Next periode at :%6d\n", env->cycle, env->cycle_to_die);
+		// ft_printf("we are une cycle :%6d, Next periode at :%6d\n", env->cycle, env->cycle_to_die);
 
 	}
 	ft_print_procs(env);
