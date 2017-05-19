@@ -74,6 +74,9 @@ typedef struct		s_proc
 	unsigned char	reg[REG_NUMBER][REG_SIZE];
 	unsigned int	cycle_to_exec;
 	unsigned int 	lives_in_period;
+	int				last_pc;
+	int				last_color;
+	int				last_op;
 	t_op			op;
 	struct s_proc	*next;
 }					t_proc;
@@ -142,5 +145,6 @@ void				control_vm(t_env *env, int ch);
 void				print_champ(t_env *env, int start, int size, int color);
 void				draw_cycle(t_env *env);
 void				slow_machine(t_env *env);
+void				draw_prompt(t_env *env, int pc, int color);
 
 #endif

@@ -119,6 +119,9 @@ void 						ft_init_proc(t_env *env,int start, int nb)
 	proc->num_players = nb;
 	proc->lives_in_period = 0;
 	proc->cycle_to_exec = 0;
+	proc->last_pc = 0;
+	proc->last_color = 0;
+	proc->last_op = 0;
 	proc->next = NULL;
 	if (env->proc == NULL)
 	{

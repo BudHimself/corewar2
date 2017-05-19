@@ -1,5 +1,25 @@
 #include "fhenry.h"
 
+void	draw_prompt(t_env *env, int pc, int color)
+{
+	int	line;
+	int	col;
+
+	col = ((env->proc->last_pc % 64) * 3) + 3;
+	line = (env->proc->last_pc / 64) + 1;
+	wattron(env->arena.win, (env->proc->last_op == 0) ? COLOR_PAIR(8) : COLOR_PAIR(env->proc->last_color));
+	mvwprintw(env->arena.win, line, col, "%02x", env->mem[env->proc->last_pc]);
+	wattroff(env->arena.win, (env->proc->last_op == 0) ? COLOR_PAIR(8) : COLOR_PAIR(env->proc->last_color));
+	col = ((pc % 64) * 3) + 3;
+	line = (pc / 64) + 1;
+	wattron(env->arena.win, A_STANDOUT | COLOR_PAIR(color));
+	mvwprintw(env->arena.win, line, col, "%02x", env->mem[pc]);
+	wattroff(env->arena.win, A_STANDOUT | COLOR_PAIR(color));
+	env->proc->last_pc = pc;
+	env->proc->last_color = color;
+	env->proc->last_op = env->proc->op.num;
+}
+
 void	draw_processes(t_env *env)
 {
 	// mvwprintw(env->arena.win, HEADER_SIZE + 6, MID_COLS + 3,

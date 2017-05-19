@@ -96,8 +96,8 @@ void			update_proc(t_env *env)
 		{
 			env->proc->pc += 1;
 			env->proc->op = g_op_tab[16];
+			draw_prompt(env, env->proc->pc, env->proc->num_players * -1);
 		}
-
 		// test_op(&env->proc->op);
 	}
 	else
@@ -105,6 +105,7 @@ void			update_proc(t_env *env)
 		env->proc->cycle_to_exec = env->cycle + 1;
 		init_params(&env->proc->params);
 	}
+	draw_prompt(env, env->proc->pc, env->proc->num_players * -1);
 }
 
 void			forward_pc(t_env *env, t_proc *begin)
