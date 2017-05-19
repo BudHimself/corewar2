@@ -83,8 +83,13 @@ int			main(int argc, char *argv[])
 		ft_print_option();
 		return (0);
 	}
-	(env.ncurses == 1 && env.debug != 1) ?init_window(&env): 42;
-	(env.no > 0) ? core(&env) : ft_exit_error("No Champions input",14);
+	if (env.no > 0)
+	{
+		(env.ncurses == 1 && env.debug != 1) ? init_window(&env): 42;
+		core(&env);
+	}
+	else
+		ft_exit_error("No Champions input",14);
 	// (env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
 	// ft_print_procs(&env); // you can see all processes !!!!
 	(env.debug == 1) ? ft_putendl("\n*********        fin        *********"): 42;

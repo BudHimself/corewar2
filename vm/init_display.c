@@ -33,9 +33,11 @@ void	draw_cycle_s(t_env *env, int ch)
 
 void	draw_status(t_env *env)
 {
-	char *tmp;
+	char	*tmp;
+	int		ch;
 
 	tmp = NULL;
+	ch = 0;
 	if (env->arena.pause == 0)
 	{
 		tmp = "Start";
@@ -49,8 +51,11 @@ void	draw_status(t_env *env)
 	mvwprintw(env->arena.win, HEADER_SIZE, MID_COLS + 3, " %s ", tmp);
 	wrefresh(env->arena.win);
 	while (env->arena.pause == 0)
-		if (wgetch(env->arena.win) == ' ')
+	{
+		if ((ch = wgetch(env->arena.win)) == ' ')
 			break;
+		control_vm(env, ch);
+	}
 	if (env->arena.pause == 0)
 		draw_status(env);
 }
@@ -133,7 +138,6 @@ void	load_display(t_env *env)
 
 	line = HEADER_SIZE;
 	col = MID_COLS + 3;
-	draw_status(env);
 	draw_cycle_s(env, 0);
 	draw_cycle(env);
 	draw_processes(env);
@@ -175,11 +179,10 @@ void	init_window(t_env *env)
 	tmp = env->proc;
 	while (++i < env->no)
 	{
-		// mvwprintw(env->arena.win,)
 		print_champ(env, tmp->pc, env->players[i].mem_size, i + 1);
 		tmp = tmp->next;
 	}
-	slow_machine(env);
+	draw_status(env);
 	endwin();
 	free(arena);
 }
@@ -193,11 +196,9 @@ void	check_window(WINDOW *win)
 	if (x < MAX_COLS || y < MAX_LINES)
 	{
 		if (x < MAX_COLS)
-			mvwprintw(stdscr, y / 2, x / 3,
-				"la fenetre n'est pas suffisament large");
+			ft_putendl("la fenetre n'est pas suffisament large");
 		if (y < MAX_LINES)
-			mvwprintw(stdscr, y / 2, x / 3,
-				"la fenetre n'est pas suffisament haute");
+			ft_putendl("la fenetre n'est pas suffisament haute");
 		wrefresh(win);
 		getch();
 		endwin();
