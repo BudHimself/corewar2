@@ -32,6 +32,16 @@ unsigned int	ft_powmod_mem(unsigned int a, unsigned int n)
 	return (res % MEM_SIZE);
 }
 
+unsigned int	ft_powmod_256(unsigned int a, unsigned int n)
+{
+	unsigned int res;
+	if (n == 0)
+		res = 1;
+	else
+		res = a * ft_powmod_256(a, n - 1);
+	return (res % 256);
+}
+
 unsigned int	ft_pow(unsigned int a, unsigned int n)
 {
 	unsigned int res;

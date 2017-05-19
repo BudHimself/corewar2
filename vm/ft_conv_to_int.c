@@ -61,3 +61,20 @@ unsigned int	ft_conv_to_int_nomod(unsigned char *s, unsigned int i)
 	}
 	return (res);
 }
+
+unsigned int	ft_conv_to_int_mod256(unsigned char *s, unsigned int i)
+{
+	unsigned int	res;
+	unsigned int	k;
+
+	res = 0;
+	k = 0;
+	while (i > 0)
+	{
+		res = res + (s[i - 1] * ft_powmod_256(2,k));
+		res = res % 256;
+		i--;
+		k = k + 8;
+	}
+	return (res);
+}

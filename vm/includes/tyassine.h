@@ -114,7 +114,7 @@ typedef struct		s_env
 /*
 **              DEBUG
 */
-int 				(*f_op[16])(unsigned char *, t_proc *);
+int 				(*f_op[16])(t_env *, t_proc *);
 t_op				g_op_tab[17];
 void				ft_print_arena(unsigned char *arena);
 void				ft_print_champion(t_env *env);
@@ -134,6 +134,7 @@ void				ft_int_to_reg(unsigned char reg[], unsigned int nb);
 unsigned int		ft_conv_to_int(unsigned char *s, unsigned int i);
 unsigned int		ft_conv_to_int_memod(unsigned char *s, unsigned int i);
 unsigned int		ft_conv_to_int_nomod(unsigned char *s, unsigned int i);
+unsigned int		ft_conv_to_int_mod256(unsigned char *s, unsigned int i);
 unsigned int		ft_powmod_idx(unsigned int a, unsigned int n);
 unsigned int		ft_powmod_mem(unsigned int a, unsigned int n);
 unsigned int		ft_pow(unsigned int a, unsigned int n);

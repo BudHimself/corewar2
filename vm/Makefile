@@ -14,7 +14,7 @@ FILES = fill \
 		ft_conv_to_int \
 		ft_powmod \
 		core \
-		sulaiman
+		function_op
 SRC = $(addsuffix .c, $(FILES))
 OBJ = $(SRC:.c=.o)
 CC = gcc
