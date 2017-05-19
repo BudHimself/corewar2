@@ -21,23 +21,31 @@ t_op		return_op_tab(unsigned char *memory, t_env *env)
 		return (g_op_tab[number_op - 1]);
 }
 
-size_t		return_size_params(t_params *params, t_op *op, int nb_arg, char bytecode)
+int		return_size_params(t_params *params, t_op *op, int nb_arg, char bytecode)
 {
 	if ((bytecode & 3u) == IND_CODE)
 	{
+		if (!(op->arg[nb_arg] & T_IND))
+			return (-1);
 		params->size_params[nb_arg] = 2;
 		params->type[nb_arg] = (unsigned char)T_IND;
 	}
 	else if ((bytecode & 2u) == DIR_CODE)
 	{
+		if (!(op->arg[nb_arg] & T_DIR))
+			return (-1);
 		params->size_params[nb_arg] = op->size;
 		params->type[nb_arg] = (unsigned char)T_DIR;
 	}
 	else if ((bytecode & 1u) == REG_CODE)
 	{
+		if (!(op->arg[nb_arg] & T_REG))
+			return (-1);
 		params->size_params[nb_arg] = 1;
 		params->type[nb_arg] = (unsigned char)T_REG;
 	}
+	else
+		return (-1);
 	return (params->size_params[nb_arg]);
 }
 
@@ -45,20 +53,30 @@ t_params	*fill_struct_param(t_params *params, t_op *op, unsigned char *memory)
 {
 	char     bytecode;
 	int 		i;
+	int 		ret_size;
 
 	i = -1;
+	ret_size = 0;
 	params->size_total = 1;
 	if (op->byte_codage)
 	{
 		params->size_total++;
 		bytecode = memory[1];
 		bytecode = ((bytecode & 0xc0) >> 6) | ((bytecode & 0x30) >> 2) | ((bytecode & 0xc) << 2) | ((bytecode & 0x3) << 6);
-		while (bytecode)
+		while (bytecode && i < 3)
 		{
 			++i;
 			params->arg[i] = memory + params->size_total;
-			params->size_total += return_size_params(params, op, i, bytecode);
+			if ((ret_size = return_size_params(params, op, i, bytecode)) == -1)
+			{
+				params->size_total = 0;
+				ft_printf("HOOOOOOOOOoOOOOOOOOOOOOO\n");
+				return (params);
+			}
+			else
+				params->size_total += ret_size;
 			bytecode = bytecode >> 2;
+			printf("%02x\n", bytecode);
 		}
 	}
 	else
@@ -69,5 +87,6 @@ t_params	*fill_struct_param(t_params *params, t_op *op, unsigned char *memory)
 		params->size_total += op->size;
 	}
 	params->nb_arg = op->nb_arg;
+	ft_printf("size total : %zu\n", params->size_total);
 	return (params);
 }

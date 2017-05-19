@@ -140,7 +140,6 @@ void						ft_fill_arena(t_env *env, char *buf, int fd, int nb)
 	int	start;
 
 	start = ft_pos_arena(env->nbp, env);
-	printf("position in arena%d\n", start);
 	i = 0;
 	lseek(fd, 4, SEEK_CUR);
 	while (i < env->players[env->no].mem_size)

@@ -59,17 +59,9 @@ unsigned int get_nbp(int argc, char *argv[])
 	nb = 0;
 	while (i < argc)
 	{
-		if (argv[i][0] == '-')
-		{
-			i++;
-			if (ft_isdigit(argv[i][0]))
-				i++;
-		}
-		else
-		{
+		if (!(argv[i][0] == '-' || ft_isdigit(argv[i][0])))
 			nb++;
-			i++;
-		}
+		i++;
 	}
 	return ((nb >= 4)? 4 : nb);
 }
@@ -85,6 +77,7 @@ int			main(int argc, char *argv[])
 	{
 		env.nbp = get_nbp(argc, argv);
 		ft_init(mem, &env, argc, argv);
+		(env.no > 0) ? core(&env) : ft_exit_error("No Champions input",14);
 	}
 	else
 	{
@@ -93,7 +86,6 @@ int			main(int argc, char *argv[])
 	}
 	(env.ncurses == 1 && env.debug != 1) ? init_window(&env) : 42;
 	(env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
-	core(&env);
 	// ft_print_procs(&env); // you can see all processes !!!!
 	ft_putendl("\n*********        fin        *********");
 	(env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;

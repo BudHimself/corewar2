@@ -87,11 +87,17 @@ void			init_params(t_params *params)
 void			update_proc(t_env *env)
 {
 	env->proc->op = return_op_tab(&env->mem[env->proc->pc], env);
-	if (env->proc->op.name)
+	if (env->proc->op.num != 0)
 	{
 		env->proc->cycle_to_exec = env->proc->op.cycle + env->cycle;
 		init_params(&env->proc->params);
 		env->proc->params = *fill_struct_param(&env->proc->params, &env->proc->op, &env->mem[env->proc->pc]);
+		if ((env->proc->params.size_total)  == 0)
+		{
+			env->proc->pc += 1;
+			env->proc->op = g_op_tab[16];
+		}
+
 		// test_op(&env->proc->op);
 	}
 	else
@@ -103,8 +109,12 @@ void			update_proc(t_env *env)
 
 void			forward_pc(t_env *env, t_proc *begin)
 {
+	ft_printf("PC :%4d\n",env->proc->pc);
 	if (env->proc->cycle_to_exec == env->cycle && env->proc)
 	{
+		ft_print_procs(env);
+		test_op(&env->proc->op);
+		ft_print_arena(env->mem);
 		if (env->proc->op.name)
 		{
 			if (env->proc->op.num == 1)
@@ -120,15 +130,15 @@ void			forward_pc(t_env *env, t_proc *begin)
 		update_proc(env);
 	}
 	if (env->proc->next)
-		{
-			env->proc = env->proc->next;
-		}
+		env->proc = env->proc->next;
 	else
 	{
 		env->cycle += 1;
 		if (env->ncurses == 1)
+		{
 			slow_machine(env);
-		draw_cycle(env);
+			draw_cycle(env);
+		}
 		env->proc = begin;
 	}
 }
@@ -194,16 +204,13 @@ void				core(t_env *env)
 			if (check_proc_live(env->proc) > 0)
 			{
 				env->proc->lives_in_period = 0;
-				printf("not die\n");
 			}
 			else
 			{
 				env->begin = die_proc(env->proc, env->begin);
-				printf("rm the proc\n");
 				if (env->begin == NULL)
 				{
 					env->proc = env->begin;
-					printf("ALLORE\n");
 					break;
 				}
 			}
@@ -212,6 +219,8 @@ void				core(t_env *env)
 		}
 		else
 			forward_pc(env, env->begin);
+		ft_printf("we are une cycle :%6d, Next periode at :%6d\n", env->cycle, env->cycle_to_die);
+
 	}
 	ft_print_procs(env);
 }
