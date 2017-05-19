@@ -766,6 +766,42 @@ int		ft_lld(unsigned char *s, t_proc *proc1)
 	return (0);
 }
 
+int         fork_cor(unsigned char *mem, t_proc *proc)
+{
+    t_proc        *new_proc;
+    int                addr_target;
+    size_t         i;
+    size_t        j;
+
+//recuperation de ladresse/pc sur laquelle creer le processus
+    while (proc->params.size_params[0]--)
+    {
+        addr_target = addr_target << 8;
+        addr_target = *(proc->params.arg[0]++);
+    }
+//malloc
+    if ((new_proc = ft_memalloc(sizeof(t_proc))) == NULL)
+        exit(0);
+//copie des registres
+    i = -1;
+    while (++i < REG_NUMBER)
+    {
+        j = -1;
+        while (++j < REG_SIZE)
+            new_proc->reg[i][j] = proc->reg[i][j];
+    }
+    new_proc->pc = proc->pc + (addr_target % IDX_MOD);
+    new_proc->op = g_op_tab[0];
+    new_proc->pc_inc = 0;
+    new_proc->params.carry = 0;
+    new_proc->num_players = proc->num_players;
+    new_proc->lives_in_period = 0;
+    new_proc->cycle_to_exec = 0;
+    new_proc->next = proc; //FAUX !!!! MODIFIER AVEC env->begin;
+    return (1);
+    return (0);
+}
+
 int (*f_op[16])(unsigned char *, t_proc *) =
 {
 	ft_ld,

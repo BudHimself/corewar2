@@ -151,6 +151,24 @@ void	slow_machine(t_env *env)
 	usleep(tmp);
 }
 
+void	draw_cycle_to_die(t_env *env)
+{
+	mvwprintw(env->arena.win, HEADER_SIZE + 8, MID_COLS + 3, "CYCLE_TO_DIE : %d", env->cycle_to_inc);
+	wrefresh(env->arena.win);
+}
+
+void	draw_max_check(t_env *env)
+{
+	mvwprintw(env->arena.win, HEADER_SIZE + 14, MID_COLS + 3, "MAX_CHECKS : %d", env->checks);
+	wrefresh(env->arena.win);
+}
+
+void	draw_nbr_live(t_env *env)
+{
+	mvwprintw(env->arena.win, HEADER_SIZE + 12, MID_COLS + 3, "NBR_LIVE : %d", env->nb_live);
+	wrefresh(env->arena.win);
+}
+
 void	load_display(t_env *env)
 {
 	int	line;
@@ -161,10 +179,9 @@ void	load_display(t_env *env)
 	draw_cycle_s(env, 0);
 	draw_cycle(env);
 	draw_processes(env);
-	mvwprintw(env->arena.win, line + 8, col, "CYCLE_TO_DIE : %d", CYCLE_TO_DIE);
+	draw_cycle_to_die(env);
 	mvwprintw(env->arena.win, line + 10, col, "CYCLE_DELTA : %d", CYCLE_DELTA);
-	mvwprintw(env->arena.win, line + 12, col, "NBR_LIVE : %d", NBR_LIVE);
-	mvwprintw(env->arena.win, line + 14, col, "MAX_CHECKS : %d", MAX_CHECKS);
+	draw_nbr_live(env);
 	// mvwprintw(env->arena.win, line + 8, col, "Player : -%d", env->players);
 }
 
@@ -204,7 +221,7 @@ void	init_window(t_env *env)
 	}
 	draw_status(env);
 	endwin();
-	free(arena);
+	// free(arena);
 }
 
 void	check_window(WINDOW *win)
@@ -222,7 +239,7 @@ void	check_window(WINDOW *win)
 		wrefresh(win);
 		getch();
 		endwin();
-		free(win);
+		// free(win);
 		exit(0);
 	}
 }

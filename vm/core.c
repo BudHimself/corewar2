@@ -1,28 +1,24 @@
 #include "tyassine.h"
 
 
-void ft_live(t_env *e, t_proc *proc)
+void		ft_live(t_env *env, t_proc *proc)
 {
-	int num_p;
-	int i;
+	int		num_p;
+	int		i;
 
 	i = -1;
 	// get_position(proc, 0);
 	num_p = ft_conv_to_int_nomod(proc->params.arg[0], proc->params.size_params[0]);
 	// printf("num player call => %d\n", num_p);
-	e->nb_live++;
-	// if (e->nb_live >= NBR_LIVE)
-	// {
-	// 	e->cycle_to_inc -= CYCLE_DELTA;
-	// 	if (e->cycle_to_inc =< 0)
-	// 		e->cycle_to_inc = 0;
-	// }
+	env->nb_live++;
+	draw_nbr_live(env);
 	proc->lives_in_period++;
-	while (++i < e->no) {
-		if (e->players[i].num_players == num_p)
+	while (++i < env->no)
+	{
+		if (env->players[i].num_players == num_p)
 		{
-			e->players[i].last_live = e->cycle;
-			(e->debug == 1)? ft_printf("\"un processus dit que le joueur %d(%s) est en vie\"\n", e->players[i].num_players, e->players[i].header.prog_name) : 42;
+			env->players[i].last_live = env->cycle;
+			(env->debug == 1)? ft_printf("\"un processus dit que le joueur %d(%s) est en vie\"\n", env->players[i].num_players, env->players[i].header.prog_name) : 42;
 			break;
 		}
 	}
@@ -149,7 +145,7 @@ void			forward_pc(t_env *env, t_proc *begin)
 	}
 }
 
-t_proc *die_proc(t_proc *proc, t_proc *begin)
+t_proc		*kill_proc(t_proc *proc, t_proc *begin)
 {
 	t_proc	*tmp;
 
@@ -157,6 +153,7 @@ t_proc *die_proc(t_proc *proc, t_proc *begin)
 	if (begin == proc)
 	{
 		begin = proc->next;
+		ft_putendl("ici");
 		free(proc);
 		proc = begin;
 	}
@@ -190,43 +187,56 @@ void				core(t_env *env)
 {
 	int				ch;
 
+	env->cycle_to_die = CYCLE_TO_DIE;
 	env->cycle_to_inc = CYCLE_TO_DIE;
-	env->cycle_to_die = env->cycle_to_inc;
 	while (env->proc)
 	{
 		update_proc(env);
 		env->proc = env->proc->next;
 	}
 	env->proc = env->begin;
-	while (env->begin != NULL || !(env->cycle >= env->cycle_to_die && env->cycle_to_inc == 0))
+	while (env->begin != NULL)
 	{
 		ch = wgetch(env->arena.win);
-		// ft_printf("ch : %d", ch);
 		if (ch)
 			control_vm(env, ch);
 		if (env->cycle == env->cycle_to_die)
 		{
-			env->checks++;
-			if (check_proc_live(env->proc) > 0)
+			ft_printf("Cycle to die!!\n");
+			if (env->nb_live == NBR_LIVE)
 			{
+				env->checks = 0;
+				draw_max_check(env);
+				env->cycle_to_inc -= CYCLE_DELTA;
+			}
+			if (!env->proc->lives_in_period)
+			{
+				ft_putendl("KILLLL");
+				kill_proc(env->proc, env->begin);
+				ft_putendl("KILLLL2");
+			}
+			else
 				env->proc->lives_in_period = 0;
+			if (env->checks == MAX_CHECKS)
+			{
+				ft_printf("CHEck MAX!!\n");
+				env->checks = 0;
+				draw_max_check(env);
+				env->cycle_to_inc -= CYCLE_DELTA;
+				env->cycle_to_die += env->cycle_to_inc;
+				draw_cycle_to_die(env);
 			}
 			else
 			{
-				env->begin = die_proc(env->proc, env->begin);
-				if (env->begin == NULL)
-				{
-					env->proc = env->begin;
-					break;
-				}
+				env->checks++;
+				draw_max_check(env);
+				env->cycle_to_die += env->cycle_to_inc;
+				draw_cycle_to_die(env);
 			}
-			env->cycle_to_die += env->cycle_to_inc;
-			// env->cycle_to_die = env->cycle + env->cycle_to_die % CYCLE_DELTA;
 		}
 		else
 			forward_pc(env, env->begin);
-		// ft_printf("we are une cycle :%6d, Next periode at :%6d\n", env->cycle, env->cycle_to_die);
-
+		ft_printf("we are une cycle :%6d, Next periode at :%6d\n", env->cycle, env->cycle_to_die);
 	}
 	ft_print_procs(env);
 }
