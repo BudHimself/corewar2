@@ -50,8 +50,8 @@ typedef struct		s_arena
 {
 	WINDOW			*win;
 	char			*name;
-	int				xmax;
-	int				ymax;
+	char			*status;
+	int				pause;
 }					t_arena;
 
 typedef struct		s_params
@@ -97,6 +97,7 @@ typedef struct		s_env
 	unsigned char	*mem;
 	unsigned int	nb_live;
 	unsigned int	cycle;
+	unsigned int	cycle_s;
 	unsigned int	cycle_to_die;
 	int				cycle_to_inc;
 	int				checks; // nb de periode if(cycle = cycle to die)checks++;

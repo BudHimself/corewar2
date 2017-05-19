@@ -103,6 +103,8 @@ void			update_proc(t_env *env)
 
 void			forward_pc(t_env *env, t_proc *begin)
 {
+	int			fd;
+
 	if (env->proc->cycle_to_exec == env->cycle && env->proc)
 	{
 		if (env->proc->op.name)
@@ -116,6 +118,7 @@ void			forward_pc(t_env *env, t_proc *begin)
 			env->proc->pc += env->proc->params.size_total;
 		if (env->proc->pc > MEM_SIZE)
 			env->proc->pc = env->proc->pc % MEM_SIZE;
+		print_champ(env, env->proc->pc, (int)env->proc->params.size_total, env->proc->num_players);
 		update_proc(env);
 	}
 	if (env->proc->next)
@@ -125,6 +128,7 @@ void			forward_pc(t_env *env, t_proc *begin)
 	else
 	{
 		env->cycle += 1;
+		draw_cycle(env);
 		env->proc = begin;
 	}
 }
@@ -156,7 +160,7 @@ t_proc *die_proc(t_proc *proc, t_proc *begin)
 }
 
 
-unsigned int check_proc_live(t_proc *proc)
+unsigned int		check_proc_live(t_proc *proc)
 {
 	unsigned int	nb_proc_live;
 
@@ -168,6 +172,8 @@ unsigned int check_proc_live(t_proc *proc)
 
 void				core(t_env *env)
 {
+	int				ch;
+
 	env->cycle_to_inc = CYCLE_TO_DIE;
 	env->cycle_to_die = env->cycle_to_inc;
 	while (env->proc)
@@ -178,6 +184,12 @@ void				core(t_env *env)
 	env->proc = env->begin;
 	while (env->begin != NULL || !(env->cycle >= env->cycle_to_die && env->cycle_to_inc == 0))
 	{
+		ch = wgetch(env->arena.win);
+		if (env->ncurses == 1)
+			slow_machine(env);
+		// ft_printf("ch : %d", ch);
+		if (ch)
+			control_vm(env, ch);
 		if (env->cycle == env->cycle_to_die)
 		{
 			env->checks++;

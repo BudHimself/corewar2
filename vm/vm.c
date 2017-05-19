@@ -42,6 +42,7 @@ void		ft_init_env(t_env *env)
 	env->ncurses = 0;
 	env->nb_live = 0;
 	env->cycle = 0;
+	env->cycle_s = 50;
 	env->nb_option = 0;
 	env->proc = NULL;
 	env->begin = NULL;
@@ -86,10 +87,12 @@ int			main(int argc, char *argv[])
 		ft_init(mem, &env, argc, argv);
 	}
 	else
+	{
 		ft_print_option();
+		return (0);
+	}
 	(env.ncurses == 1 && env.debug != 1) ? init_window(&env) : 42;
 	(env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
-
 	core(&env);
 	// ft_print_procs(&env); // you can see all processes !!!!
 	ft_putendl("\n*********        fin        *********");
