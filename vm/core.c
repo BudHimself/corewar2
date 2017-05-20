@@ -53,7 +53,7 @@ void			init_params(t_params *params)
 	params->nb_arg = 0;
 	params->sign = 0;
 	params->size_total = 0;
-	params->carry = 0;
+	// params->carry = 0; carry ne dois pas etre remit a ZERO
 }
 
 void			update_proc(t_env *env, t_proc *proc)
@@ -128,23 +128,19 @@ t_proc		*kill_proc(t_proc *proc, t_proc *begin)
 	t_proc	*tmp;
 
 	tmp = begin;
-	if (begin == proc)
+	if (proc == begin)
 	{
 		begin = proc->next;
 		free(proc);
-		proc = begin;
 	}
-	while (begin)
+	else
 	{
-		if (begin->next == proc)
+		while (tmp->next != proc)
 		{
-			begin->next = proc->next;
-			free(proc);
-			proc = begin->next;
-			begin = tmp;
-			break;
+			tmp = tmp->next;
 		}
-		begin = begin->next;
+		tmp->next = tmp->next->next;
+		free(proc);
 	}
 	return (begin);
 }
@@ -174,6 +170,11 @@ void				core(t_env *env)
 	env->proc = env->begin;
 	while (env->begin != NULL)
 	{
+		if (env->dump == env->cycle && env->dump)
+		{
+			ft_print_arena(env->mem);
+			exit(0);
+		}
 		ch = wgetch(env->arena.win);
 		if (ch)
 			control_vm(env, ch);

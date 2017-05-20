@@ -52,8 +52,8 @@ int			ft_init_options(t_env *env, char *argv[], int i)
 		env->nb_option = ft_get_nbafter(argv, i);
 		(env->nb_option > 0)? i++ : 42;
 	}
-	else if (argv[i][1] == 'd' && argv[i][1] == 'u'
-	&& argv[i][1] == 'm' && argv[i][1] == 'p' && argv[i][2] == '\0')
+	else if (argv[i][1] == 'd' && argv[i][2] == 'u'
+	&& argv[i][3] == 'm' && argv[i][4] == 'p' && argv[i][5] == '\0')
 	{
 		env->dump = ft_get_nbafter(argv, i);
 		(env->dump > 0)? i++ : 42;
