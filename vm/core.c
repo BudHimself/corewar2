@@ -193,9 +193,9 @@ void				core(t_env *env)
 		ch = wgetch(env->arena.win);
 		if (ch)
 			control_vm(env, ch);
-		if (env->cycle == env->cycle_to_die)
+		if (env->cycle >= env->cycle_to_die)
 		{
-			if (env->nb_live == NBR_LIVE)
+			if (env->nb_live >= NBR_LIVE)
 			{
 				env->checks = 0;
 				draw_max_check(env);
