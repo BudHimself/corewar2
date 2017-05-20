@@ -56,21 +56,21 @@ void			init_params(t_params *params)
 	params->carry = 0;
 }
 
-void			update_proc(t_env *env)
+void			update_proc(t_env *env, t_proc *proc)
 {
-	env->proc->op = return_op_tab(&env->mem[env->proc->pc], env);
-	if (env->proc->op.num != 0)
+	proc->op = return_op_tab(&env->mem[proc->pc], env);
+	if (proc->op.num != 0)
 	{
-		env->proc->cycle_to_exec = env->proc->op.cycle + env->cycle;
-		init_params(&env->proc->params);
-		env->proc->params = *fill_struct_param(&env->proc->params, &env->proc->op, &env->mem[env->proc->pc]);
-		if ((env->proc->params.size_total)  == 0)
+		proc->cycle_to_exec = proc->op.cycle + env->cycle;
+		init_params(&proc->params);
+		proc->params = *fill_struct_param(&proc->params, &proc->op, &env->mem[proc->pc]);
+		if ((proc->params.size_total)  == 0)
 		{
-			env->proc->pc += 1;
-			env->proc->op = g_op_tab[16];
-			draw_prompt(env, env->proc->pc, env->proc->num_players * -1);
+			proc->pc += 1;
+			proc->op = g_op_tab[16];
+			draw_prompt(env, proc->pc, proc->num_players * -1);
 		}
-		// test_op(&env->proc->op);
+		// test_op(&proc->op);
 	}
 	else
 	{
@@ -82,33 +82,32 @@ void			update_proc(t_env *env)
 
 void			forward_pc(t_env *env, t_proc *begin)
 {
-	(env->debug > 1)?ft_printf("PC :%4d\n",env->proc->pc):42;
 	int			fd;
 
 	fd = 0;
-	if (env->proc->cycle_to_exec == env->cycle && env->proc)
+	if (env->proc->cycle_to_exec <= env->cycle && env->proc)
 	{
-		if (env->debug > 2)
+		if (env->debug > 3)
 		{
 			ft_print_proc(env->proc);
 			test_op(&env->proc->op);
-			// ft_print_arena(env->mem);
 		}
 		if (env->proc->op.name)
 		{
-			if (env->proc->op.num == 1)
-				ft_live(env, env->proc);
-			else
-			{
-				f_op[env->proc->op.num - 1](env, env->proc); // -2 a cause live qui est au dessus et qui commence a 1;
-				print_champ(env, env->proc->pc, env->proc->params.size_total, (env->proc->num_players) * -1);
-			}
+			f_op[env->proc->op.num - 1](env, env->proc);
+			print_champ(env, env->proc->pc, env->proc->params.size_total, (env->proc->num_players) * -1);
 		}
-		if (env->proc->params.size_total > 0)
-			env->proc->pc += env->proc->params.size_total;
-		if (env->proc->pc > MEM_SIZE)
-			env->proc->pc = env->proc->pc % MEM_SIZE;
-		update_proc(env);
+		if (env->proc->pc_inc == 0)
+		{
+			if (env->proc->params.size_total > 0)
+				env->proc->pc += env->proc->params.size_total;
+			if (env->proc->pc > MEM_SIZE)
+				env->proc->pc = env->proc->pc % MEM_SIZE;
+			(env->debug == 6)?ft_printf("PC :%4d\n",env->proc->pc):42;
+		}
+		else
+			env->proc->pc_inc = 0;
+		update_proc(env, env->proc);
 	}
 	if (env->proc->next)
 		env->proc = env->proc->next;
@@ -169,7 +168,7 @@ void				core(t_env *env)
 	env->cycle_to_inc = CYCLE_TO_DIE;
 	while (env->proc)
 	{
-		update_proc(env);
+		update_proc(env, env->proc);
 		env->proc = env->proc->next;
 	}
 	env->proc = env->begin;
@@ -210,6 +209,6 @@ void				core(t_env *env)
 		}
 		else
 			forward_pc(env, env->begin);
-		(env->debug > 1)?ft_printf("we are une cycle :%6d, Next periode at :%6d\n", env->cycle, env->cycle_to_die) : 42;
+		(env->debug > 1)?ft_printf("we are in cycle :%6d, Next periode at :%6d\n", env->cycle, env->cycle_to_die) : 42;
 	}
 }

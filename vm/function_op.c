@@ -631,7 +631,8 @@ int		ft_zjmp(t_env *env, t_proc *proc1)
 		if (s1)
 		{
 			index = ft_get_index_t(s1, sizeof(unsigned int), proc1->pc);
-//			proc1->pc = index;
+			proc1->pc = index;
+			proc1->pc_inc = 1;
 			return (1);
 		}
 	}
@@ -670,16 +671,13 @@ int         ft_fork(t_env *env, t_proc *proc)
     size_t         i;
     size_t        j;
 
-//recuperation de ladresse/pc sur laquelle creer le processus
     while (proc->params.size_params[0]--)
     {
         addr_target = addr_target << 8;
         addr_target = *(proc->params.arg[0]++);
     }
-//malloc
     if ((new_proc = ft_memalloc(sizeof(t_proc))) == NULL)
         exit(0);
-//copie des registres
     i = -1;
     while (++i < REG_NUMBER)
     {
@@ -688,14 +686,15 @@ int         ft_fork(t_env *env, t_proc *proc)
             new_proc->reg[i][j] = proc->reg[i][j];
     }
     new_proc->pc = proc->pc + (addr_target % IDX_MOD);
-    new_proc->op = g_op_tab[0];
+    new_proc->op = g_op_tab[16];
     new_proc->pc_inc = 0;
     new_proc->params.carry = 0;
     new_proc->num_players = proc->num_players;
     new_proc->lives_in_period = 0;
-    new_proc->cycle_to_exec = 0;
-    new_proc->next = env->begin; //FAUX !!!! MODIFIER AVEC env->begin;
+    new_proc->cycle_to_exec = proc->cycle_to_exec + 1;
+    new_proc->next = env->begin;
 	env->begin = new_proc;
+	update_proc(env, env->begin);
     return (1);
     return (0);
 }
@@ -707,16 +706,13 @@ int         ft_lfork(t_env *env, t_proc *proc)
     size_t         i;
     size_t        j;
 
-//recuperation de ladresse/pc sur laquelle creer le processus
     while (proc->params.size_params[0]--)
     {
         addr_target = addr_target << 8;
         addr_target = *(proc->params.arg[0]++);
     }
-//malloc
     if ((new_proc = ft_memalloc(sizeof(t_proc))) == NULL)
         exit(0);
-//copie des registres
     i = -1;
     while (++i < REG_NUMBER)
     {
@@ -724,15 +720,17 @@ int         ft_lfork(t_env *env, t_proc *proc)
         while (++j < REG_SIZE)
             new_proc->reg[i][j] = proc->reg[i][j];
     }
-    new_proc->pc = proc->pc + (addr_target);
+	i = proc->pc + (addr_target);
+    new_proc->pc = (i > MEM_SIZE) ? i % MEM_SIZE : i;
     new_proc->op = g_op_tab[0];
     new_proc->pc_inc = 0;
     new_proc->params.carry = 0;
     new_proc->num_players = proc->num_players;
     new_proc->lives_in_period = 0;
     new_proc->cycle_to_exec = 0;
-    new_proc->next = env->begin; //FAUX !!!! MODIFIER AVEC env->begin;
+    new_proc->next = env->begin;
 	env->begin = new_proc;
+	update_proc(env, env->begin);
     return (1);
     return (0);
 }
@@ -893,7 +891,6 @@ int		ft_live(t_env *env, t_proc *proc)
 	i = -1;
 	// get_position(proc, 0);
 	num_p = ft_conv_to_int_nomod(proc->params.arg[0], proc->params.size_params[0]);
-	// printf("num player call => %d\n", num_p);
 	env->nb_live++;
 	draw_nbr_live(env);
 	proc->lives_in_period++;

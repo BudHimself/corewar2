@@ -34,7 +34,7 @@ void		ft_print_option(void)
 	ft_printf("Options:\n");
 	ft_printf(" %-8.8s : Number of champion after N number positive\n", "-n N");
 	ft_printf(" %-8.8s : Ncurses output mode\n", "-nc");
-	ft_printf(" %-8.8s : Verbosity for debug\n", "-d");
+	ft_printf(" %-8.8s : Verbosity for debug with facultative N number\n", "-d N");
 	ft_printf(" %-8.8s : Dumps memory after N cycles then exit\n", "-dump N");
 }
 
@@ -98,6 +98,11 @@ int			main(int argc, char *argv[])
 		ft_print_option();
 		return (0);
 	}
+	if (env.ncurses == 1 && env.debug == 1)
+	{
+		ft_print_arena(mem);
+		return(0);
+	}
 	if (env.no > 0)
 	{
 		(env.ncurses == 1 && env.debug < 1) ? init_window(&env): 42;
@@ -105,10 +110,9 @@ int			main(int argc, char *argv[])
 	}
 	else
 		ft_exit_error("No Champions input",14);
-	// (env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
 	// ft_print_procs(&env); // you can see all processes !!!!
-	(env.debug == 1) ? ft_putendl("\n*********        fin        *********"): 42;
-	// (env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
+	(env.debug > 1) ? ft_putendl("\n*********        end        *********"): 42;
+	(env.ncurses == 1 && env.debug == 5) ? ft_print_arena(mem) : 42;
 	get_winer(&env);
 	return (0);
 }

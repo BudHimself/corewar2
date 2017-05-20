@@ -99,7 +99,7 @@ void	ft_print_procs(t_env *env)
 {
 	t_proc	*begin;
 
-	begin = env->proc;
+	begin = env->begin;
 	while (begin)
 	{
 		ft_print_proc(begin);
