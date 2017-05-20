@@ -101,7 +101,7 @@ void			forward_pc(t_env *env, t_proc *begin)
 			else
 			{
 				f_op[env->proc->op.num - 1](env, env->proc); // -2 a cause live qui est au dessus et qui commence a 1;
-				print_champ(env, env->proc->pc, env->proc->params.size_total, (env->proc->num_players) * -1);
+//				print_champ(env, env->proc->pc, env->proc->params.size_total, (env->proc->num_players) * -1);
 			}
 		}
 		if (env->proc->params.size_total > 0)

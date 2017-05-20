@@ -90,14 +90,8 @@ static unsigned int		ft_get_index_without_idxmod(unsigned char *si, unsigned int
 	int						sign;
 	unsigned int	conv1;
 
-//	sign = ft_get_sign(si);
 	conv1 = ft_conv_to_int_memod(si, i);
-//	printf("conv1 = %d\n",conv1);
-//	if(sign == 1)
-		return ((pc + conv1) % MEM_SIZE);
-//	if(sign == -1)
-//		return ((pc - (- conv1)) % MEM_SIZE);
-//	return (0);
+	return ((pc + conv1) % MEM_SIZE);
 }
 
 static unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
@@ -180,7 +174,6 @@ static unsigned char	*ft_sub2(unsigned char *sa, unsigned char *sb, unsigned int
 		{
 			sc[i - 1] = sa[i - 1] - (sb[j - 1] + p);
 			p = (sa[i - 1] < (sb[j - 1] + p)) ? 1 : 0;
-			i--;
 			i--;
 			j--;
 		}
@@ -631,7 +624,8 @@ int		ft_zjmp(t_env *env, t_proc *proc1)
 		if (s1)
 		{
 			index = ft_get_index_t(s1, sizeof(unsigned int), proc1->pc);
-//			proc1->pc = index;
+			proc1->pc = index;
+			proc1->pc_inc = 1;
 			return (1);
 		}
 	}
@@ -655,7 +649,10 @@ int		ft_st(t_env *env, t_proc *proc1)
 			else
 			{
 				ind1 = ft_conv_to_int_memod(s2, sizeof(unsigned int));
+				proc1->index_st = ind1;
+				proc1->size_st = REG_SIZE;
 				ft_cp_r_to_stack(REG_SIZE,env->mem, ind1, s1);
+				print_champ(env, ind1, REG_SIZE, (env->proc->num_players) * -1);
 			}
 			return (1);
 		}
@@ -754,6 +751,8 @@ int	ft_sti(t_env *env, t_proc *proc1)
 		{
 			s4 = ft_add2(s2, s3, sizeof(unsigned int), sizeof(unsigned int));
 			index = ft_get_index_t(s4, sizeof(unsigned int), proc1->pc);
+			proc1->index_st = index;
+			proc1->size_st = REG_SIZE;
 			ft_cp_r_to_stack(REG_SIZE,env->mem, index, s1);
 			return (1);
 		}
