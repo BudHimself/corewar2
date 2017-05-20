@@ -85,7 +85,7 @@ int			main(int argc, char *argv[])
 	}
 	if (env.no > 0)
 	{
-		(env.ncurses == 1 && env.debug != 1) ? init_window(&env): 42;
+		(env.ncurses == 1 && env.debug < 1) ? init_window(&env): 42;
 		core(&env);
 	}
 	else

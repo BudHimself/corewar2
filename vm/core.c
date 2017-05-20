@@ -18,7 +18,7 @@ void		ft_live(t_env *env, t_proc *proc)
 		if (env->players[i].num_players == num_p)
 		{
 			env->players[i].last_live = env->cycle;
-			(env->debug == 1)? ft_printf("\"un processus dit que le joueur %d(%s) est en vie\"\n", env->players[i].num_players, env->players[i].header.prog_name) : 42;
+			(env->debug > 1)? ft_printf("\"un processus dit que le joueur %d(%s) est en vie\"\n", env->players[i].num_players, env->players[i].header.prog_name) : 42;
 			break;
 		}
 	}
@@ -106,7 +106,7 @@ void			update_proc(t_env *env)
 
 void			forward_pc(t_env *env, t_proc *begin)
 {
-	// ft_printf("PC :%4d\n",env->proc->pc);
+	(env->debug > 1)?ft_printf("PC :%4d\n",env->proc->pc):42;
 	int			fd;
 
 	fd = 0;
@@ -121,7 +121,7 @@ void			forward_pc(t_env *env, t_proc *begin)
 				ft_live(env, env->proc);
 			else
 			{
-				f_op[env->proc->op.num - 2](env->mem, env->proc); // -2 a cause live qui est au dessus et qui commence a 1;
+				f_op[env->proc->op.num - 2](env, env->proc); // -2 a cause live qui est au dessus et qui commence a 1;
 				print_champ(env, env->proc->pc, env->proc->params.size_total, (env->proc->num_players) * -1);
 			}
 		}
@@ -153,7 +153,6 @@ t_proc		*kill_proc(t_proc *proc, t_proc *begin)
 	if (begin == proc)
 	{
 		begin = proc->next;
-		ft_putendl("ici");
 		free(proc);
 		proc = begin;
 	}
@@ -202,7 +201,6 @@ void				core(t_env *env)
 			control_vm(env, ch);
 		if (env->cycle == env->cycle_to_die)
 		{
-			ft_printf("Cycle to die!!\n");
 			if (env->nb_live == NBR_LIVE)
 			{
 				env->checks = 0;
@@ -211,15 +209,12 @@ void				core(t_env *env)
 			}
 			if (!env->proc->lives_in_period)
 			{
-				ft_putendl("KILLLL");
-				kill_proc(env->proc, env->begin);
-				ft_putendl("KILLLL2");
+				env->begin = kill_proc(env->proc, env->begin);
 			}
 			else
 				env->proc->lives_in_period = 0;
 			if (env->checks == MAX_CHECKS)
 			{
-				ft_printf("CHEck MAX!!\n");
 				env->checks = 0;
 				draw_max_check(env);
 				env->cycle_to_inc -= CYCLE_DELTA;
@@ -236,7 +231,7 @@ void				core(t_env *env)
 		}
 		else
 			forward_pc(env, env->begin);
-		ft_printf("we are une cycle :%6d, Next periode at :%6d\n", env->cycle, env->cycle_to_die);
+		(env->debug > 1)?ft_printf("we are une cycle :%6d, Next periode at :%6d\n", env->cycle, env->cycle_to_die) : 42;
 	}
-	ft_print_procs(env);
+	(env->debug > 2)?ft_print_procs(env):42;
 }

@@ -43,7 +43,10 @@ int			ft_init_options(t_env *env, char *argv[], int i)
 	if (argv[i][1] == 'n' && argv[i][2] == 'c' && argv[i][3] == '\0')
 		env->ncurses = 1;
 	else if (argv[i][1] == 'd' && argv[i][2] == '\0')
-		env->debug = 1;
+	{
+		env->debug = ft_get_nbafter(argv, i) + 1;
+		(ft_get_nbafter(argv, i) > 0)? i++ : 42;
+	}
 	else if (argv[i][1] == 'n' && argv[i][2] == '\0')
 	{
 		env->nb_option = ft_get_nbafter(argv, i);
