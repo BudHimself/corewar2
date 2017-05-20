@@ -16,7 +16,7 @@ static int		ft_getcarry(unsigned char *r)
 	return (1);
 }
 
-static unsigned int	get_position(t_proc *proc1, int x)
+unsigned int	get_position(t_proc *proc1, int x)
 {
 	int		res;
 
@@ -250,7 +250,7 @@ static unsigned char	*ft_and2(unsigned char *sa, unsigned char *sb, unsigned int
 	return (sc);
 }
 
-static unsigned char	*ft_or2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_or2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int k;
@@ -296,7 +296,7 @@ static unsigned char	*ft_or2(unsigned char *sa, unsigned char *sb, unsigned int 
 	return (sc);
 }
 
-static unsigned char	*ft_xor2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_xor2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int k;
@@ -342,7 +342,7 @@ static unsigned char	*ft_xor2(unsigned char *sa, unsigned char *sb, unsigned int
 	return (sc);
 }
 
-static void		ft_cp_s_to_s(unsigned char *s1, unsigned char *s2, unsigned int i, unsigned int j)
+void		ft_cp_s_to_s(unsigned char *s1, unsigned char *s2, unsigned int i, unsigned int j)
 {
 	unsigned int		l;
 
@@ -382,7 +382,7 @@ static void		ft_cp_s_to_s(unsigned char *s1, unsigned char *s2, unsigned int i, 
 	}
 }
 
-static unsigned char		*ft_new_s_on_sizeint(unsigned int i, unsigned char *s, unsigned int pos)
+unsigned char		*ft_new_s_on_sizeint(unsigned int i, unsigned char *s, unsigned int pos)
 {
 	unsigned char *s1;
 	unsigned char	*s2;
@@ -649,8 +649,6 @@ int		ft_st(t_env *env, t_proc *proc1)
 			else
 			{
 				ind1 = ft_conv_to_int_memod(s2, sizeof(unsigned int));
-				proc1->index_st = ind1;
-				proc1->size_st = REG_SIZE;
 				ft_cp_r_to_stack(REG_SIZE,env->mem, ind1, s1);
 				print_champ(env, ind1, REG_SIZE, (env->proc->num_players) * -1);
 			}
@@ -751,9 +749,8 @@ int	ft_sti(t_env *env, t_proc *proc1)
 		{
 			s4 = ft_add2(s2, s3, sizeof(unsigned int), sizeof(unsigned int));
 			index = ft_get_index_t(s4, sizeof(unsigned int), proc1->pc);
-			proc1->index_st = index;
-			proc1->size_st = REG_SIZE;
 			ft_cp_r_to_stack(REG_SIZE,env->mem, index, s1);
+			print_champ(env, index, REG_SIZE, (env->proc->num_players) * -1);
 			return (1);
 		}
 	}
