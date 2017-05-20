@@ -1,29 +1,5 @@
 #include "tyassine.h"
 
-
-void		ft_live(t_env *env, t_proc *proc)
-{
-	int		num_p;
-	int		i;
-
-	i = -1;
-	// get_position(proc, 0);
-	num_p = ft_conv_to_int_nomod(proc->params.arg[0], proc->params.size_params[0]);
-	// printf("num player call => %d\n", num_p);
-	env->nb_live++;
-	draw_nbr_live(env);
-	proc->lives_in_period++;
-	while (++i < env->no)
-	{
-		if (env->players[i].num_players == num_p)
-		{
-			env->players[i].last_live = env->cycle;
-			(env->debug > 1)? ft_printf("\"un processus dit que le joueur %d(%s) est en vie\"\n", env->players[i].num_players, env->players[i].header.prog_name) : 42;
-			break;
-		}
-	}
-}
-
 void			test_params(t_params *params)
 {
 	size_t			i;
@@ -112,16 +88,19 @@ void			forward_pc(t_env *env, t_proc *begin)
 	fd = 0;
 	if (env->proc->cycle_to_exec == env->cycle && env->proc)
 	{
-		// ft_print_procs(env);
-		// test_op(&env->proc->op);
-		// ft_print_arena(env->mem);
+		if (env->debug > 2)
+		{
+			ft_print_proc(env->proc);
+			test_op(&env->proc->op);
+			// ft_print_arena(env->mem);
+		}
 		if (env->proc->op.name)
 		{
 			if (env->proc->op.num == 1)
 				ft_live(env, env->proc);
 			else
 			{
-				f_op[env->proc->op.num - 2](env, env->proc); // -2 a cause live qui est au dessus et qui commence a 1;
+				f_op[env->proc->op.num - 1](env, env->proc); // -2 a cause live qui est au dessus et qui commence a 1;
 				print_champ(env, env->proc->pc, env->proc->params.size_total, (env->proc->num_players) * -1);
 			}
 		}
@@ -233,5 +212,4 @@ void				core(t_env *env)
 			forward_pc(env, env->begin);
 		(env->debug > 1)?ft_printf("we are une cycle :%6d, Next periode at :%6d\n", env->cycle, env->cycle_to_die) : 42;
 	}
-	(env->debug > 2)?ft_print_procs(env):42;
 }

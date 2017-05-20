@@ -1,16 +1,4 @@
 #include "tyassine.h"
-// #include "syusof.h"
-#include "fun_op.h"
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -897,28 +885,33 @@ int		ft_aff(t_env *env, t_proc *proc1)
 	return (0);
 }
 
-// void		ft_live(t_env *env, t_proc *proc)
-// {
-// 	int		num_p;
-// 	int		i;
-//
-// 	i = -1;
-// 	num_p = ft_conv_to_int_nomod(proc->params.arg[0], proc->params.size_params[0]);
-// 	env->nb_live++;
-// 	proc->lives_in_period++;
-// 	while (++i < env->no)
-// 	{
-// 		if (env->players[i].num_players == num_p)
-// 		{
-// 			env->players[i].last_live = env->cycle;
-// 			(env->debug == 1)? ft_printf("\"un processus dit que le joueur %d(%s) est en vie\"\n", env->players[i].num_players, env->players[i].header.prog_name) : 42;
-// 			break;
-// 		}
-// 	}
-// }
+int		ft_live(t_env *env, t_proc *proc)
+{
+	int		num_p;
+	int		i;
+
+	i = -1;
+	// get_position(proc, 0);
+	num_p = ft_conv_to_int_nomod(proc->params.arg[0], proc->params.size_params[0]);
+	// printf("num player call => %d\n", num_p);
+	env->nb_live++;
+	draw_nbr_live(env);
+	proc->lives_in_period++;
+	while (++i < env->no)
+	{
+		if (env->players[i].num_players == num_p)
+		{
+			env->players[i].last_live = env->cycle;
+			(env->debug > 1)? ft_printf("\"un processus dit que le joueur %d(%s) est en vie\"\n", env->players[i].num_players, env->players[i].header.prog_name) : 42;
+			break;
+		}
+	}
+	return (0);
+}
 
 int (*f_op[16])(t_env *, t_proc *) =
 {
+	ft_live,
 	ft_ld,
 	ft_st,
 	ft_add,

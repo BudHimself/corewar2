@@ -14,6 +14,21 @@
 #include "fhenry.h"
 #include "libft.h"
 
+unsigned int 		get_winer(t_env *env)
+{
+		unsigned int win;
+
+		win = env->no -1;
+		while (--env->no >= 0)
+		{
+			if (env->players[env->no].last_live > env->players[win].last_live)
+				win = env->no;
+			(DEBUG > 3)?ft_printf("last_live : %d\n", env->players[env->no].last_live):42;
+		}
+		ft_printf("Contestant %d, \"%s\", has won !\n",win + 1, env->players[win].header.prog_name);
+		return (win);
+}
+
 void		ft_print_option(void)
 {
 	ft_printf("Options:\n");
@@ -94,5 +109,6 @@ int			main(int argc, char *argv[])
 	// ft_print_procs(&env); // you can see all processes !!!!
 	(env.debug == 1) ? ft_putendl("\n*********        fin        *********"): 42;
 	// (env.ncurses == 1 && env.debug == 1) ? ft_print_arena(mem) : 42;
+	get_winer(&env);
 	return (0);
 }

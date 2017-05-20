@@ -54,7 +54,7 @@ void			ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
 	size_t			j;
 
 	i = -1;
-	printf("\n%20s\n", "Registers :");
+	ft_printf("\n%20s\n", "Registers :");
 	while (++i < REG_NUMBER)
 	{
 		j = -1;
@@ -90,8 +90,8 @@ void	ft_print_proc(t_proc *proc)
 	ft_putendl("\n\n********* print PROC *********\n");
 	ft_printf("    num du player :%5d\n", proc->num_players);
 	test_params2(&proc->params);
-	printf("       PC        :%5d\n", proc->pc);
-	printf("  Live in period :%5d\n", proc->lives_in_period);
+	ft_printf("       PC        :%5d\n", proc->pc);
+	ft_printf("  Live in period :%5d\n", proc->lives_in_period);
 	ft_print_register(proc->reg);
 }
 

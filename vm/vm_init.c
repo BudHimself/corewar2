@@ -90,6 +90,7 @@ void		ft_add_player(t_env *env, int fd, unsigned char arena[], unsigned int num_
 	ft_fill_comment(env, buf, fd);
 	env->mem = arena;
 	ft_fill_arena(env, buf, fd, num_players);
+	env->players[env->no].last_live = 0;
 	(DEBUG == 1) ? ft_print_champion(env) : 42;
 	++env->no;
 }
