@@ -82,7 +82,6 @@ void			test_params2(t_params *params)
 	ft_printf("    param->nb_arg : %zu\n", params->nb_arg);
 	ft_printf("      param->sign : %u\n", params->sign);
 	ft_printf("param->size_total : %zu\n", params->size_total);
-	ft_printf("     param->carry : %d\n", params->carry);
 }
 
 void	ft_print_proc(t_proc *proc)

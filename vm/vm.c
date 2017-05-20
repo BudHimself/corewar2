@@ -63,6 +63,7 @@ void		ft_init_env(t_env *env)
 	env->begin = NULL;
 	env->cycle_to_inc = 0;
 	env->checks = 0;
+	env->carry = 0;
 }
 
 unsigned int get_nbp(int argc, char *argv[])

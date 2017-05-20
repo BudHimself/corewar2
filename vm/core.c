@@ -1,5 +1,21 @@
 #include "tyassine.h"
 
+unsigned int 	get_nb_porc(t_env *env)
+{
+	t_proc *tmp;
+	unsigned int 	nb;
+
+	nb = 0;
+	tmp = env->begin;
+	while (tmp)
+	{
+		nb++;
+		tmp = tmp->next;
+	}
+	return(nb);
+}
+
+
 void			test_params(t_params *params)
 {
 	size_t			i;
@@ -18,7 +34,6 @@ void			test_params(t_params *params)
 	ft_printf("        param->nb_arg : %zu\n", params->nb_arg);
 	ft_printf("          param->sign : %u\n", params->sign);
 	ft_printf("    param->size_total : %zu\n", params->size_total);
-	ft_printf("         param->carry : %d\n", params->carry);
 }
 
 void			test_op(t_op *op)
@@ -210,6 +225,6 @@ void				core(t_env *env)
 		}
 		else
 			forward_pc(env, env->begin);
-		(env->debug > 1)?ft_printf("we are in cycle :%6d, Next periode at :%6d\n", env->cycle, env->cycle_to_die) : 42;
+		(env->debug > 1)?ft_printf("we are in cycle :%6d, Next periode at :%6d, nb proc:%d\n", env->cycle, env->cycle_to_die, get_nb_porc(env)) : 42;
 	}
 }

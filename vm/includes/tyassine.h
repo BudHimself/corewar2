@@ -62,7 +62,6 @@ typedef struct		s_params
 	size_t			nb_arg;
 	unsigned int	sign;
 	size_t			size_total;
-	int				carry;
 }					t_params;
 
 typedef struct		s_proc
@@ -99,6 +98,7 @@ typedef struct		s_env
 	int				ncurses;
 	unsigned char	*mem;
 	unsigned int	nb_live;
+	int				carry;
 	unsigned int	cycle;
 	unsigned int	cycle_s;
 	unsigned int	cycle_to_die;
