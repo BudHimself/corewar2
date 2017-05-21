@@ -193,7 +193,7 @@ unsigned int		check_proc_live(t_proc *proc)
 void				core(t_env *env)
 {
 	int				ch;
-
+	int				dump = 1;
 	env->cycle_to_die = CYCLE_TO_DIE;
 	env->cycle_to_inc = CYCLE_TO_DIE;
 	draw_cycle_to_die(env);
@@ -202,12 +202,14 @@ void				core(t_env *env)
 		update_proc(env, env->proc);
 		env->proc = env->proc->next;
 	}
+	// ft_print_arena(env->mem);
 	env->proc = env->begin;
 	while (env->begin != NULL)
 	{
-		if (env->dump == env->cycle && env->dump)
+		if (env->dump == env->cycle && env->dump && dump == 1)
 		{
 			ft_print_arena(env->mem);
+			dump = 0;
 		}
 		ch = wgetch(env->arena.win);
 		if (ch)

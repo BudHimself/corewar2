@@ -78,6 +78,7 @@ void						ft_fill_memsize(t_env *env, char *buf, int fd)
 	if (env->players[env->no].mem_size > CHAMP_MAX_SIZE)
 		ft_exit_error("Invalid Champion Size.", 11);
 	env->players[env->no].header.prog_size = env->players[env->no].mem_size;
+	// ft_printf("%d\n", env->players[env->no].mem_size);
 }
 
 int							ft_pos_arena(int num_players, t_env *env)
