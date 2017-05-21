@@ -19,7 +19,7 @@ int		ft_list_size(t_list *begin_list)
 
 	if (!begin_list)
 		return (0);
-	size = 0;
+	size = 1;
 	tmp = begin_list;
 	while (tmp)
 	{

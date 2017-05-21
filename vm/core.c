@@ -177,6 +177,7 @@ void				core(t_env *env)
 
 	env->cycle_to_die = CYCLE_TO_DIE;
 	env->cycle_to_inc = CYCLE_TO_DIE;
+	draw_cycle_to_die(env);
 	while (env->proc)
 	{
 		update_proc(env, env->proc);
@@ -198,12 +199,15 @@ void				core(t_env *env)
 			if (env->nb_live >= NBR_LIVE)
 			{
 				env->checks = 0;
+				env->nb_live = 0;
 				draw_max_check(env);
 				env->cycle_to_inc -= CYCLE_DELTA;
+				env->nb_live_full = 1;
 			}
 			if (!env->proc->lives_in_period)
 			{
 				env->begin = kill_proc(env->proc, env->begin);
+				// draw_processes(env);
 			}
 			else
 				env->proc->lives_in_period = 0;
@@ -218,6 +222,11 @@ void				core(t_env *env)
 			else
 			{
 				env->checks++;
+				if (env->nb_live_full)
+				{
+					env->checks = 0;
+					env->nb_live_full = 0;
+				}
 				draw_max_check(env);
 				env->cycle_to_die += env->cycle_to_inc;
 				draw_cycle_to_die(env);

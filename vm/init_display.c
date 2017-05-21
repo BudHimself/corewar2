@@ -22,8 +22,13 @@ void	draw_prompt(t_env *env, int pc, int color)
 
 void	draw_processes(t_env *env)
 {
-	// mvwprintw(env->arena.win, HEADER_SIZE + 6, MID_COLS + 3,
-	// "Processes : %d", env->proc_num);
+	int	lol;
+
+	lol = ft_list_size((t_list*)env->proc);
+	mvwprintw(env->arena.win, HEADER_SIZE + 6, MID_COLS + 3, "Processes : %4d", lol);
+	wrefresh(env->arena.win);
+	// printf("cycle : %d | ", env->cycle);
+	// printf("proc : %d\n", lol);
 }
 
 void	draw_cycle(t_env *env)
@@ -42,12 +47,12 @@ void	draw_cycle_s(t_env *env, int ch)
 		if (env->cycle_s < 90)
 			env->cycle_s += 10;
 	if (ch == 'w')
-		if (env->cycle_s > 1)
+		if (env->cycle_s > 2)
 			env->cycle_s -= 1;
 	if (ch == 'e')
 		if (env->cycle_s < 100)
 			env->cycle_s += 1;
-	mvwprintw(env->arena.win, HEADER_SIZE + 2, MID_COLS + 3, "Cycle/Sec : %d",
+	mvwprintw(env->arena.win, HEADER_SIZE + 2, MID_COLS + 3, "Cycle/Sec : %3d",
 		env->cycle_s);
 }
 
@@ -153,19 +158,19 @@ void	slow_machine(t_env *env)
 
 void	draw_cycle_to_die(t_env *env)
 {
-	mvwprintw(env->arena.win, HEADER_SIZE + 8, MID_COLS + 3, "CYCLE_TO_DIE : %d", env->cycle_to_inc);
+	mvwprintw(env->arena.win, HEADER_SIZE + 8, MID_COLS + 3, "CYCLE_TO_DIE : %4d", (env->cycle_to_inc == 0) ? env->cycle_to_die : env->cycle_to_inc);
 	wrefresh(env->arena.win);
 }
 
 void	draw_max_check(t_env *env)
 {
-	mvwprintw(env->arena.win, HEADER_SIZE + 14, MID_COLS + 3, "MAX_CHECKS : %d", env->checks);
+	mvwprintw(env->arena.win, HEADER_SIZE + 14, MID_COLS + 3, "MAX_CHECKS : %2d", env->checks);
 	wrefresh(env->arena.win);
 }
 
 void	draw_nbr_live(t_env *env)
 {
-	mvwprintw(env->arena.win, HEADER_SIZE + 12, MID_COLS + 3, "NBR_LIVE : %d", env->nb_live);
+	mvwprintw(env->arena.win, HEADER_SIZE + 12, MID_COLS + 3, "NBR_LIVE : %2d", env->nb_live);
 	wrefresh(env->arena.win);
 }
 
@@ -177,9 +182,10 @@ void	load_display(t_env *env)
 	line = HEADER_SIZE;
 	col = MID_COLS + 3;
 	draw_cycle_s(env, 0);
+	draw_cycle_to_die(env);
 	draw_cycle(env);
 	draw_processes(env);
-	draw_cycle_to_die(env);
+	draw_max_check(env);
 	mvwprintw(env->arena.win, line + 10, col, "CYCLE_DELTA : %d", CYCLE_DELTA);
 	draw_nbr_live(env);
 	// mvwprintw(env->arena.win, line + 8, col, "Player : -%d", env->players);

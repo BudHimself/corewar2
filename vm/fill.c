@@ -122,6 +122,7 @@ void 						ft_init_proc(t_env *env,int start, int nb)
 	proc->last_color = 0;
 	proc->last_op = 0;
 	proc->next = NULL;
+	proc->carry = 0;
 	if (env->proc == NULL)
 	{
 		env->proc = proc;
