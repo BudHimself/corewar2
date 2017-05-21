@@ -22,10 +22,7 @@ void	draw_prompt(t_env *env, int pc, int color)
 
 void	draw_processes(t_env *env)
 {
-	int	lol;
-
-	lol = ft_list_size((t_list*)env->proc);
-	mvwprintw(env->arena.win, HEADER_SIZE + 6, MID_COLS + 3, "Processes : %4d", lol);
+	mvwprintw(env->arena.win, HEADER_SIZE + 6, MID_COLS + 3, "Processes : %4d", list_size(env->begin));
 	wrefresh(env->arena.win);
 	// printf("cycle : %d | ", env->cycle);
 	// printf("proc : %d\n", lol);

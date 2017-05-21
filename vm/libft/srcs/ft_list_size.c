@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -19,7 +20,7 @@ int		ft_list_size(t_list *begin_list)
 
 	if (!begin_list)
 		return (0);
-	size = 1;
+	size = 0;
 	tmp = begin_list;
 	while (tmp)
 	{

@@ -138,25 +138,44 @@ void			forward_pc(t_env *env, t_proc *begin)
 	}
 }
 
-t_proc		*kill_proc(t_proc *proc, t_proc *begin)
+size_t		list_size(t_proc *begin)
 {
+	int			size;
 	t_proc	*tmp;
 
+	if (!begin)
+		return (0);
+	size = 0;
 	tmp = begin;
-	if (proc == begin)
+	while (tmp)
 	{
-		begin = proc->next;
-		free(proc);
+		tmp = tmp->next;
+		size++;
 	}
-	else
+	return (size);
+}
+
+t_proc		*kill_proc(t_proc *proc, t_proc *begin)
+{
+	t_proc	*prev;
+
+	prev = begin;
+	// ft_printf("nombre de process %d\n", list_size(begin));
+	// ft_printf("numero du proc a delete %d\n", list_size(proc));
+	if (begin == proc)
 	{
-		while (tmp->next != proc)
-		{
-			tmp = tmp->next;
-		}
-		tmp->next = tmp->next->next;
-		free(proc);
+		if (begin->next)
+			begin = begin->next;
+		else
+			begin = NULL;
+		ft_memdel((void**)&proc);
+		return (begin);
 	}
+	while (prev->next != proc) //&& prev->next
+		prev = prev->next;
+	prev->next = proc->next;
+	ft_memdel((void**)&proc);
+	// ft_printf("size %d\n", list_size(begin));
 	return (begin);
 }
 
@@ -189,7 +208,6 @@ void				core(t_env *env)
 		if (env->dump == env->cycle && env->dump)
 		{
 			ft_print_arena(env->mem);
-			exit(0);
 		}
 		ch = wgetch(env->arena.win);
 		if (ch)
@@ -204,13 +222,19 @@ void				core(t_env *env)
 				env->cycle_to_inc -= CYCLE_DELTA;
 				env->nb_live_full = 1;
 			}
-			if (!env->proc->lives_in_period)
+			while (env->proc)
 			{
-				env->begin = kill_proc(env->proc, env->begin);
-				// draw_processes(env);
+				if (!env->proc->lives_in_period)
+				{
+					env->begin = kill_proc(env->proc, env->begin);
+// ft_printf("%d\n", env->cycle);
+					draw_processes(env);
+				}
+				else
+					env->proc->lives_in_period = 0;
+				env->proc = env->proc->next;
 			}
-			else
-				env->proc->lives_in_period = 0;
+			env->proc = env->begin;
 			if (env->checks == MAX_CHECKS)
 			{
 				env->checks = 0;

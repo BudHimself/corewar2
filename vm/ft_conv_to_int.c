@@ -46,20 +46,17 @@ unsigned int	ft_conv_to_int_memod(unsigned char *s, unsigned int i)
 	return (res);
 }
 
-unsigned int	ft_conv_to_int_nomod(unsigned char *s, unsigned int i)
+unsigned int	ft_conv_to_int_nomod(unsigned char *addr, unsigned int size)
 {
-	unsigned int	res;
-	unsigned int	k;
+	unsigned int	num;
 
-	res = 0;
-	k = 0;
-	while (i > 0)
+	num = 0;
+	while (size--)
 	{
-		res = res + (s[i - 1] * ft_pow(2,k));
-		i--;
-		k = k + 8;
+		num = num << 8;
+		num += *(addr++);
 	}
-	return (res);
+	return (num);
 }
 
 unsigned int	ft_conv_to_int_mod256(unsigned char *s, unsigned int i)

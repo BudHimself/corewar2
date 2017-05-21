@@ -59,7 +59,10 @@ void			ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
 	{
 		j = -1;
 		while (++j < REG_SIZE)
+		{
 			ft_printf("reg[%02d][%02d]= %02x   ", i, j, reg[i][j]);
+			ft_printf("%p", reg[i]);
+		}
 		ft_printf("\n");
 	}
 }

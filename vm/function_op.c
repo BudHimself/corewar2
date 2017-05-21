@@ -43,6 +43,10 @@ static void		ft_cp_r_to_stack(unsigned int i, unsigned char *s, unsigned int pos
 {
 	while (i > 0)
 	{
+		// ft_printf("%d %d ", (pos + i - 1) % MEM_SIZE, i);
+		// ft_printf("%d\n", r[i - 1]);
+		// void			ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
+		// ft_printf("%p\n", r);
 		s[(pos + i - 1) % MEM_SIZE] = r[i - 1];
 		i--;
 	}
@@ -421,19 +425,21 @@ static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 	unsigned int		position;
 	unsigned int		index;
 	unsigned int		ind1;
+	unsigned int		conv1;
 
 	pc = proc1->pc;
 	position = get_position(proc1, x);
 	s1 = NULL;
 	if (proc1->params.type[x] == T_REG)
 	{
-		if (ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) <= REG_NUMBER)
-			s1 = proc1->reg[ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) - 1];
+		conv1 = ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]);
+		if (conv1 <= REG_NUMBER && conv1 > 0)
+			s1 = proc1->reg[conv1 - 1];
 		else
 			return (NULL);
 	}
 	else if (proc1->params.type[x] == T_DIR)
-		s1 = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
+		s1 = ft_new_s_on_sizeint(proc1->params.size_params[x], s, position);
 	// st
 	else if (proc1->params.type[x] == T_IND && (proc1->op.num == 3 || proc1->op.num == 2))
 	{
@@ -459,14 +465,16 @@ static unsigned char   *ft_get_para_whihtout_idxmod(unsigned char *s, t_proc *pr
 	unsigned int		position;
 	unsigned int		index;
 	unsigned int		ind1;
+	unsigned int		conv1;
 
 	pc = proc1->pc;
 	position = get_position(proc1, x);
 	s1 = NULL;
 	if (proc1->params.type[x] == T_REG)
 	{
-		if (ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) <= REG_NUMBER)
-			s1 = proc1->reg[ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]) - 1];
+		conv1 = ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]);
+		if (conv1 <= REG_NUMBER && conv1 > 0)
+			s1 = proc1->reg[conv1 - 1];
 		else
 			return (NULL);
 	}
@@ -488,22 +496,6 @@ static unsigned char   *ft_get_para_whihtout_idxmod(unsigned char *s, t_proc *pr
 	}
 	return (s1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 int		ft_add(t_env *env, t_proc *proc1)
 {
@@ -671,10 +663,11 @@ int         ft_fork(t_env *env, t_proc *proc)
     size_t         i;
     size_t        j;
 
+		addr_target = 0;
     while (proc->params.size_params[0]--)
     {
         addr_target = addr_target << 8;
-        addr_target = *(proc->params.arg[0]++);
+        addr_target += *(proc->params.arg[0]++);
     }
     if ((new_proc = ft_memalloc(sizeof(t_proc))) == NULL)
         exit(0);
@@ -685,17 +678,20 @@ int         ft_fork(t_env *env, t_proc *proc)
         while (++j < REG_SIZE)
             new_proc->reg[i][j] = proc->reg[i][j];
     }
-    new_proc->pc = proc->pc + (addr_target % IDX_MOD);
-    new_proc->op = g_op_tab[16];
+		if (addr_target >> 15)
+			new_proc->pc = (proc->pc - (IDX_MOD - addr_target % IDX_MOD)) % MEM_SIZE;
+		else
+			new_proc->pc = (proc->pc + (addr_target % IDX_MOD)) % MEM_SIZE;
+		new_proc->op = g_op_tab[16];
     new_proc->pc_inc = 0;
-    env->proc->carry = 0;
+    new_proc->carry = proc->carry;
     new_proc->num_players = proc->num_players;
     new_proc->lives_in_period = 0;
     new_proc->cycle_to_exec = proc->cycle_to_exec + 1;
     new_proc->next = env->begin;
-	env->begin = new_proc;
-	// draw_processes(env);
-	update_proc(env, env->begin);
+		env->begin = new_proc;
+		draw_processes(env);
+		update_proc(env, env->begin);
     return (1);
 }
 
@@ -706,10 +702,11 @@ int         ft_lfork(t_env *env, t_proc *proc)
     size_t         i;
     size_t        j;
 
+		addr_target = 0;
     while (proc->params.size_params[0]--)
     {
         addr_target = addr_target << 8;
-        addr_target = *(proc->params.arg[0]++);
+        addr_target += *(proc->params.arg[0]++);
     }
     if ((new_proc = ft_memalloc(sizeof(t_proc))) == NULL)
         exit(0);
@@ -720,17 +717,17 @@ int         ft_lfork(t_env *env, t_proc *proc)
         while (++j < REG_SIZE)
             new_proc->reg[i][j] = proc->reg[i][j];
     }
-	i = proc->pc + (addr_target);
-    new_proc->pc = (i > MEM_SIZE) ? i % MEM_SIZE : i;
-    new_proc->op = g_op_tab[0];
+		new_proc->pc = (proc->pc + (addr_target)) % MEM_SIZE;
+    new_proc->op = g_op_tab[16];
     new_proc->pc_inc = 0;
-    env->proc->carry = 0;
+		new_proc->carry = proc->carry;
     new_proc->num_players = proc->num_players;
     new_proc->lives_in_period = 0;
     new_proc->cycle_to_exec = 0;
     new_proc->next = env->begin;
-	env->begin = new_proc;
-	update_proc(env, env->begin);
+		env->begin = new_proc;
+		update_proc(env, env->begin);
+		draw_processes(env);
     return (1);
 }
 
