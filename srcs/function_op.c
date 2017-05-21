@@ -1,7 +1,5 @@
 #include "tyassine.h"
 
-
-
 static int		ft_getcarry(unsigned char *r)
 {
 	unsigned int		i;
@@ -43,10 +41,6 @@ static void		ft_cp_r_to_stack(unsigned int i, unsigned char *s, unsigned int pos
 {
 	while (i > 0)
 	{
-		// ft_printf("%d %d ", (pos + i - 1) % MEM_SIZE, i);
-		// ft_printf("%d\n", r[i - 1]);
-		// void			ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
-		// ft_printf("%p\n", r);
 		s[(pos + i - 1) % MEM_SIZE] = r[i - 1];
 		i--;
 	}
@@ -94,17 +88,11 @@ static unsigned int		ft_get_index_without_idxmod(unsigned char *si, unsigned int
 	int						sign;
 	unsigned int	conv1;
 
-//	sign = ft_get_sign(si);
 	conv1 = ft_conv_to_int_memod(si, i);
-//	printf("conv1 = %d\n",conv1);
-//	if(sign == 1)
-		return ((pc + conv1) % MEM_SIZE);
-//	if(sign == -1)
-//		return ((pc - (- conv1)) % MEM_SIZE);
-//	return (0);
+	return ((pc + conv1) % MEM_SIZE);
 }
 
-static unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+static unsigned char	*ft_add2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
@@ -112,8 +100,58 @@ static unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb, unsigned int
 
 	k = (i >= j) ? i : j;
 	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	p = 0;
+	while (j > 0)
+	{
+		sc[i - 1] = sa[i - 1] + sb[j - 1] + p;
+		p = ((sa[i - 1] + sb[j - 1]) > 255) ? 1 : 0;
+		i--;
+		j--;
+	}
+	while (i > 0)
+	{
+		sc[i - 1] = sa[i - 1] + p;
+		p = (sa[i - 1] > 255) ? 1 : 0;
+		i--;
+	}
+	return (sc);
+}
+
+static unsigned char	*ft_add2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned int	p;
+	unsigned char	*sc;
+	unsigned int k;
+
+	k = (i >= j) ? i : j;
+	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	p = 0;
+	while (i > 0)
+	{
+		sc[j - 1] = sa[i - 1] + sb[j - 1] + p;
+		p = ((sa[i - 1] + sb[j - 1]) > 255) ? 1 : 0;
+		i--;
+		j--;
+	}
+	while (j > 0)
+	{
+		sc[j - 1] = sb[j - 1] + p;
+		p = (sb[j - 1] > 255) ? 1 : 0;
+		j--;
+	}
+	return (sc);
+}
+
+unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned int	p;
+	unsigned char	*sc;
+	unsigned int k;
+
 	if (i == j)
 	{
+		k = (i >= j) ? i : j;
+		sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
 		p = 0;
 		while (i > 0)
 		{
@@ -123,43 +161,13 @@ static unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb, unsigned int
 		}
 	}
 	else if (i > j)
-	{
-		p = 0;
-		while (j > 0)
-		{
-			sc[i - 1] = sa[i - 1] + sb[j - 1] + p;
-			p = ((sa[i - 1] + sb[j - 1]) > 255) ? 1 : 0;
-			i--;
-			j--;
-		}
-		while (i > 0)
-		{
-			sc[i - 1] = sa[i - 1] + p;
-			p = (sa[i - 1] > 255) ? 1 : 0;
-			i--;
-		}
-	}
+		sc = ft_add2_p1(sa, sb, i, j);
 	else if (i < j)
-	{
-		p = 0;
-		while (i > 0)
-		{
-			sc[j - 1] = sa[i - 1] + sb[j - 1] + p;
-			p = ((sa[i - 1] + sb[j - 1]) > 255) ? 1 : 0;
-			i--;
-			j--;
-		}
-		while (j > 0)
-		{
-			sc[j - 1] = sb[j - 1] + p;
-			p = (sb[j - 1] > 255) ? 1 : 0;
-			j--;
-		}
-	}
+		sc = ft_add2_p2(sa, sb, i, j);
 	return (sc);
 }
 
-static unsigned char	*ft_sub2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+static unsigned char	*ft_sub2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
@@ -167,8 +175,58 @@ static unsigned char	*ft_sub2(unsigned char *sa, unsigned char *sb, unsigned int
 
 	k = (i >= j) ? i : j;
 	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	p = 0;
+	while (j > 0)
+	{
+		sc[i - 1] = sa[i - 1] - (sb[j - 1] + p);
+		p = (sa[i - 1] < (sb[j - 1] + p)) ? 1 : 0;
+		i--;
+		j--;
+	}
+	while (i > 0)
+	{
+		sc[i - 1] = sa[i - 1] - p;
+		p = (sa[i - 1] < p) ? 1 : 0;
+		i--;
+	}
+	return (sc);
+}
+
+static unsigned char	*ft_sub2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned int	p;
+	unsigned char	*sc;
+	unsigned int k;
+
+	k = (i >= j) ? i : j;
+	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	p = 0;
+	while (i > 0)
+	{
+		sc[j - 1] = sa[i - 1] - (sb[j - 1] + p);
+		p = (sa[i - 1] < (sb[j - 1] + p)) ? 1 : 0;
+		i--;
+		j--;
+	}
+	while (j > 0)
+	{
+		sc[j - 1] = - (sb[j - 1] + p);
+		p = (0 < (sb[j - 1] + p)) ? 1 : 0;
+		j--;
+	}
+	return (sc);
+}
+
+unsigned char	*ft_sub2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned int	p;
+	unsigned char	*sc;
+	unsigned int k;
+
 	if (i == j)
 	{
+		k = (i >= j) ? i : j;
+		sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
 		p = 0;
 		while (i > 0)
 		{
@@ -178,52 +236,64 @@ static unsigned char	*ft_sub2(unsigned char *sa, unsigned char *sb, unsigned int
 		}
 	}
 	else if (i > j)
-	{
-		p = 0;
-		while (j > 0)
-		{
-			sc[i - 1] = sa[i - 1] - (sb[j - 1] + p);
-			p = (sa[i - 1] < (sb[j - 1] + p)) ? 1 : 0;
-			i--;
-			i--;
-			j--;
-		}
-		while (i > 0)
-		{
-			sc[i - 1] = sa[i - 1] - p;
-			p = (sa[i - 1] < p) ? 1 : 0;
-			i--;
-		}
-	}
+		sc = ft_sub2_p1(sa, sb, i, j);
 	else if (i < j)
+		sc = ft_sub2_p2(sa, sb, i, j);
+	return (sc);
+}
+
+static unsigned char	*ft_and2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned char	*sc;
+	unsigned int	k;
+
+	k = (i >= j) ? i : j;
+	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	while (j > 0)
 	{
-		p = 0;
-		while (i > 0)
-		{
-			sc[j - 1] = sa[i - 1] - (sb[j - 1] + p);
-			p = (sa[i - 1] < (sb[j - 1] + p)) ? 1 : 0;
-			i--;
-			j--;
-		}
-		while (j > 0)
-		{
-			sc[j - 1] = - (sb[j - 1] + p);
-			p = (0 < (sb[j - 1] + p)) ? 1 : 0;
-			j--;
-		}
+		sc[i - 1] = sa[i - 1] & sb[j - 1];
+		i--;
+		j--;
+	}
+	while (i > 0)
+	{
+		sc[i - 1] = 0;
+		i--;
+	}
+	return (sc);
+
+}
+
+static unsigned char	*ft_and2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned char	*sc;
+	unsigned int	k;
+
+	k = (i >= j) ? i : j;
+	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	while (i > 0)
+	{
+		sc[j - 1] = sa[i - 1] & sb[j - 1];
+		i--;
+		j--;
+	}
+	while (j > 0)
+	{
+		sc[j - 1] = 0;
+		j--;
 	}
 	return (sc);
 }
 
-static unsigned char	*ft_and2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char			*ft_and2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
-	unsigned int k;
+	unsigned int	k;
 
-	k = (i >= j) ? i : j;
-	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
 	if (i == j)
 	{
+		k = (i >= j) ? i : j;
+		sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
 		while (i > 0)
 		{
 			sc[i - 1] = sa[i - 1] & sb[i - 1];
@@ -231,45 +301,64 @@ static unsigned char	*ft_and2(unsigned char *sa, unsigned char *sb, unsigned int
 		}
 	}
 	else if (i > j)
-	{
-		while (j > 0)
-		{
-			sc[i - 1] = sa[i - 1] & sb[j - 1];
-			i--;
-			j--;
-		}
-		while (i > 0)
-		{
-			sc[i - 1] = 0;
-			i--;
-		}
-	}
+		sc = ft_and2_p1(sa, sb, i, j);
 	else if (i < j)
+		sc = ft_and2_p2(sa, sb, i, j);
+	return (sc);
+}
+
+static unsigned char	*ft_or2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned char	*sc;
+	unsigned int	k;
+
+	k = (i >= j) ? i : j;
+	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	while (j > 0)
 	{
-		while (i > 0)
-		{
-			sc[j - 1] = sa[i - 1] & sb[j - 1];
-			i--;
-			j--;
-		}
-		while (j > 0)
-		{
-			sc[j - 1] = 0;
-			j--;
-		}
+		sc[i - 1] = sa[i - 1] | sb[j - 1];
+		i--;
+		j--;
+	}
+	while (i > 0)
+	{
+		sc[i - 1] = 0;
+		i--;
+	}
+	return (sc);
+
+}
+
+static unsigned char	*ft_or2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned char	*sc;
+	unsigned int	k;
+
+	k = (i >= j) ? i : j;
+	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	while (i > 0)
+	{
+		sc[j - 1] = sa[i - 1] | sb[j - 1];
+		i--;
+		j--;
+	}
+	while (j > 0)
+	{
+		sc[j - 1] = 0;
+		j--;
 	}
 	return (sc);
 }
 
-static unsigned char	*ft_or2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char			*ft_or2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
-	unsigned int k;
+	unsigned int	k;
 
-	k = (i >= j) ? i : j;
-	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
 	if (i == j)
 	{
+		k = (i >= j) ? i : j;
+		sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
 		while (i > 0)
 		{
 			sc[i - 1] = sa[i - 1] | sb[i - 1];
@@ -277,45 +366,64 @@ static unsigned char	*ft_or2(unsigned char *sa, unsigned char *sb, unsigned int 
 		}
 	}
 	else if (i > j)
-	{
-		while (j > 0)
-		{
-			sc[i - 1] = sa[i - 1] | sb[j - 1];
-			i--;
-			j--;
-		}
-		while (i > 0)
-		{
-			sc[i - 1] = 0;
-			i--;
-		}
-	}
+		sc = ft_or2_p1(sa, sb, i, j);
 	else if (i < j)
+		sc = ft_or2_p2(sa, sb, i, j);
+	return (sc);
+}
+
+static unsigned char	*ft_xor2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned char	*sc;
+	unsigned int	k;
+
+	k = (i >= j) ? i : j;
+	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	while (j > 0)
 	{
-		while (i > 0)
-		{
-			sc[j - 1] = sa[i - 1] | sb[j - 1];
-			i--;
-			j--;
-		}
-		while (j > 0)
-		{
-			sc[j - 1] = 0;
-			j--;
-		}
+		sc[i - 1] = sa[i - 1] ^ sb[j - 1];
+		i--;
+		j--;
+	}
+	while (i > 0)
+	{
+		sc[i - 1] = 0;
+		i--;
+	}
+	return (sc);
+
+}
+
+static unsigned char	*ft_xor2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+{
+	unsigned char	*sc;
+	unsigned int	k;
+
+	k = (i >= j) ? i : j;
+	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
+	while (i > 0)
+	{
+		sc[j - 1] = sa[i - 1] ^ sb[j - 1];
+		i--;
+		j--;
+	}
+	while (j > 0)
+	{
+		sc[j - 1] = 0;
+		j--;
 	}
 	return (sc);
 }
 
-static unsigned char	*ft_xor2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char			*ft_xor2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
-	unsigned int k;
+	unsigned int	k;
 
-	k = (i >= j) ? i : j;
-	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
 	if (i == j)
 	{
+		k = (i >= j) ? i : j;
+		sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
 		while (i > 0)
 		{
 			sc[i - 1] = sa[i - 1] ^ sb[i - 1];
@@ -323,33 +431,9 @@ static unsigned char	*ft_xor2(unsigned char *sa, unsigned char *sb, unsigned int
 		}
 	}
 	else if (i > j)
-	{
-		while (j > 0)
-		{
-			sc[i - 1] = sa[i - 1] ^ sb[j - 1];
-			i--;
-			j--;
-		}
-		while (i > 0)
-		{
-			sc[i - 1] = 0;
-			i--;
-		}
-	}
+		sc = ft_xor2_p1(sa, sb, i, j);
 	else if (i < j)
-	{
-		while (i > 0)
-		{
-			sc[j - 1] = sa[i - 1] ^ sb[j - 1];
-			i--;
-			j--;
-		}
-		while (j > 0)
-		{
-			sc[j - 1] = 0;
-			j--;
-		}
-	}
+		sc = ft_xor2_p2(sa, sb, i, j);
 	return (sc);
 }
 
@@ -405,95 +489,127 @@ static unsigned char		*ft_new_s_on_sizeint(unsigned int i, unsigned char *s, uns
 
 	return (s1);
 }
-/*
-void ft_int_to_char(char reg[REG_SIZE], unsigned int nb)
-{
-	int i;
-	i = REG_SIZE;
-	while (nb)
-	{
-		reg[--i] = nb & 0xff;
-		nb = nb >> 8;
-	}
-}
-*/
-static unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
+
+static unsigned char   *ft_get_para_p1(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
 	unsigned char		*si;
-	unsigned int		pc;
 	unsigned int		position;
 	unsigned int		index;
-	unsigned int		ind1;
+
+	s1 = NULL;
+	position = get_position(proc1, x);
+	si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
+	index = ft_get_index_t(si, sizeof(unsigned int), proc1->pc);
+	s1 = (unsigned char*)malloc(sizeof(unsigned char) * REG_SIZE);
+	ft_int_to_reg(s1, index);
+	return (s1);
+
+}
+
+static unsigned char   *ft_get_para_p2(unsigned char *s, t_proc *proc1, int x)
+{
+	unsigned char		*s1;
+	unsigned char		*si;
+	unsigned int		position;
+	unsigned int		index;
+
+	s1 = NULL;
+	position = get_position(proc1, x);
+	si = ft_new_s_on_sizeint(proc1->params.size_params[x], s, position);
+	index = ft_conv_to_int_memod(si, sizeof(unsigned int));
+	s1 = ft_new_s_on_sizeint(REG_SIZE, s, index);
+	return (s1);
+
+}
+
+unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
+{
+	unsigned char		*s1;
+	unsigned char		*si;
+	unsigned int		position;
+	unsigned int		index;
 	unsigned int		conv1;
 
-	pc = proc1->pc;
-	position = get_position(proc1, x);
 	s1 = NULL;
+	position = get_position(proc1, x);
 	if (proc1->params.type[x] == T_REG)
 	{
-		conv1 = ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]);
+		conv1 = ft_conv_to_int_nomod(proc1->params.arg[x],
+				proc1->params.size_params[x]);
 		if (conv1 <= REG_NUMBER && conv1 > 0)
-			s1 = proc1->reg[conv1 - 1];
+			s1 = proc1->reg[conv1- 1];
 		else
 			return (NULL);
 	}
 	else if (proc1->params.type[x] == T_DIR)
 		s1 = ft_new_s_on_sizeint(proc1->params.size_params[x], s, position);
-	// st
-	else if (proc1->params.type[x] == T_IND && (proc1->op.num == 3 || proc1->op.num == 2))
-	{
-		si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
-		index = ft_get_index_t(si, sizeof(unsigned int), pc);
-		s1 = (unsigned char*)malloc(sizeof(unsigned char) * REG_SIZE);
-		ft_int_to_reg(s1, index);
-	}
+	else if (proc1->params.type[x] == T_IND
+			&& (proc1->op.num == 3 || proc1->op.num == 2))
+		s1 = ft_get_para_p1(s, proc1, x);
 	else if (proc1->params.type[x] == T_IND)
-	{
-		si = ft_new_s_on_sizeint(proc1->params.size_params[x], s, position);
-		ind1 = ft_conv_to_int_memod(si, sizeof(unsigned int));
-		s1 = ft_new_s_on_sizeint( REG_SIZE, s, ind1);
-	}
+		s1 = ft_get_para_p2(s, proc1, x);
 	return (s1);
 }
 
-static unsigned char   *ft_get_para_whihtout_idxmod(unsigned char *s, t_proc *proc1, int x)
+static unsigned char   *ft_get_para_without_idxmod_p1(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
 	unsigned char		*si;
-	unsigned int		pc;
 	unsigned int		position;
 	unsigned int		index;
-	unsigned int		ind1;
+
+	s1 = NULL;
+	position = get_position(proc1, x);
+	si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
+	index = ft_get_index_without_idxmod(si, sizeof(unsigned int), proc1->pc);
+	s1 = (unsigned char*)malloc(sizeof(unsigned char) * REG_SIZE);
+	ft_int_to_reg(s1, index);
+	return (s1);
+
+}
+
+static unsigned char   *ft_get_para_without_idxmod_p2(unsigned char *s, t_proc *proc1, int x)
+{
+	unsigned char		*s1;
+	unsigned char		*si;
+	unsigned int		position;
+	unsigned int		index;
+
+	s1 = NULL;
+	position = get_position(proc1, x);
+	si = ft_new_s_on_sizeint(proc1->params.size_params[x], s, position);
+	index = ft_conv_to_int_memod(si, sizeof(unsigned int));
+	s1 = ft_new_s_on_sizeint(REG_SIZE, s, index);
+	return (s1);
+
+}
+
+unsigned char   *ft_get_para_without_idxmod(unsigned char *s, t_proc *proc1, int x)
+{
+	unsigned char		*s1;
+	unsigned char		*si;
+	unsigned int		position;
+	unsigned int		index;
 	unsigned int		conv1;
 
-	pc = proc1->pc;
-	position = get_position(proc1, x);
 	s1 = NULL;
+	position = get_position(proc1, x);
 	if (proc1->params.type[x] == T_REG)
 	{
-		conv1 = ft_conv_to_int_nomod(proc1->params.arg[x],proc1->params.size_params[x]);
+		conv1 = ft_conv_to_int_nomod(proc1->params.arg[x],
+				proc1->params.size_params[x]);
 		if (conv1 <= REG_NUMBER && conv1 > 0)
-			s1 = proc1->reg[conv1 - 1];
+			s1 = proc1->reg[conv1- 1];
 		else
 			return (NULL);
 	}
 	else if (proc1->params.type[x] == T_DIR)
-		s1 = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
-	// 3 st, 2 ld, 13 lld
-	else if (proc1->params.type[x] == T_IND && (proc1->op.num == 3 || proc1->op.num == 2 || proc1->op.num == 13))
-	{
-		si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
-		index = ft_get_index_without_idxmod(si, sizeof(unsigned int), pc);
-		s1 = (unsigned char*)malloc(sizeof(unsigned char) * REG_SIZE);
-		ft_int_to_reg(s1, index);
-	}
+		s1 = ft_new_s_on_sizeint(proc1->params.size_params[x], s, position);
+	else if (proc1->params.type[x] == T_IND && (proc1->op.num == 13))
+		s1 = ft_get_para_without_idxmod_p1(s, proc1, x);
 	else if (proc1->params.type[x] == T_IND)
-	{
-		si = ft_new_s_on_sizeint(proc1->params.size_params[x], s, position);
-		ind1 = ft_conv_to_int_memod(si, sizeof(unsigned int));
-		s1 = ft_new_s_on_sizeint( REG_SIZE, s, ind1);
-	}
+		s1 = ft_get_para_without_idxmod_p2(s, proc1, x);
 	return (s1);
 }
 
@@ -658,77 +774,77 @@ int		ft_st(t_env *env, t_proc *proc1)
 
 int         ft_fork(t_env *env, t_proc *proc)
 {
-    t_proc        *new_proc;
-    int                addr_target;
-    size_t         i;
-    size_t        j;
+	t_proc        *new_proc;
+	int                addr_target;
+	size_t         i;
+	size_t        j;
 
-		addr_target = 0;
-    while (proc->params.size_params[0]--)
-    {
-        addr_target = addr_target << 8;
-        addr_target += *(proc->params.arg[0]++);
-    }
-    if ((new_proc = ft_memalloc(sizeof(t_proc))) == NULL)
-        exit(0);
-    i = -1;
-    while (++i < REG_NUMBER)
-    {
-        j = -1;
-        while (++j < REG_SIZE)
-            new_proc->reg[i][j] = proc->reg[i][j];
-    }
-		if (addr_target >> 15)
-			new_proc->pc = (proc->pc - (IDX_MOD - addr_target % IDX_MOD)) % MEM_SIZE;
-		else
-			new_proc->pc = (proc->pc + (addr_target % IDX_MOD)) % MEM_SIZE;
-		new_proc->op = g_op_tab[16];
-    new_proc->pc_inc = 0;
-    new_proc->carry = proc->carry;
-    new_proc->num_players = proc->num_players;
-    new_proc->lives_in_period = 0;
-    new_proc->cycle_to_exec = proc->cycle_to_exec + 1;
-    new_proc->next = env->begin;
-		env->begin = new_proc;
-		draw_processes(env);
-		update_proc(env, env->begin);
-    return (1);
+	addr_target = 0;
+	while (proc->params.size_params[0]--)
+	{
+		addr_target = addr_target << 8;
+		addr_target += *(proc->params.arg[0]++);
+	}
+	if ((new_proc = ft_memalloc(sizeof(t_proc))) == NULL)
+		exit(0);
+	i = -1;
+	while (++i < REG_NUMBER)
+	{
+		j = -1;
+		while (++j < REG_SIZE)
+			new_proc->reg[i][j] = proc->reg[i][j];
+	}
+	if (addr_target >> 15)
+		new_proc->pc = (proc->pc - (IDX_MOD - addr_target % IDX_MOD)) % MEM_SIZE;
+	else
+		new_proc->pc = (proc->pc + (addr_target % IDX_MOD)) % MEM_SIZE;
+	new_proc->op = g_op_tab[16];
+	new_proc->pc_inc = 0;
+	new_proc->carry = proc->carry;
+	new_proc->num_players = proc->num_players;
+	new_proc->lives_in_period = 0;
+	new_proc->cycle_to_exec = proc->cycle_to_exec + 1;
+	new_proc->next = env->begin;
+	env->begin = new_proc;
+	draw_processes(env);
+	update_proc(env, env->begin);
+	return (1);
 }
 
 int         ft_lfork(t_env *env, t_proc *proc)
 {
-    t_proc        *new_proc;
-    int                addr_target;
-    size_t         i;
-    size_t        j;
+	t_proc        *new_proc;
+	int                addr_target;
+	size_t         i;
+	size_t        j;
 
-		addr_target = 0;
-    while (proc->params.size_params[0]--)
-    {
-        addr_target = addr_target << 8;
-        addr_target += *(proc->params.arg[0]++);
-    }
-    if ((new_proc = ft_memalloc(sizeof(t_proc))) == NULL)
-        exit(0);
-    i = -1;
-    while (++i < REG_NUMBER)
-    {
-        j = -1;
-        while (++j < REG_SIZE)
-            new_proc->reg[i][j] = proc->reg[i][j];
-    }
-		new_proc->pc = (proc->pc + (addr_target)) % MEM_SIZE;
-    new_proc->op = g_op_tab[16];
-    new_proc->pc_inc = 0;
-		new_proc->carry = proc->carry;
-    new_proc->num_players = proc->num_players;
-    new_proc->lives_in_period = 0;
-    new_proc->cycle_to_exec = 0;
-    new_proc->next = env->begin;
-		env->begin = new_proc;
-		update_proc(env, env->begin);
-		draw_processes(env);
-    return (1);
+	addr_target = 0;
+	while (proc->params.size_params[0]--)
+	{
+		addr_target = addr_target << 8;
+		addr_target += *(proc->params.arg[0]++);
+	}
+	if ((new_proc = ft_memalloc(sizeof(t_proc))) == NULL)
+		exit(0);
+	i = -1;
+	while (++i < REG_NUMBER)
+	{
+		j = -1;
+		while (++j < REG_SIZE)
+			new_proc->reg[i][j] = proc->reg[i][j];
+	}
+	new_proc->pc = (proc->pc + (addr_target)) % MEM_SIZE;
+	new_proc->op = g_op_tab[16];
+	new_proc->pc_inc = 0;
+	new_proc->carry = proc->carry;
+	new_proc->num_players = proc->num_players;
+	new_proc->lives_in_period = 0;
+	new_proc->cycle_to_exec = 0;
+	new_proc->next = env->begin;
+	env->begin = new_proc;
+	update_proc(env, env->begin);
+	draw_processes(env);
+	return (1);
 }
 
 int	ft_sti(t_env *env, t_proc *proc1)
@@ -790,9 +906,9 @@ int	ft_lldi(t_env *env, t_proc *proc1)
 
 	if (IND_SIZE <= REG_SIZE)
 	{
-		s1 = ft_get_para_whihtout_idxmod(env->mem, proc1, 0);
-		s2 = ft_get_para_whihtout_idxmod(env->mem, proc1, 1);
-		s3 = ft_get_para_whihtout_idxmod(env->mem, proc1, 2);
+		s1 = ft_get_para_without_idxmod(env->mem, proc1, 0);
+		s2 = ft_get_para_without_idxmod(env->mem, proc1, 1);
+		s3 = ft_get_para_without_idxmod(env->mem, proc1, 2);
 		if (s1 && s2 && s3)
 		{
 			s4 = ft_add2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
@@ -841,15 +957,14 @@ int		ft_lld(t_env *env, t_proc *proc1)
 
 	if (IND_SIZE <= REG_SIZE)
 	{
-		s1 = ft_get_para_whihtout_idxmod(env->mem, proc1, 0);
-		s2 = ft_get_para_whihtout_idxmod(env->mem, proc1, 1);
+		s1 = ft_get_para_without_idxmod(env->mem, proc1, 0);
+		s2 = ft_get_para_without_idxmod(env->mem, proc1, 1);
 		if (s1 && s2)
 		{
 			if (proc1->params.type[0] == T_DIR)
 				ft_cp_s_to_s(s2,s1,REG_SIZE,REG_SIZE);
 			else
 			{
-				//ind1 a verifier pas sur
 				ind1 = ft_conv_to_int_memod(s1, sizeof(unsigned int));
 				ft_cp_in_s_for_lld(REG_SIZE,s2, env->mem, ind1);
 			}
@@ -871,9 +986,9 @@ int		ft_aff(t_env *env, t_proc *proc1)
 		if (s1)
 		{
 			ind1 = ft_conv_to_int_mod256(s1, sizeof(unsigned int));
-// a voir pour le return le caratere ou le 1 pour bon
+			// a voir pour le return le caratere ou le 1 pour bon
 			return (ind1);
-//			return (1);
+			//			return (1);
 		}
 	}
 	return (0);
@@ -885,7 +1000,6 @@ int		ft_live(t_env *env, t_proc *proc)
 	int		i;
 
 	i = -1;
-	// get_position(proc, 0);
 	num_p = ft_conv_to_int_nomod(proc->params.arg[0], proc->params.size_params[0]);
 	env->nb_live++;
 	draw_nbr_live(env);
@@ -895,7 +1009,6 @@ int		ft_live(t_env *env, t_proc *proc)
 		if (env->players[i].num_players == num_p)
 		{
 			env->players[i].last_live = env->cycle;
-			(env->debug > 1)? ft_printf("\"un processus dit que le joueur %d(%s) est en vie\"\n", env->players[i].num_players, env->players[i].header.prog_name) : 42;
 			break;
 		}
 	}
