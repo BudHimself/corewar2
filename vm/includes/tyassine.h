@@ -6,7 +6,7 @@
 /*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:55:48 by tyassine          #+#    #+#             */
-/*   Updated: 2017/04/27 21:55:52 by tyassine         ###   ########.fr       */
+/*   Updated: 2017/05/21 13:20:29 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct		s_proc
 	unsigned char	reg[REG_NUMBER][REG_SIZE];
 	unsigned int	cycle_to_exec;
 	unsigned int 	lives_in_period;
+	int				carry;
 	int				last_pc;
 	int				last_color;
 	int				last_op;
@@ -98,10 +99,10 @@ typedef struct		s_env
 	int				ncurses;
 	unsigned char	*mem;
 	unsigned int	nb_live;
-	int				carry;
 	unsigned int	cycle;
 	unsigned int	cycle_s;
 	unsigned int	cycle_to_die;
+	int				nb_live_full;
 	int				cycle_to_inc;
 	int				checks; // nb de periode if(cycle = cycle to die)checks++;
 	unsigned int	nbp;

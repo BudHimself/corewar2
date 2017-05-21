@@ -6,7 +6,7 @@
 /*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:50:51 by tyassine          #+#    #+#             */
-/*   Updated: 2017/04/27 21:50:54 by tyassine         ###   ########.fr       */
+/*   Updated: 2017/05/21 13:22:05 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void		ft_init_env(t_env *env)
 	env->proc = NULL;
 	env->begin = NULL;
 	env->cycle_to_inc = 0;
+	env->cycle_to_die = CYCLE_TO_DIE;
 	env->checks = 0;
-	env->carry = 0;
 }
 
 unsigned int get_nbp(int argc, char *argv[])

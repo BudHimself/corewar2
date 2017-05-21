@@ -521,7 +521,7 @@ int		ft_add(t_env *env, t_proc *proc1)
 		{
 			s4 = ft_add2(s1, s2, REG_SIZE, REG_SIZE);
 			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-			env->carry = ft_getcarry(s3);
+			env->proc->carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -544,7 +544,7 @@ int		ft_sub(t_env *env, t_proc *proc1)
 		{
 			s4 = ft_sub2(s1, s2, REG_SIZE, REG_SIZE);
 			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-			env->carry = ft_getcarry(s3);
+			env->proc->carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -567,7 +567,7 @@ int		ft_or(t_env *env, t_proc *proc1)
 		{
 			s4 = ft_or2(s1, s2, REG_SIZE, REG_SIZE);
 			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-			env->carry = ft_getcarry(s3);
+			env->proc->carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -590,7 +590,7 @@ int		ft_xor(t_env *env, t_proc *proc1)
 		{
 			s4 = ft_xor2(s1, s2, REG_SIZE, REG_SIZE);
 			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-			env->carry = ft_getcarry(s3);
+			env->proc->carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -613,7 +613,7 @@ int		ft_and(t_env *env, t_proc *proc1)
 		{
 			s4 = ft_and2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
 			ft_cp_s_to_s(s3, s4, REG_SIZE, REG_SIZE);
-			env->carry = ft_getcarry(s3);
+			env->proc->carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -625,7 +625,7 @@ int		ft_zjmp(t_env *env, t_proc *proc1)
 	unsigned char	*s1;
 	unsigned int	index;
 
-	if (IND_SIZE <= REG_SIZE && env->carry == 1)
+	if (IND_SIZE <= REG_SIZE && env->proc->carry == 1)
 	{
 		s1 = ft_get_para(env->mem, proc1, 0);
 		if (s1)
@@ -688,15 +688,15 @@ int         ft_fork(t_env *env, t_proc *proc)
     new_proc->pc = proc->pc + (addr_target % IDX_MOD);
     new_proc->op = g_op_tab[16];
     new_proc->pc_inc = 0;
-    env->carry = 0;
+    env->proc->carry = 0;
     new_proc->num_players = proc->num_players;
     new_proc->lives_in_period = 0;
     new_proc->cycle_to_exec = proc->cycle_to_exec + 1;
     new_proc->next = env->begin;
 	env->begin = new_proc;
+	// draw_processes(env);
 	update_proc(env, env->begin);
     return (1);
-    return (0);
 }
 
 int         ft_lfork(t_env *env, t_proc *proc)
@@ -724,7 +724,7 @@ int         ft_lfork(t_env *env, t_proc *proc)
     new_proc->pc = (i > MEM_SIZE) ? i % MEM_SIZE : i;
     new_proc->op = g_op_tab[0];
     new_proc->pc_inc = 0;
-    env->carry = 0;
+    env->proc->carry = 0;
     new_proc->num_players = proc->num_players;
     new_proc->lives_in_period = 0;
     new_proc->cycle_to_exec = 0;
@@ -732,7 +732,6 @@ int         ft_lfork(t_env *env, t_proc *proc)
 	env->begin = new_proc;
 	update_proc(env, env->begin);
     return (1);
-    return (0);
 }
 
 int	ft_sti(t_env *env, t_proc *proc1)
@@ -777,7 +776,7 @@ int	ft_ldi(t_env *env, t_proc *proc1)
 			s4 = ft_add2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
 			index = ft_get_index_t(s4, sizeof(unsigned int), proc1->pc);
 			ft_cp_in_s(REG_SIZE,s3, env->mem, index);
-			env->carry = ft_getcarry(s3);
+			env->proc->carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -802,7 +801,7 @@ int	ft_lldi(t_env *env, t_proc *proc1)
 			s4 = ft_add2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
 			index = ft_get_index_without_idxmod(s4, sizeof(unsigned int), proc1->pc);
 			ft_cp_in_s(REG_SIZE,s3, env->mem, index);
-			env->carry = ft_getcarry(s3);
+			env->proc->carry = ft_getcarry(s3);
 			return (1);
 		}
 	}
@@ -828,7 +827,7 @@ int		ft_ld(t_env *env, t_proc *proc1)
 				ind1 = ft_conv_to_int_memod(s1, sizeof(unsigned int));
 				ft_cp_in_s(REG_SIZE,s2, env->mem, ind1);
 			}
-			env->carry = ft_getcarry(s2);
+			env->proc->carry = ft_getcarry(s2);
 			return (1);
 		}
 	}
@@ -857,7 +856,7 @@ int		ft_lld(t_env *env, t_proc *proc1)
 				ind1 = ft_conv_to_int_memod(s1, sizeof(unsigned int));
 				ft_cp_in_s_for_lld(REG_SIZE,s2, env->mem, ind1);
 			}
-			env->carry = ft_getcarry(s2);
+			env->proc->carry = ft_getcarry(s2);
 			return (1);
 		}
 	}
