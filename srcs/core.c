@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   core.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/05/22 14:39:24 by jjourdai          #+#    #+#             */
+/*   Updated: 2017/05/22 18:05:05 by syusof           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tyassine.h"
 
-unsigned int 	get_nb_porc(t_env *env)
+unsigned int	get_nb_porc(t_env *env)
 {
-	t_proc *tmp;
-	unsigned int 	nb;
+	t_proc			*tmp;
+	unsigned int	nb;
 
 	nb = 0;
 	tmp = env->begin;
@@ -12,9 +24,8 @@ unsigned int 	get_nb_porc(t_env *env)
 		nb++;
 		tmp = tmp->next;
 	}
-	return(nb);
+	return (nb);
 }
-
 
 void			test_params(t_params *params)
 {
@@ -28,8 +39,10 @@ void			test_params(t_params *params)
 		ft_printf("       param->type[%d] : %d \n", i, params->type[i]);
 		j = -1;
 		while (++j < params->size_params[i])
-			ft_printf("        param->arg[%d][%d] : %02x", i, j , params->arg[i][j]);
-		ft_printf("\n       size_params[%d] : %zu\n", i, params->size_params[i]);
+			ft_printf("        param->arg[%d][%d] : %02x", i, j,
+			params->arg[i][j]);
+		ft_printf("\n       size_params[%d] : %zu\n", i,
+		params->size_params[i]);
 	}
 	ft_printf("        param->nb_arg : %zu\n", params->nb_arg);
 	ft_printf("          param->sign : %u\n", params->sign);
@@ -68,7 +81,6 @@ void			init_params(t_params *params)
 	params->nb_arg = 0;
 	params->sign = 0;
 	params->size_total = 0;
-	// params->carry = 0; carry ne dois pas etre remit a ZERO
 }
 
 void			update_proc(t_env *env, t_proc *proc)
@@ -78,17 +90,17 @@ void			update_proc(t_env *env, t_proc *proc)
 	{
 		proc->cycle_to_exec = proc->op.cycle + env->cycle;
 		init_params(&proc->params);
-		proc->params = *fill_struct_param(&proc->params, &proc->op, &env->mem[proc->pc]);
-		if ((proc->params.size_total)  == 0)
+		proc->params = *fill_struct_param(&proc->params, &proc->op,
+		&env->mem[proc->pc]);
+		if ((proc->params.size_total) == 0)
 		{
 			if (proc->op.byte_codage)
 				proc->pc += 2;
-			else	
+			else
 				proc->pc += 1;
 			proc->op = g_op_tab[16];
 			draw_prompt(env, proc->pc, proc->num_players * -1);
 		}
-		// test_op(&proc->op);
 	}
 	else
 	{
@@ -98,35 +110,39 @@ void			update_proc(t_env *env, t_proc *proc)
 	draw_prompt(env, env->proc->pc, env->proc->num_players * -1);
 }
 
+void			if_times_are_come(t_env *env, t_proc *begin)
+{
+	if (env->debug > 3)
+	{
+		ft_print_proc(env->proc);
+		test_op(&env->proc->op);
+	}
+	if (env->proc->op.name)
+	{
+		g_op[env->proc->op.num - 1](env, env->proc);
+		print_champ(env, env->proc->pc, env->proc->params.size_total,
+		(env->proc->num_players) * -1);
+	}
+	if (env->proc->pc_inc == 0)
+	{
+		if (env->proc->params.size_total > 0)
+			env->proc->pc += env->proc->params.size_total;
+		if (env->proc->pc > MEM_SIZE)
+			env->proc->pc = env->proc->pc % MEM_SIZE;
+		(env->debug == 6) ? ft_printf("PC :%4d\n", env->proc->pc) : 42;
+	}
+	else
+		env->proc->pc_inc = 0;
+	update_proc(env, env->proc);
+}
+
 void			forward_pc(t_env *env, t_proc *begin)
 {
 	int			fd;
 
 	fd = 0;
 	if (env->proc->cycle_to_exec <= env->cycle && env->proc)
-	{
-		if (env->debug > 3)
-		{
-			ft_print_proc(env->proc);
-			test_op(&env->proc->op);
-		}
-		if (env->proc->op.name)
-		{
-			g_op[env->proc->op.num - 1](env, env->proc);
-			print_champ(env, env->proc->pc, env->proc->params.size_total, (env->proc->num_players) * -1);
-		}
-		if (env->proc->pc_inc == 0)
-		{
-			if (env->proc->params.size_total > 0)
-				env->proc->pc += env->proc->params.size_total;
-			if (env->proc->pc > MEM_SIZE)
-				env->proc->pc = env->proc->pc % MEM_SIZE;
-			(env->debug == 6)?ft_printf("PC :%4d\n",env->proc->pc):42;
-		}
-		else
-			env->proc->pc_inc = 0;
-		update_proc(env, env->proc);
-	}
+		if_times_are_come(env, begin);
 	if (env->proc->next)
 		env->proc = env->proc->next;
 	else
@@ -141,9 +157,9 @@ void			forward_pc(t_env *env, t_proc *begin)
 	}
 }
 
-size_t		list_size(t_proc *begin)
+size_t			list_size(t_proc *begin)
 {
-	int			size;
+	int		size;
 	t_proc	*tmp;
 
 	if (!begin)
@@ -158,13 +174,11 @@ size_t		list_size(t_proc *begin)
 	return (size);
 }
 
-t_proc		*kill_proc(t_proc *proc, t_proc *begin)
+t_proc			*kill_proc(t_proc *proc, t_proc *begin)
 {
 	t_proc	*prev;
 
 	prev = begin;
-	// ft_printf("nombre de process %d\n", list_size(begin));
-	// ft_printf("numero du proc a delete %d\n", list_size(proc));
 	if (begin == proc)
 	{
 		if (begin->next)
@@ -174,16 +188,14 @@ t_proc		*kill_proc(t_proc *proc, t_proc *begin)
 		ft_memdel((void**)&proc);
 		return (begin);
 	}
-	while (prev->next != proc) //&& prev->next
+	while (prev->next != proc)
 		prev = prev->next;
 	prev->next = proc->next;
 	ft_memdel((void**)&proc);
-	// ft_printf("size %d\n", list_size(begin));
 	return (begin);
 }
 
-
-unsigned int		check_proc_live(t_proc *proc)
+unsigned int	check_proc_live(t_proc *proc)
 {
 	unsigned int	nb_proc_live;
 
@@ -193,10 +205,57 @@ unsigned int		check_proc_live(t_proc *proc)
 	return (nb_proc_live);
 }
 
-void				core(t_env *env)
+void			check_check(t_env *env)
 {
-	int				ch;
-	int				dump = 1;
+	if (env->checks == MAX_CHECKS)
+	{
+		env->checks = 0;
+		draw_max_check(env);
+		env->cycle_to_inc -= CYCLE_DELTA;
+		env->cycle_to_die += env->cycle_to_inc;
+		draw_cycle_to_die(env);
+	}
+	else
+	{
+		env->checks++;
+		if (env->nb_live_full)
+		{
+			env->checks = 0;
+			env->nb_live_full = 0;
+		}
+		draw_max_check(env);
+		env->cycle_to_die += env->cycle_to_inc;
+		draw_cycle_to_die(env);
+	}
+}
+
+void			end_of_time(t_env *env)
+{
+	if (env->nb_live >= NBR_LIVE)
+	{
+		env->checks = 0;
+		env->nb_live = 0;
+		draw_max_check(env);
+		env->cycle_to_inc -= CYCLE_DELTA;
+		env->nb_live_full = 1;
+	}
+	while (env->proc)
+	{
+		if (!env->proc->lives_in_period)
+		{
+			env->begin = kill_proc(env->proc, env->begin);
+			draw_processes(env);
+		}
+		else
+			env->proc->lives_in_period = 0;
+		env->proc = env->proc->next;
+	}
+	env->proc = env->begin;
+	check_check(env);
+}
+
+void			init_game(t_env *env)
+{
 	env->cycle_to_die = CYCLE_TO_DIE;
 	env->cycle_to_inc = CYCLE_TO_DIE;
 	draw_cycle_to_die(env);
@@ -205,8 +264,16 @@ void				core(t_env *env)
 		update_proc(env, env->proc);
 		env->proc = env->proc->next;
 	}
-	// ft_print_arena(env->mem);
 	env->proc = env->begin;
+}
+
+void			core(t_env *env)
+{
+	int				ch;
+	t_bool			dump;
+
+	dump = 1;
+	init_game(env);
 	while (env->begin != NULL)
 	{
 		if (env->dump == env->cycle && env->dump && dump == 1)
@@ -218,51 +285,13 @@ void				core(t_env *env)
 		if (ch)
 			control_vm(env, ch);
 		if (env->cycle >= env->cycle_to_die)
-		{
-			if (env->nb_live >= NBR_LIVE)
-			{
-				env->checks = 0;
-				env->nb_live = 0;
-				draw_max_check(env);
-				env->cycle_to_inc -= CYCLE_DELTA;
-				env->nb_live_full = 1;
-			}
-			while (env->proc)
-			{
-				if (!env->proc->lives_in_period)
-				{
-					env->begin = kill_proc(env->proc, env->begin);
-// ft_printf("%d\n", env->cycle);
-					draw_processes(env);
-				}
-				else
-					env->proc->lives_in_period = 0;
-				env->proc = env->proc->next;
-			}
-			env->proc = env->begin;
-			if (env->checks == MAX_CHECKS)
-			{
-				env->checks = 0;
-				draw_max_check(env);
-				env->cycle_to_inc -= CYCLE_DELTA;
-				env->cycle_to_die += env->cycle_to_inc;
-				draw_cycle_to_die(env);
-			}
-			else
-			{
-				env->checks++;
-				if (env->nb_live_full)
-				{
-					env->checks = 0;
-					env->nb_live_full = 0;
-				}
-				draw_max_check(env);
-				env->cycle_to_die += env->cycle_to_inc;
-				draw_cycle_to_die(env);
-			}
-		}
+			end_of_time(env);
 		else
 			forward_pc(env, env->begin);
-		(env->debug > 1)?ft_printf("we are in cycle :%6d, Next periode at :%6d, nb proc:%d\n", env->cycle, env->cycle_to_die, get_nb_porc(env)) : 42;
+		if (env->debug > 1)
+		{
+			ft_printf("we are in cycle :%6d, Next periode at :%6d, nb proc:%d\n"
+			, env->cycle, env->cycle_to_die, get_nb_porc(env));
+		}
 	}
 }
