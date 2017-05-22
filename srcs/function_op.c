@@ -1,6 +1,6 @@
 #include "tyassine.h"
 
-static int		ft_getcarry(unsigned char *r)
+int		ft_getcarry(unsigned char *r)
 {
 	unsigned int		i;
 
@@ -14,7 +14,7 @@ static int		ft_getcarry(unsigned char *r)
 	return (1);
 }
 
-static unsigned int	get_position(t_proc *proc1, int x)
+unsigned int	get_position(t_proc *proc1, int x)
 {
 	int		res;
 
@@ -28,7 +28,7 @@ static unsigned int	get_position(t_proc *proc1, int x)
 	return (proc1->pc + 1 + proc1->op.byte_codage + res);
 }
 
-static int		ft_get_sign(unsigned char *s1)
+int		ft_get_sign(unsigned char *s1)
 {
 	if (!(s1[2] & (1 << (8 - 1))))
 		return (1);
@@ -37,7 +37,7 @@ static int		ft_get_sign(unsigned char *s1)
 	return (0);
 }
 
-static void		ft_cp_r_to_stack(unsigned int i, unsigned char *s, unsigned int pos, unsigned char r[REG_SIZE])
+void		ft_cp_r_to_stack(unsigned int i, unsigned char *s, unsigned int pos, unsigned char r[REG_SIZE])
 {
 	while (i > 0)
 	{
@@ -46,7 +46,7 @@ static void		ft_cp_r_to_stack(unsigned int i, unsigned char *s, unsigned int pos
 	}
 }
 
-static void		ft_cp_in_s(unsigned int i, unsigned char *s1, unsigned char *s, unsigned int j)
+void		ft_cp_in_s(unsigned int i, unsigned char *s1, unsigned char *s, unsigned int j)
 {
 	while (i > 0)
 	{
@@ -55,7 +55,7 @@ static void		ft_cp_in_s(unsigned int i, unsigned char *s1, unsigned char *s, uns
 	}
 }
 
-static void		ft_cp_in_s_for_lld(unsigned int i, unsigned char *s1, unsigned char *s, unsigned int j)
+void		ft_cp_in_s_for_lld(unsigned int i, unsigned char *s1, unsigned char *s, unsigned int j)
 {
 	while (i > 2)
 	{
@@ -69,7 +69,7 @@ static void		ft_cp_in_s_for_lld(unsigned int i, unsigned char *s1, unsigned char
 	}
 }
 
-static unsigned int		ft_get_index_t(unsigned char *si, unsigned int i, unsigned int pc)
+unsigned int		ft_get_index_t(unsigned char *si, unsigned int i, unsigned int pc)
 {
 	int						sign;
 	unsigned int	conv1;
@@ -83,7 +83,7 @@ static unsigned int		ft_get_index_t(unsigned char *si, unsigned int i, unsigned 
 	return (0);
 }
 
-static unsigned int		ft_get_index_without_idxmod(unsigned char *si, unsigned int i, unsigned int pc)
+unsigned int		ft_get_index_without_idxmod(unsigned char *si, unsigned int i, unsigned int pc)
 {
 	int						sign;
 	unsigned int	conv1;
@@ -92,7 +92,7 @@ static unsigned int		ft_get_index_without_idxmod(unsigned char *si, unsigned int
 	return ((pc + conv1) % MEM_SIZE);
 }
 
-static unsigned char	*ft_add2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_add2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
@@ -117,7 +117,7 @@ static unsigned char	*ft_add2_p1(unsigned char *sa, unsigned char *sb, unsigned 
 	return (sc);
 }
 
-static unsigned char	*ft_add2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_add2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
@@ -167,7 +167,7 @@ unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb, unsigned int i, uns
 	return (sc);
 }
 
-static unsigned char	*ft_sub2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_sub2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
@@ -192,7 +192,7 @@ static unsigned char	*ft_sub2_p1(unsigned char *sa, unsigned char *sb, unsigned 
 	return (sc);
 }
 
-static unsigned char	*ft_sub2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_sub2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
@@ -242,7 +242,7 @@ unsigned char	*ft_sub2(unsigned char *sa, unsigned char *sb, unsigned int i, uns
 	return (sc);
 }
 
-static unsigned char	*ft_and2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_and2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
@@ -264,7 +264,7 @@ static unsigned char	*ft_and2_p1(unsigned char *sa, unsigned char *sb, unsigned 
 
 }
 
-static unsigned char	*ft_and2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_and2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
@@ -307,7 +307,7 @@ unsigned char			*ft_and2(unsigned char *sa, unsigned char *sb, unsigned int i, u
 	return (sc);
 }
 
-static unsigned char	*ft_or2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_or2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
@@ -329,7 +329,7 @@ static unsigned char	*ft_or2_p1(unsigned char *sa, unsigned char *sb, unsigned i
 
 }
 
-static unsigned char	*ft_or2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_or2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
@@ -372,7 +372,7 @@ unsigned char			*ft_or2(unsigned char *sa, unsigned char *sb, unsigned int i, un
 	return (sc);
 }
 
-static unsigned char	*ft_xor2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_xor2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
@@ -394,7 +394,7 @@ static unsigned char	*ft_xor2_p1(unsigned char *sa, unsigned char *sb, unsigned 
 
 }
 
-static unsigned char	*ft_xor2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_xor2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
@@ -437,7 +437,7 @@ unsigned char			*ft_xor2(unsigned char *sa, unsigned char *sb, unsigned int i, u
 	return (sc);
 }
 
-static void		ft_cp_s_to_s_p1(unsigned char *s1, unsigned char *s2, unsigned int i, unsigned int j)
+void		ft_cp_s_to_s_p1(unsigned char *s1, unsigned char *s2, unsigned int i, unsigned int j)
 {
 	unsigned int		l;
 
@@ -483,7 +483,7 @@ void		ft_cp_s_to_s(unsigned char *s1, unsigned char *s2, unsigned int i, unsigne
 	}
 }
 
-static unsigned char		*ft_new_s_on_sizeint(unsigned int i, unsigned char *s, unsigned int pos)
+unsigned char		*ft_new_s_on_sizeint(unsigned int i, unsigned char *s, unsigned int pos)
 {
 	unsigned char *s1;
 	unsigned char	*s2;
@@ -496,7 +496,7 @@ static unsigned char		*ft_new_s_on_sizeint(unsigned int i, unsigned char *s, uns
 	return (s1);
 }
 
-static unsigned char   *ft_get_para_p1(unsigned char *s, t_proc *proc1, int x)
+unsigned char   *ft_get_para_p1(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
 	unsigned char		*si;
@@ -513,7 +513,7 @@ static unsigned char   *ft_get_para_p1(unsigned char *s, t_proc *proc1, int x)
 
 }
 
-static unsigned char   *ft_get_para_p2(unsigned char *s, t_proc *proc1, int x)
+unsigned char   *ft_get_para_p2(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
 	unsigned char		*si;
@@ -558,7 +558,7 @@ unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 	return (s1);
 }
 
-static unsigned char   *ft_get_para_without_idxmod_p1(unsigned char *s, t_proc *proc1, int x)
+unsigned char   *ft_get_para_without_idxmod_p1(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
 	unsigned char		*si;
@@ -575,7 +575,7 @@ static unsigned char   *ft_get_para_without_idxmod_p1(unsigned char *s, t_proc *
 
 }
 
-static unsigned char   *ft_get_para_without_idxmod_p2(unsigned char *s, t_proc *proc1, int x)
+unsigned char   *ft_get_para_without_idxmod_p2(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
 	unsigned char		*si;
@@ -780,7 +780,7 @@ int		ft_st(t_env *env, t_proc *proc1)
 	return (0);
 }
 
-static void				ft_fork_p1(int addr_target, t_env *env, t_proc *new_proc, t_proc *proc)
+void				ft_fork_p1(int addr_target, t_env *env, t_proc *new_proc, t_proc *proc)
 {
 	if (addr_target >> 15)
 		new_proc->pc = (proc->pc - (IDX_MOD - addr_target % IDX_MOD)) % MEM_SIZE;
@@ -824,7 +824,7 @@ int				ft_fork(t_env *env, t_proc *proc)
 	return (1);
 }
 
-static void				ft_lfork_p1(int addr_target, t_env *env, t_proc *new_proc, t_proc *proc)
+void				ft_lfork_p1(int addr_target, t_env *env, t_proc *new_proc, t_proc *proc)
 {
 	new_proc->pc = (proc->pc + (addr_target)) % MEM_SIZE;
 	new_proc->op = g_op_tab[16];
