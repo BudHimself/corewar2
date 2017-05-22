@@ -816,6 +816,22 @@ int				ft_fork(t_env *env, t_proc *proc)
 	return (1);
 }
 
+static void				ft_lfork_p1(int addr_target, t_env *env, t_proc *new_proc, t_proc *proc)
+{
+	new_proc->pc = (proc->pc + (addr_target)) % MEM_SIZE;
+	new_proc->op = g_op_tab[16];
+	new_proc->pc_inc = 0;
+	new_proc->carry = proc->carry;
+	new_proc->num_players = proc->num_players;
+	new_proc->lives_in_period = 0;
+	new_proc->cycle_to_exec = 0;
+	new_proc->next = env->begin;
+	env->begin = new_proc;
+	update_proc(env, env->begin);
+	draw_processes(env);
+
+}
+
 int         ft_lfork(t_env *env, t_proc *proc)
 {
 	t_proc        *new_proc;
@@ -838,17 +854,7 @@ int         ft_lfork(t_env *env, t_proc *proc)
 		while (++j < REG_SIZE)
 			new_proc->reg[i][j] = proc->reg[i][j];
 	}
-	new_proc->pc = (proc->pc + (addr_target)) % MEM_SIZE;
-	new_proc->op = g_op_tab[16];
-	new_proc->pc_inc = 0;
-	new_proc->carry = proc->carry;
-	new_proc->num_players = proc->num_players;
-	new_proc->lives_in_period = 0;
-	new_proc->cycle_to_exec = 0;
-	new_proc->next = env->begin;
-	env->begin = new_proc;
-	update_proc(env, env->begin);
-	draw_processes(env);
+	ft_lfork_p1(addr_target, env, new_proc, proc);
 	return (1);
 }
 
