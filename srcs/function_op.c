@@ -437,7 +437,26 @@ unsigned char			*ft_xor2(unsigned char *sa, unsigned char *sb, unsigned int i, u
 	return (sc);
 }
 
-static void		ft_cp_s_to_s(unsigned char *s1, unsigned char *s2, unsigned int i, unsigned int j)
+static void		ft_cp_s_to_s_p1(unsigned char *s1, unsigned char *s2, unsigned int i, unsigned int j)
+{
+	unsigned int		l;
+
+	l = (i >= j) ? i - j : j - i;
+		while (l > 0)
+		{
+			s1[i - 1] = s2[j - 1];
+			i--;
+			j--;
+			l--;
+		}
+		while (i > 0)
+		{
+			s1[i - 1] = 0;
+			i--;
+		}
+}
+
+void		ft_cp_s_to_s(unsigned char *s1, unsigned char *s2, unsigned int i, unsigned int j)
 {
 	unsigned int		l;
 
@@ -451,20 +470,7 @@ static void		ft_cp_s_to_s(unsigned char *s1, unsigned char *s2, unsigned int i, 
 		}
 	}
 	else if (i > j)
-	{
-		while (l > 0)
-		{
-			s1[i - 1] = s2[j - 1];
-			i--;
-			j--;
-			l--;
-		}
-		while (i > 0)
-		{
-			s1[i - 1] = 0;
-			i--;
-		}
-	}
+		ft_cp_s_to_s_p1(s1, s2, i, j);
 	else if (j > i)
 	{
 		while (l > 0)
