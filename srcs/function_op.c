@@ -979,6 +979,7 @@ int		ft_aff(t_env *env, t_proc *proc1)
 {
 	unsigned char	*s1;
 	unsigned int	ind1;
+	char	c;
 
 	if (IND_SIZE <= REG_SIZE)
 	{
@@ -986,9 +987,9 @@ int		ft_aff(t_env *env, t_proc *proc1)
 		if (s1)
 		{
 			ind1 = ft_conv_to_int_mod256(s1, sizeof(unsigned int));
-			// a voir pour le return le caratere ou le 1 pour bon
-			return (ind1);
-			//			return (1);
+			c = ind1;
+			write(1, &c, 1);
+			return (1);
 		}
 	}
 	return (0);
