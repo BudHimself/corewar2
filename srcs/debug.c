@@ -6,7 +6,7 @@
 /*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:50:32 by tyassine          #+#    #+#             */
-/*   Updated: 2017/04/27 21:50:36 by tyassine         ###   ########.fr       */
+/*   Updated: 2017/05/22 12:51:45 by jjourdai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void		ft_exit_error(char *msg, char nb_error)
 	exit(nb_error);
 }
 
-void			ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
+void		ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
 {
 	size_t			i;
 	size_t			j;
@@ -67,7 +67,7 @@ void			ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
 	}
 }
 
-void			test_params2(t_params *params)
+void		test_params2(t_params *params)
 {
 	size_t			i;
 	size_t			j;
@@ -79,7 +79,8 @@ void			test_params2(t_params *params)
 		ft_printf("       param->type[%d] : %d \n", i, params->type[i]);
 		j = -1;
 		while (++j < params->size_params[i])
-			ft_printf("    param->arg[%d][%d] : %02x", i, j , params->arg[i][j]);
+			ft_printf("    param->arg[%d][%d] : %02x", i, j,
+			params->arg[i][j]);
 		ft_printf("\n   size_params[%d] : %zu\n", i, params->size_params[i]);
 	}
 	ft_printf("    param->nb_arg : %zu\n", params->nb_arg);
@@ -87,24 +88,3 @@ void			test_params2(t_params *params)
 	ft_printf("param->size_total : %zu\n", params->size_total);
 }
 
-void	ft_print_proc(t_proc *proc)
-{
-	ft_putendl("\n\n********* print PROC *********\n");
-	ft_printf("    num du player :%5d\n", proc->num_players);
-	test_params2(&proc->params);
-	ft_printf("       PC        :%5d\n", proc->pc);
-	ft_printf("  Live in period :%5d\n", proc->lives_in_period);
-	ft_print_register(proc->reg);
-}
-
-void	ft_print_procs(t_env *env)
-{
-	t_proc	*begin;
-
-	begin = env->begin;
-	while (begin)
-	{
-		ft_print_proc(begin);
-		begin = begin->next;
-	}
-}
