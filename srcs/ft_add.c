@@ -6,17 +6,18 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 13:01:12 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/22 14:11:38 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 14:20:39 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tyassine.h"
 
-unsigned char	*ft_add2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_add2_p1(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
-	unsigned int k;
+	unsigned int	k;
 
 	k = (i >= j) ? i : j;
 	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
@@ -37,11 +38,12 @@ unsigned char	*ft_add2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, 
 	return (sc);
 }
 
-unsigned char	*ft_add2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_add2_p2(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
-	unsigned int k;
+	unsigned int	k;
 
 	k = (i >= j) ? i : j;
 	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
@@ -62,11 +64,12 @@ unsigned char	*ft_add2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, 
 	return (sc);
 }
 
-unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
-	unsigned int k;
+	unsigned int	k;
 
 	if (i == j)
 	{
@@ -87,7 +90,7 @@ unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb, unsigned int i, uns
 	return (sc);
 }
 
-int		ft_add(t_env *env, t_proc *proc1)
+int				ft_add(t_env *env, t_proc *proc1)
 {
 	unsigned char	*s1;
 	unsigned char	*s2;

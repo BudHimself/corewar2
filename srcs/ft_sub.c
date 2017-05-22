@@ -6,17 +6,18 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 13:18:01 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/22 14:15:08 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 14:22:33 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tyassine.h"
 
-unsigned char	*ft_sub2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_sub2_p1(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
-	unsigned int k;
+	unsigned int	k;
 
 	k = (i >= j) ? i : j;
 	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);
@@ -37,11 +38,12 @@ unsigned char	*ft_sub2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, 
 	return (sc);
 }
 
-unsigned char	*ft_sub2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_sub2_p2(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
-	unsigned int k;
+	unsigned int	k;
 
 	k = (i >= j) ? i : j;
 	sc = (unsigned char*)malloc(sizeof(unsigned char) * k);

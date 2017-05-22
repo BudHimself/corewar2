@@ -6,7 +6,7 @@
 /*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:55:48 by tyassine          #+#    #+#             */
-/*   Updated: 2017/05/22 14:03:10 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 14:31:16 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ typedef struct		s_env
 /*
 **              DEBUG
 */
-int 				(*f_op[16])(t_env *, t_proc *);
+int 				(*g_op[16])(t_env *, t_proc *);
 t_op				g_op_tab[17];
 void				ft_print_arena(unsigned char *arena);
 void				ft_print_champion(t_env *env);

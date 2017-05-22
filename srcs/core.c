@@ -109,7 +109,7 @@ void			forward_pc(t_env *env, t_proc *begin)
 		}
 		if (env->proc->op.name)
 		{
-			f_op[env->proc->op.num - 1](env, env->proc);
+			g_op[env->proc->op.num - 1](env, env->proc);
 			print_champ(env, env->proc->pc, env->proc->params.size_total, (env->proc->num_players) * -1);
 		}
 		if (env->proc->pc_inc == 0)
