@@ -6,13 +6,14 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 13:20:52 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/22 14:11:56 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 14:48:46 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tyassine.h"
 
-unsigned char	*ft_and2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_and2_p1(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
@@ -31,10 +32,10 @@ unsigned char	*ft_and2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, 
 		i--;
 	}
 	return (sc);
-
 }
 
-unsigned char	*ft_and2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_and2_p2(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
@@ -55,11 +56,13 @@ unsigned char	*ft_and2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, 
 	return (sc);
 }
 
-unsigned char			*ft_and2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_and2(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
 
+	sc = NULL;
 	if (i == j)
 	{
 		k = (i >= j) ? i : j;
@@ -72,12 +75,12 @@ unsigned char			*ft_and2(unsigned char *sa, unsigned char *sb, unsigned int i, u
 	}
 	else if (i > j)
 		sc = ft_and2_p1(sa, sb, i, j);
-	else if (i < j)
+	else
 		sc = ft_and2_p2(sa, sb, i, j);
 	return (sc);
 }
 
-int		ft_and(t_env *env, t_proc *proc1)
+int				ft_and(t_env *env, t_proc *proc1)
 {
 	unsigned char	*s1;
 	unsigned char	*s2;

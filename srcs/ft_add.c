@@ -6,7 +6,7 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 13:01:12 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/22 14:20:39 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 14:46:58 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb,
 	unsigned char	*sc;
 	unsigned int	k;
 
+	sc = NULL;
 	if (i == j)
 	{
 		k = (i >= j) ? i : j;
@@ -85,7 +86,7 @@ unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb,
 	}
 	else if (i > j)
 		sc = ft_add2_p1(sa, sb, i, j);
-	else if (i < j)
+	else
 		sc = ft_add2_p2(sa, sb, i, j);
 	return (sc);
 }

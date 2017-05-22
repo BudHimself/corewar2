@@ -6,13 +6,14 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 13:27:45 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/22 14:14:53 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 14:50:06 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tyassine.h"
 
-unsigned char	*ft_xor2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_xor2_p1(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
@@ -31,10 +32,10 @@ unsigned char	*ft_xor2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, 
 		i--;
 	}
 	return (sc);
-
 }
 
-unsigned char	*ft_xor2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_xor2_p2(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
@@ -55,11 +56,13 @@ unsigned char	*ft_xor2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, 
 	return (sc);
 }
 
-unsigned char			*ft_xor2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_xor2(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned char	*sc;
 	unsigned int	k;
 
+	sc = NULL;
 	if (i == j)
 	{
 		k = (i >= j) ? i : j;
@@ -72,12 +75,12 @@ unsigned char			*ft_xor2(unsigned char *sa, unsigned char *sb, unsigned int i, u
 	}
 	else if (i > j)
 		sc = ft_xor2_p1(sa, sb, i, j);
-	else if (i < j)
+	else
 		sc = ft_xor2_p2(sa, sb, i, j);
 	return (sc);
 }
 
-int		ft_xor(t_env *env, t_proc *proc1)
+int				ft_xor(t_env *env, t_proc *proc1)
 {
 	unsigned char	*s1;
 	unsigned char	*s2;
