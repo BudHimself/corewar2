@@ -6,7 +6,7 @@
 /*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 11:44:26 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/22 12:00:49 by jjourdai         ###   ########.fr       */
+/*   Updated: 2017/05/22 17:06:49 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ unsigned char *memory)
 	bytecode = memory[1];
 	bytecode = ((bytecode & 0xc0) >> 6) | ((bytecode & 0x30) >> 2) |
 	((bytecode & 0xc) << 2) | ((bytecode & 0x3) << 6);
+	if (!bytecode)
+	{
+		params->size_total = 0;
+		return (-1);
+	}
 	while (bytecode && i < 3)
 	{
 		++i;
