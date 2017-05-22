@@ -6,7 +6,7 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/25 15:42:17 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/03 18:55:25 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 12:09:02 by jjourdai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 unsigned int	ft_powmod_idx(unsigned int a, unsigned int n)
 {
 	unsigned int res;
+
 	if (n == 0)
 		res = 1;
 	else
@@ -25,6 +26,7 @@ unsigned int	ft_powmod_idx(unsigned int a, unsigned int n)
 unsigned int	ft_powmod_mem(unsigned int a, unsigned int n)
 {
 	unsigned int res;
+
 	if (n == 0)
 		res = 1;
 	else
@@ -35,6 +37,7 @@ unsigned int	ft_powmod_mem(unsigned int a, unsigned int n)
 unsigned int	ft_powmod_256(unsigned int a, unsigned int n)
 {
 	unsigned int res;
+
 	if (n == 0)
 		res = 1;
 	else
@@ -45,6 +48,7 @@ unsigned int	ft_powmod_256(unsigned int a, unsigned int n)
 unsigned int	ft_pow(unsigned int a, unsigned int n)
 {
 	unsigned int res;
+
 	if (n == 0)
 		res = 1;
 	else
