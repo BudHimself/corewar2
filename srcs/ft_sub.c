@@ -6,7 +6,7 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 13:18:01 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/22 14:22:33 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 14:35:39 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,19 @@ unsigned char	*ft_sub2_p2(unsigned char *sa, unsigned char *sb,
 	}
 	while (j > 0)
 	{
-		sc[j - 1] = - (sb[j - 1] + p);
+		sc[j - 1] = -(sb[j - 1] + p);
 		p = (0 < (sb[j - 1] + p)) ? 1 : 0;
 		j--;
 	}
 	return (sc);
 }
 
-unsigned char	*ft_sub2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j)
+unsigned char	*ft_sub2(unsigned char *sa, unsigned char *sb,
+		unsigned int i, unsigned int j)
 {
 	unsigned int	p;
 	unsigned char	*sc;
-	unsigned int k;
+	unsigned int	k;
 
 	if (i == j)
 	{
@@ -89,7 +90,7 @@ unsigned char	*ft_sub2(unsigned char *sa, unsigned char *sb, unsigned int i, uns
 	return (sc);
 }
 
-int		ft_sub(t_env *env, t_proc *proc1)
+int				ft_sub(t_env *env, t_proc *proc1)
 {
 	unsigned char	*s1;
 	unsigned char	*s2;

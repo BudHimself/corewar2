@@ -6,7 +6,7 @@
 /*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:55:48 by tyassine          #+#    #+#             */
-/*   Updated: 2017/05/22 14:31:16 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 14:37:47 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ typedef struct		s_env
 	int				checks; // nb de periode if(cycle = cycle to die)checks++;
 	unsigned int	nbp;
 	int				nb_option; // Option -n
+	int				winer;
 	t_proc			*proc; //!!! add in here
 	t_proc			*begin; // debut des procs
 	t_arena			arena;

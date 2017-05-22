@@ -313,22 +313,22 @@ int		ft_aff(t_env *env, t_proc *proc1)
 
 int		ft_live(t_env *env, t_proc *proc)
 {
-	int		num_p;
-	int		i;
+		int		num_p;
+		int		i;
 
-	i = -1;
-	num_p = ft_conv_to_int_nomod(proc->params.arg[0],
-	proc->params.size_params[0]);
-	env->nb_live++;
-	draw_nbr_live(env);
-	proc->lives_in_period++;
-	while (++i < env->no)
-	{
-		if (env->players[i].num_players == num_p)
+		i = -1;
+		num_p = ft_conv_to_int_nomod(proc->params.arg[0], proc->params.size_params[0]);
+		env->nb_live++;
+		draw_nbr_live(env);
+		proc->lives_in_period++;
+		while (++i < env->no)
 		{
-			env->players[i].last_live = env->cycle;
-			break ;
+			if (env->players[i].num_players == num_p)
+			{
+				env->players[i].last_live = env->cycle;
+				env->winer = num_p;
+				break;
+			}
 		}
-	}
-	return (0);
+		return (0);
 }
