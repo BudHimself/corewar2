@@ -16,6 +16,20 @@
 #include "libft.h"
 #include "tyassine.h"
 
+
+int					diff_nbplayer(t_env *env, int nb)
+{
+	int 	i;
+
+	i = -1;
+	while (++i < env->no)
+	{
+		if (env->players[i].num_players == nb)
+			return (0);
+	}
+	return (nb);
+}
+
 unsigned int		ft_get_nbafter(char *argv[], int i) // A deplacer autre fichier
 {
 	unsigned int	res;
@@ -41,24 +55,33 @@ int			is_cor_suffix(char *str)
 int			ft_init_options(t_env *env, char *argv[], int i)
 {
 	if (argv[i][1] == 'n' && argv[i][2] == 'c' && argv[i][3] == '\0')
+	{
 		env->ncurses = 1;
+		return (i);
+	}
 	else if (argv[i][1] == 'd' && argv[i][2] == '\0')
 	{
 		env->debug = ft_get_nbafter(argv, i) + 1;
 		(ft_get_nbafter(argv, i) > 0)? i++ : 42;
+		return (i);
 	}
 	else if (argv[i][1] == 'n' && argv[i][2] == '\0')
 	{
 		env->nb_option = ft_get_nbafter(argv, i);
-		(env->nb_option > 0)? i++ : 42;
+		if (diff_nbplayer(env, env->nb_option) != 0)
+			 i++;
+		else
+			 env->nb_option = 0;
+		return (i);
 	}
 	else if (argv[i][1] == 'd' && argv[i][2] == 'u'
 	&& argv[i][3] == 'm' && argv[i][4] == 'p' && argv[i][5] == '\0')
 	{
 		env->dump = ft_get_nbafter(argv, i);
 		(env->dump > 0)? i++ : 42;
+		return (i);
 	}
-	return (i);
+	return (0);
 }
 
 int			ft_access(char *str)
@@ -93,9 +116,7 @@ void		ft_add_player(t_env *env, int fd, unsigned char arena[], unsigned int num_
 	ft_fill_arena(env, buf, fd, num_players);
 	env->players[env->no].last_live = 0;
 	env->winer = num_players;
-	(DEBUG == 1) ? ft_print_champion(env) : 42;
 	++env->no;
-	t_header blabla;
 }
 
 void		ft_init_players(t_env *env, int argc, char *argv[], unsigned char *mem)
@@ -120,7 +141,7 @@ void		ft_init_players(t_env *env, int argc, char *argv[], unsigned char *mem)
 		}
 		else
 		{
-			if (i == ft_init_options(env, argv, i))
+			if (ft_init_options(env, argv, i) == 0)
 				ft_exit_error("options not valid", 16);
 			i = ft_init_options(env, argv, i);
 		}

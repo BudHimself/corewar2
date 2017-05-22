@@ -1,5 +1,31 @@
 #include "fhenry.h"
 
+void	message_cw(t_env *env, char *message, int num, char *name)
+{
+	if (env->ncurses)
+		mvwprintw(env->arena.win, HEADER_SIZE + 30, MID_COLS + 3, message, num, name);
+	else
+	{
+		ft_printf(message, num, name);
+		ft_putchar('\n');
+	}
+}
+
+void	which_color(t_env *env, int pc, int line, int col)
+{
+	int	color;
+	int	num;
+
+	num = -4;
+	if (env->mem[pc] == 0)
+		color = 8;
+	else
+		color = env->proc->last_color;
+	wattron(env->arena.win, COLOR_PAIR(color));
+	mvwprintw(env->arena.win, line, col, "%02x", env->mem[env->proc->last_pc]);
+	wattroff(env->arena.win, COLOR_PAIR(color));
+}
+
 void	draw_prompt(t_env *env, int pc, int color)
 {
 	int	line;
@@ -7,11 +33,15 @@ void	draw_prompt(t_env *env, int pc, int color)
 
 	col = ((env->proc->last_pc % 64) * 3) + 3;
 	line = (env->proc->last_pc / 64) + 1;
-	wattron(env->arena.win, (env->proc->last_op == 0) ? COLOR_PAIR(8) : COLOR_PAIR(env->proc->last_color));
-	mvwprintw(env->arena.win, line, col, "%02x", env->mem[env->proc->last_pc]);
-	wattroff(env->arena.win, (env->proc->last_op == 0) ? COLOR_PAIR(8) : COLOR_PAIR(env->proc->last_color));
+	if (line > 64)
+		line -= 63;
+	if (color < 0)
+		color *= -1;
+	which_color(env, pc, line, col);
 	col = ((pc % 64) * 3) + 3;
 	line = (pc / 64) + 1;
+	if (line > 64)
+		line -= 63;
 	wattron(env->arena.win, A_STANDOUT | COLOR_PAIR(color));
 	mvwprintw(env->arena.win, line, col, "%02x", env->mem[pc]);
 	wattroff(env->arena.win, A_STANDOUT | COLOR_PAIR(color));
@@ -20,12 +50,44 @@ void	draw_prompt(t_env *env, int pc, int color)
 	env->proc->last_op = env->proc->op.num;
 }
 
+void	print_champ(t_env *env, int start, int size, int color)
+{
+	int	line;
+	int	col;
+	int	i;
+	int	fd;
+
+	col = ((start / 64) * 3) + 3;
+	line = (start / 64) + 1;
+	i = start;
+	// fd = open("lol", O_CREAT | O_APPEND | O_RDWR | O_TRUNC);
+	// ft_fprintf(fd, "start : %d | size : %d | color : %d\n", start, size, color);
+	if (color < 0)
+		color *= -1;
+	while (i < size + start)
+	{
+		while (col < MID_COLS)
+		{
+			// ft_fprintf(fd, "LINE : %d | COL : %d\n", line, col);
+			// ft_fprintf(fd, "%s\n", "lol");
+			wattron(env->arena.win, COLOR_PAIR(color));
+			mvwprintw(env->arena.win, line, col, "%02x ", env->mem[i++ % MEM_SIZE]);
+			wattroff(env->arena.win, COLOR_PAIR(color));
+			col += 3;
+			if (i + 1 > size + start)
+				break;
+		}
+		line++;
+		if (line > 64)
+			line -= 63;
+		col = 3;
+	}
+}
+
 void	draw_processes(t_env *env)
 {
 	mvwprintw(env->arena.win, HEADER_SIZE + 6, MID_COLS + 3, "Processes : %4d", list_size(env->begin));
 	wrefresh(env->arena.win);
-	// printf("cycle : %d | ", env->cycle);
-	// printf("proc : %d\n", lol);
 }
 
 void	draw_cycle(t_env *env)
@@ -101,47 +163,23 @@ void		print_memory(t_env *env)
 	unsigned int	i;
 	int				line;
 	int				col;
+	int				j;
 
 	i = 0;
 	line = 1;
-	init_color(10, 200, 200, 200);
-	init_pair(8, 10, COLOR_BLACK);
-	wattron(env->arena.win, COLOR_PAIR(8));
 	while (i < MEM_SIZE)
 	{
 		col = 3;
+		j = 0;
 		while (col < MID_COLS)
 		{
-			mvwprintw(env->arena.win, line, col, "%02x ", env->mem[i++]);
-			col += 3;
-		}
-		line++;
-	}
-}
-
-void	print_champ(t_env *env, int start, int size, int color)
-{
-	int	line;
-	int	col;
-	int	i;
-
-	col = ((start % 64) * 3) + 3;
-	line = (start / 64) + 1;
-	i = start;
-	while (i < size + start)
-	{
-		while (col < MID_COLS)
-		{
-			wattron(env->arena.win, COLOR_PAIR(color));
-			mvwprintw(env->arena.win, line, col, "%02x ", env->mem[i]);
-			wattroff(env->arena.win, COLOR_PAIR(color));
+			wattron(env->arena.win, COLOR_PAIR(8));
+			mvwprintw(env->arena.win, line, col, "00 ");
+			wattroff(env->arena.win, COLOR_PAIR(8));
 			col += 3;
 			i++;
-			if (i + 1 > size + start)
-				break;
 		}
 		line++;
-		col = 3;
 	}
 }
 
@@ -178,6 +216,7 @@ void	load_display(t_env *env)
 
 	line = HEADER_SIZE;
 	col = MID_COLS + 3;
+	draw_border(env);
 	draw_cycle_s(env, 0);
 	draw_cycle_to_die(env);
 	draw_cycle(env);
@@ -185,7 +224,32 @@ void	load_display(t_env *env)
 	draw_max_check(env);
 	mvwprintw(env->arena.win, line + 10, col, "CYCLE_DELTA : %d", CYCLE_DELTA);
 	draw_nbr_live(env);
-	// mvwprintw(env->arena.win, line + 8, col, "Player : -%d", env->players);
+}
+
+void	def_color(t_env *env)
+{
+	t_proc	*tmp;
+	int		num;
+
+	tmp = env->begin;
+	num = 0;
+	init_color(10, 200, 200, 200);
+	init_pair(8, 10, COLOR_BLACK);
+	while (tmp)
+	{
+		if (tmp->num_players < 0)
+			tmp->num_players *= -1;
+		if (num == 0)
+			init_pair((tmp->num_players), COLOR_CYAN, COLOR_BLACK);
+		else if (num == 1)
+			init_pair((tmp->num_players), COLOR_GREEN, COLOR_BLACK);
+		else if (num == 2)
+			init_pair((tmp->num_players), COLOR_BLUE, COLOR_BLACK);
+		else if (num == 3)
+			init_pair((tmp->num_players), COLOR_YELLOW, COLOR_BLACK);
+		num++;
+		tmp = tmp->next;
+	}
 }
 
 void	init_struct(t_env *env, WINDOW *arena)
@@ -193,10 +257,7 @@ void	init_struct(t_env *env, WINDOW *arena)
 	env->arena.win = arena;
 	env->arena.status = ft_strdup("Pause");
 	env->arena.pause = 1;
-	init_pair(1, COLOR_CYAN, COLOR_BLACK);
-	init_pair(2, COLOR_GREEN, COLOR_BLACK);
-	init_pair(3, COLOR_BLUE, COLOR_BLACK);
-	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+	def_color(env);
 }
 
 void	init_window(t_env *env)
@@ -209,22 +270,23 @@ void	init_window(t_env *env)
 	arena = initscr();
 	noecho();
 	nodelay(arena, 1);
+	curs_set(0);
 	start_color();
-	// arena = subwin(stdscr, MAX_LINES, MAX_COLS, 0, 0);
 	check_window(arena);
 	init_struct(env, arena);
-	draw_border(env);
 	load_display(env);
 	print_memory(env);
 	tmp = env->proc;
 	while (++i < env->no)
 	{
-		print_champ(env, tmp->pc, env->players[i].mem_size, i + 1);
+		if (tmp->num_players < 0)
+			tmp->num_players *= -1;
+		print_champ(env, tmp->pc, env->players[i].mem_size, tmp->num_players);
 		tmp = tmp->next;
 	}
 	draw_status(env);
 	endwin();
-	// free(arena);
+	free(arena);
 }
 
 void	check_window(WINDOW *win)
@@ -242,7 +304,7 @@ void	check_window(WINDOW *win)
 		wrefresh(win);
 		getch();
 		endwin();
-		// free(win);
+		free(win);
 		exit(0);
 	}
 }

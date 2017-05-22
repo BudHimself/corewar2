@@ -6,7 +6,7 @@
 /*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:50:51 by tyassine          #+#    #+#             */
-/*   Updated: 2017/04/27 21:50:54 by tyassine         ###   ########.fr       */
+/*   Updated: 2017/05/22 20:50:52 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,17 @@ unsigned int 		get_winer(t_env *env)
 {
 		unsigned int win;
 
-		win = env->no -1;
+		win = env->no - 1;
 		while (--env->no >= 0)
 		{
-			if (env->players[env->no].last_live > env->players[win].last_live)
+			if (env->players[env->no].num_players == env->winer)
+			{
 				win = env->no;
-			(DEBUG > 3)?ft_printf("last_live : %d\n", env->players[env->no].last_live):42;
+				break;
+			}
 		}
-		ft_printf("Contestant %d, \"%s\", has won !\n",win + 1, env->players[win].header.prog_name);
+		message_cw(env, "Contestant %d, \"%s\", has won !",
+		env->players[win].num_players, env->players[win].header.prog_name);
 		return (win);
 }
 
@@ -101,6 +104,8 @@ int			main(int argc, char *argv[])
 	}
 	if (env.ncurses == 1 && env.debug == 1)
 	{
+		ft_printf("Introducing contestants...\n");
+		ft_print_champions(&env);
 		ft_print_arena(mem);
 		return(0);
 	}
@@ -111,9 +116,7 @@ int			main(int argc, char *argv[])
 	}
 	else
 		ft_exit_error("No Champions input",14);
-	// ft_print_procs(&env); // you can see all processes !!!!
 	(env.debug > 1) ? ft_putendl("\n*********        end        *********"): 42;
-	(env.ncurses == 1 && env.debug == 5) ? ft_print_arena(mem) : 42;
 	get_winer(&env);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/21 19:01:09 by jjourdai          #+#    #+#              #
-#    Updated: 2017/05/22 15:24:39 by syusof           ###   ########.fr        #
+#    Updated: 2017/05/22 20:49:38 by syusof           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,6 @@ SRC_NAME = fill.c \
 		function_op1.c \
 		function_op2.c \
 		function_op3.c \
-		debug2.c \
 		ft_add.c \
 		ft_sub.c \
 		ft_and.c \
