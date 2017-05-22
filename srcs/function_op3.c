@@ -6,7 +6,7 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 15:19:44 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/22 15:22:29 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 15:26:56 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int		ft_lfork(t_env *env, t_proc *proc)
 	ft_lfork_p1(addr_target, env, new_proc, proc);
 	return (1);
 }
-
 
 int		ft_ldi(t_env *env, t_proc *proc1)
 {

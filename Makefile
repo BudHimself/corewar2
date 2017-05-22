@@ -6,7 +6,7 @@
 #    By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/21 19:01:09 by jjourdai          #+#    #+#              #
-#    Updated: 2017/05/22 15:22:26 by syusof           ###   ########.fr        #
+#    Updated: 2017/05/22 15:24:39 by syusof           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,6 @@ SRC_NAME = fill.c \
 		ft_conv_to_int.c  \
 		ft_powmod.c \
 		core.c \
-		function_op.c \
 		function_op1.c \
 		function_op2.c \
 		function_op3.c \

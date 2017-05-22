@@ -6,7 +6,7 @@
 /*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 14:09:47 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/22 15:21:27 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 15:26:31 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int		ft_sti(t_env *env, t_proc *proc1)
 	}
 	return (0);
 }
-
 
 int		ft_ld(t_env *env, t_proc *proc1)
 {
@@ -111,22 +110,23 @@ int		ft_aff(t_env *env, t_proc *proc1)
 
 int		ft_live(t_env *env, t_proc *proc)
 {
-		int		num_p;
-		int		i;
+	int		num_p;
+	int		i;
 
-		i = -1;
-		num_p = ft_conv_to_int_nomod(proc->params.arg[0], proc->params.size_params[0]);
-		env->nb_live++;
-		draw_nbr_live(env);
-		proc->lives_in_period++;
-		while (++i < env->no)
+	i = -1;
+	num_p = ft_conv_to_int_nomod(proc->params.arg[0],
+			proc->params.size_params[0]);
+	env->nb_live++;
+	draw_nbr_live(env);
+	proc->lives_in_period++;
+	while (++i < env->no)
+	{
+		if (env->players[i].num_players == num_p)
 		{
-			if (env->players[i].num_players == num_p)
-			{
-				env->players[i].last_live = env->cycle;
-				env->winer = num_p;
-				break;
-			}
+			env->players[i].last_live = env->cycle;
+			env->winer = num_p;
+			break ;
 		}
-		return (0);
+	}
+	return (0);
 }
