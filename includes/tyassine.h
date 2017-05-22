@@ -6,7 +6,7 @@
 /*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:55:48 by tyassine          #+#    #+#             */
-/*   Updated: 2017/04/27 21:55:52 by tyassine         ###   ########.fr       */
+/*   Updated: 2017/05/22 14:03:10 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,60 @@ void				slow_machine(t_env *env);
 void				draw_prompt(t_env *env, int pc, int color);
 
 
+int		ft_getcarry(unsigned char *r);
+unsigned int	get_position(t_proc *proc1, int x);
+int		ft_get_sign(unsigned char *s1);
+void		ft_cp_r_to_stack(unsigned int i, unsigned char *s, unsigned int pos, unsigned char r[REG_SIZE]);
+void		ft_cp_in_s(unsigned int i, unsigned char *s1, unsigned char *s, unsigned int j);
+void		ft_cp_in_s_for_lld(unsigned int i, unsigned char *s1, unsigned char *s, unsigned int j);
+unsigned int		ft_get_index_t(unsigned char *si, unsigned int i, unsigned int pc);
+unsigned int		ft_get_index_without_idxmod(unsigned char *si, unsigned int i, unsigned int pc);
+unsigned char	*ft_add2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char	*ft_add2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char	*ft_add2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char	*ft_sub2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char	*ft_sub2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char	*ft_sub2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char	*ft_and2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char	*ft_and2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char			*ft_and2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char	*ft_or2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char	*ft_or2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char			*ft_or2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char	*ft_xor2_p1(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char	*ft_xor2_p2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+unsigned char			*ft_xor2(unsigned char *sa, unsigned char *sb, unsigned int i, unsigned int j);
+void		ft_cp_s_to_s_p1(unsigned char *s1, unsigned char *s2, unsigned int i, unsigned int j);
+void		ft_cp_s_to_s(unsigned char *s1, unsigned char *s2, unsigned int i, unsigned int j);
+unsigned char		*ft_new_s_on_sizeint(unsigned int i, unsigned char *s, unsigned int pos);
+unsigned char   *ft_get_para_p1(unsigned char *s, t_proc *proc1, int x);
+unsigned char   *ft_get_para_p2(unsigned char *s, t_proc *proc1, int x);
+unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x);
+unsigned char   *ft_get_para_without_idxmod_p1(unsigned char *s, t_proc *proc1, int x);
+unsigned char   *ft_get_para_without_idxmod_p2(unsigned char *s, t_proc *proc1, int x);
+unsigned char   *ft_get_para_without_idxmod(unsigned char *s, t_proc *proc1, int x);
+int		ft_add(t_env *env, t_proc *proc1);
+int		ft_sub(t_env *env, t_proc *proc1);
+int		ft_or(t_env *env, t_proc *proc1);
+int		ft_xor(t_env *env, t_proc *proc1);
+int		ft_and(t_env *env, t_proc *proc1);
+
+
+
+int		ft_zjmp(t_env *env, t_proc *proc1);
+int		ft_st(t_env *env, t_proc *proc1);
+void				ft_fork_p1(int addr_target, t_env *env, t_proc *new_proc, t_proc *proc);
+int				ft_fork(t_env *env, t_proc *proc);
+void				ft_lfork_p1(int addr_target, t_env *env, t_proc *new_proc, t_proc *proc);
+int         ft_lfork(t_env *env, t_proc *proc);
+int	ft_sti(t_env *env, t_proc *proc1);
+int	ft_ldi(t_env *env, t_proc *proc1);
+int	ft_lldi(t_env *env, t_proc *proc1);
+int		ft_ld(t_env *env, t_proc *proc1);
+int		ft_lld(t_env *env, t_proc *proc1);
+int		ft_aff(t_env *env, t_proc *proc1);
+int		ft_live(t_env *env, t_proc *proc);
+/*
 int		    ft_live(t_env *env, t_proc *proc);
 int         ft_lfork(t_env *env, t_proc *proc);
 int         ft_fork(t_env *env, t_proc *proc);
@@ -166,5 +220,5 @@ int			ft_ld(t_env *env, t_proc *proc1);
 int			ft_lld(t_env *env, t_proc *proc1);
 int			ft_aff(t_env *env, t_proc *proc1);
 int			ft_st(t_env *env, t_proc *proc1);
-
+*/
 #endif

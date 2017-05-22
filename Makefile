@@ -6,7 +6,7 @@
 #    By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/21 19:01:09 by jjourdai          #+#    #+#              #
-#    Updated: 2017/05/22 12:52:43 by jjourdai         ###   ########.fr        #
+#    Updated: 2017/05/22 14:04:05 by syusof           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC_NAME = fill.c \
 		ft_powmod.c \
 		core.c \
 		function_op.c \
+		function_op2.c \
 		debug2.c \
 
 OBJ_PATH = ./obj/
