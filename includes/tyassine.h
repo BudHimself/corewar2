@@ -6,7 +6,7 @@
 /*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:55:48 by tyassine          #+#    #+#             */
-/*   Updated: 2017/05/22 14:37:47 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 15:04:31 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ unsigned int		ft_conv_to_int_mod256(unsigned char *s, unsigned int i);
 unsigned int		ft_powmod_idx(unsigned int a, unsigned int n);
 unsigned int		ft_powmod_mem(unsigned int a, unsigned int n);
 unsigned int		ft_pow(unsigned int a, unsigned int n);
+unsigned int	ft_powmod_256(unsigned int a, unsigned int n);
 void				ft_print_procs(t_env *env);
 void				ft_print_proc(t_proc *proc);
 int					ft_do_st(unsigned char *s, t_proc *proc1);

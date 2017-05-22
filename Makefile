@@ -6,7 +6,7 @@
 #    By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/21 19:01:09 by jjourdai          #+#    #+#              #
-#    Updated: 2017/05/22 14:16:30 by syusof           ###   ########.fr        #
+#    Updated: 2017/05/22 15:16:53 by syusof           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,11 @@ SRC_NAME = fill.c \
 		ft_and.c \
 		ft_or.c \
 		ft_xor.c \
+		ft_get_para.c \
+		ft_get_para_without_idxmod.c \
+		function_inter1.c \
+		function_inter2.c \
+		function_inter3.c \
 
 OBJ_PATH = ./obj/
 
