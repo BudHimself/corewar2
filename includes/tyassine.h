@@ -20,9 +20,10 @@
 # include <limits.h>
 
 # define CEM	COREWAR_EXEC_MAGIC
-# define CEM_1	(char)(CEM >> 16)
-# define CEM_2	(char)((CEM & 65280) >> 8)
-# define CEM_3	(char)(CEM & 255)
+# define CEM_0	(unsigned char)(CEM >> 24)
+# define CEM_1	(unsigned char)((CEM & 16711680) >> 16)
+# define CEM_2	(unsigned char)((CEM & 65280) >> 8)
+# define CEM_3	(unsigned char)(CEM & 255)
 
 # define DEBUG	env->debug
 
@@ -122,10 +123,10 @@ void				ft_print_arena(unsigned char *arena);
 void				ft_print_champion(t_env *env);
 void				ft_exit_error(char *msg, char nb_error);
 
-void				ft_fill_name(t_env *env, char *buf, int fd);
-void				ft_fill_comment(t_env *env, char *buf, int fd);
-void				ft_fill_memsize(t_env *env, char *buf, int fd);
-void				ft_fill_arena(t_env *env, char *buf, int fd, int nb);
+void				ft_fill_name(t_env *env, unsigned char *buf, int fd);
+void				ft_fill_comment(t_env *env, unsigned char *buf, int fd);
+void				ft_fill_memsize(t_env *env, unsigned char *buf, int fd);
+void				ft_fill_arena(t_env *env, unsigned char *buf, int fd, int nb);
 void				ft_init_players(t_env *env, int argc, char *argv[],
 									unsigned char *mem);
 void				core(t_env *env);

@@ -15,13 +15,13 @@
 #include "op.h"
 #include "tyassine.h"
 
-void						ft_fill_name(t_env *env, char *buf, int fd)
+void						ft_fill_name(t_env *env, unsigned char *buf, int fd)
 {
 	int						i;
 	int						n;
 
 	i = 0;
-	n = read(fd, buf, PROG_NAME_LENGTH);
+	n = read(fd, buf, PROG_NAME_LENGTH + 1);
 	(n <= 0) ? ft_exit_error("Name of champion not valid.", 5) : 42;
 	buf[n] = 0;
 	while (buf[i] != 0)
@@ -37,13 +37,13 @@ void						ft_fill_name(t_env *env, char *buf, int fd)
 	env->players[env->no].header.prog_name[i] = 0;
 }
 
-void						ft_fill_comment(t_env *env, char *buf, int fd)
+void						ft_fill_comment(t_env *env, unsigned char *buf, int fd)
 {
 	int						i;
 	int						n;
 
 	i = 0;
-	n = read(fd, buf, COMMENT_LENGTH);
+	n = read(fd, buf, COMMENT_LENGTH + 1);
 	(n <= 0) ? ft_exit_error("Comment of champion not valid.", 8) : 42;
 	buf[n] = 0;
 	while (buf[i] != 0)
@@ -59,26 +59,24 @@ void						ft_fill_comment(t_env *env, char *buf, int fd)
 		ft_exit_error("Comment of champion not valid.", 10);
 }
 
-void						ft_fill_memsize(t_env *env, char *buf, int fd)
+void						ft_fill_memsize(t_env *env, unsigned char *buf, int fd)
 {
 	int						i;
 	int						n;
 
 	i = 0;
-	n = read(fd, buf, 8);
+	read(fd, buf, 3);
+	n = read(fd, buf, 4);
 	env->players[env->no].mem_size = 0;
-	while (i < 8)
+	while (i < 4)
 	{
-		if (i == 6)
-			env->players[env->no].mem_size += ((unsigned int)buf[i]) << 8;
-		else
-			env->players[env->no].mem_size += (unsigned int)buf[i];
-		++i;
+		env->players[env->no].mem_size <<= 8;
+		env->players[env->no].mem_size += buf[i];
+		i++;
 	}
-	if (env->players[env->no].mem_size > CHAMP_MAX_SIZE)
+	if (env->players[env->no].mem_size > (CHAMP_MAX_SIZE + 1))
 		ft_exit_error("Invalid Champion Size.", 11);
 	env->players[env->no].header.prog_size = env->players[env->no].mem_size;
-	// ft_printf("%d\n", env->players[env->no].mem_size);
 }
 
 int							ft_pos_arena(int num_players, t_env *env)
@@ -138,14 +136,14 @@ void 						ft_init_proc(t_env *env,int start, int nb)
 	}
 }
 
-void						ft_fill_arena(t_env *env, char *buf, int fd, int nb)
+void						ft_fill_arena(t_env *env, unsigned char *buf, int fd, int nb)
 {
 	unsigned int	i;
 	int	start;
 
 	start = ft_pos_arena(env->nbp, env);
 	i = 0;
-	lseek(fd, 4, SEEK_CUR);
+	lseek(fd, 3, SEEK_CUR);
 	while (i < env->players[env->no].mem_size)
 	{
 		if (read(fd, buf, 1))
@@ -155,8 +153,5 @@ void						ft_fill_arena(t_env *env, char *buf, int fd, int nb)
 		++i;
 	}
 	env->players[env->no].num_players = nb;
-	/*
-	**init parametres and processe
-	*/
 	ft_init_proc(env, start, nb);
 }

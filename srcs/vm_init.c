@@ -76,14 +76,15 @@ int			ft_access(char *str)
 void		ft_add_player(t_env *env, int fd, unsigned char arena[], unsigned int num_players)
 {
 	int		n;
-	char	buf[MEM_SIZE];
+	unsigned char	buf[MEM_SIZE];
 	int		i;
 
 	i = 0;
 	env->nb_option = 0;
 	n = read(fd, buf, 4);
 	buf[n] = 0;
-	if (buf[1] != CEM_1 || buf[2] != CEM_2 || buf[3] != CEM_3)
+	if (buf[0] != CEM_0 || buf[1] != CEM_1
+		|| buf[2] != CEM_2 || buf[3] != CEM_3)
 		ft_exit_error("Incorrect magic number.", 2);
 	ft_fill_name(env, buf, fd);
 	ft_fill_memsize(env, buf, fd);
@@ -91,8 +92,10 @@ void		ft_add_player(t_env *env, int fd, unsigned char arena[], unsigned int num_
 	env->mem = arena;
 	ft_fill_arena(env, buf, fd, num_players);
 	env->players[env->no].last_live = 0;
+	env->winer = num_players;
 	(DEBUG == 1) ? ft_print_champion(env) : 42;
 	++env->no;
+	t_header blabla;
 }
 
 void		ft_init_players(t_env *env, int argc, char *argv[], unsigned char *mem)
@@ -116,7 +119,11 @@ void		ft_init_players(t_env *env, int argc, char *argv[], unsigned char *mem)
 			close(fd);
 		}
 		else
+		{
+			if (i == ft_init_options(env, argv, i))
+				ft_exit_error("options not valid", 16);
 			i = ft_init_options(env, argv, i);
+		}
 		++i;
 	}
 }

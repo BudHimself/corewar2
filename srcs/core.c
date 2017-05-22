@@ -81,7 +81,10 @@ void			update_proc(t_env *env, t_proc *proc)
 		proc->params = *fill_struct_param(&proc->params, &proc->op, &env->mem[proc->pc]);
 		if ((proc->params.size_total)  == 0)
 		{
-			proc->pc += 1;
+			if (proc->op.byte_codage)
+				proc->pc += 2;
+			else	
+				proc->pc += 1;
 			proc->op = g_op_tab[16];
 			draw_prompt(env, proc->pc, proc->num_players * -1);
 		}
@@ -109,7 +112,6 @@ void			forward_pc(t_env *env, t_proc *begin)
 		}
 		if (env->proc->op.name)
 		{
-			//printf("%s\n",env->proc->op.name);
 			g_op[env->proc->op.num - 1](env, env->proc);
 			print_champ(env, env->proc->pc, env->proc->params.size_total, (env->proc->num_players) * -1);
 		}
