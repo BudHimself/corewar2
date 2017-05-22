@@ -6,7 +6,7 @@
 /*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 14:09:47 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/22 14:27:50 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/22 14:54:53 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,8 +267,6 @@ int		ft_lld(t_env *env, t_proc *proc1)
 {
 	unsigned char	*s1;
 	unsigned char	*s2;
-	unsigned char	*si;
-	unsigned char	*si2;
 	unsigned int	ind1;
 
 	if (IND_SIZE <= REG_SIZE)

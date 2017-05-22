@@ -85,7 +85,6 @@ unsigned int		ft_get_index_t(unsigned char *si, unsigned int i, unsigned int pc)
 
  unsigned int		ft_get_index_without_idxmod(unsigned char *si, unsigned int i, unsigned int pc)
 {
-	int						sign;
 	unsigned int	conv1;
 
 	conv1 = ft_conv_to_int_memod(si, i);
@@ -190,9 +189,7 @@ unsigned char   *ft_get_para_p2(unsigned char *s, t_proc *proc1, int x)
 unsigned char   *ft_get_para(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
-	unsigned char		*si;
 	unsigned int		position;
-	unsigned int		index;
 	unsigned int		conv1;
 
 	s1 = NULL;
@@ -252,9 +249,7 @@ unsigned char   *ft_get_para_without_idxmod_p2(unsigned char *s, t_proc *proc1, 
 unsigned char   *ft_get_para_without_idxmod(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
-	unsigned char		*si;
 	unsigned int		position;
-	unsigned int		index;
 	unsigned int		conv1;
 
 	s1 = NULL;
