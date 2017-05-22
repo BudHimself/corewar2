@@ -772,12 +772,30 @@ int		ft_st(t_env *env, t_proc *proc1)
 	return (0);
 }
 
-int         ft_fork(t_env *env, t_proc *proc)
+static void				ft_fork_p1(int addr_target, t_env *env, t_proc *new_proc, t_proc *proc)
 {
-	t_proc        *new_proc;
-	int                addr_target;
-	size_t         i;
-	size_t        j;
+	if (addr_target >> 15)
+		new_proc->pc = (proc->pc - (IDX_MOD - addr_target % IDX_MOD)) % MEM_SIZE;
+	else
+		new_proc->pc = (proc->pc + (addr_target % IDX_MOD)) % MEM_SIZE;
+	new_proc->op = g_op_tab[16];
+	new_proc->pc_inc = 0;
+	new_proc->carry = proc->carry;
+	new_proc->num_players = proc->num_players;
+	new_proc->lives_in_period = 0;
+	new_proc->cycle_to_exec = proc->cycle_to_exec + 1;
+	new_proc->next = env->begin;
+	env->begin = new_proc;
+	draw_processes(env);
+	update_proc(env, env->begin);
+}
+
+int				ft_fork(t_env *env, t_proc *proc)
+{
+	t_proc			*new_proc;
+	int				addr_target;
+	size_t			i;
+	size_t			j;
 
 	addr_target = 0;
 	while (proc->params.size_params[0]--)
@@ -794,20 +812,7 @@ int         ft_fork(t_env *env, t_proc *proc)
 		while (++j < REG_SIZE)
 			new_proc->reg[i][j] = proc->reg[i][j];
 	}
-	if (addr_target >> 15)
-		new_proc->pc = (proc->pc - (IDX_MOD - addr_target % IDX_MOD)) % MEM_SIZE;
-	else
-		new_proc->pc = (proc->pc + (addr_target % IDX_MOD)) % MEM_SIZE;
-	new_proc->op = g_op_tab[16];
-	new_proc->pc_inc = 0;
-	new_proc->carry = proc->carry;
-	new_proc->num_players = proc->num_players;
-	new_proc->lives_in_period = 0;
-	new_proc->cycle_to_exec = proc->cycle_to_exec + 1;
-	new_proc->next = env->begin;
-	env->begin = new_proc;
-	draw_processes(env);
-	update_proc(env, env->begin);
+	ft_fork_p1(addr_target, env, new_proc, proc);
 	return (1);
 }
 
