@@ -6,13 +6,11 @@
 /*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 10:48:36 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 11:25:02 by jjourdai         ###   ########.fr       */
+/*   Updated: 2017/05/23 13:52:25 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tyassine.h"
 #include "fhenry.h"
-#include "libft.h"
 
 unsigned int	get_winer(t_env *env)
 {
@@ -70,38 +68,6 @@ void			ft_init_env(t_env *env)
 	env->cycle_to_inc = 0;
 	env->cycle_to_die = CYCLE_TO_DIE;
 	env->checks = 0;
-}
-
-unsigned int	get_nbp(int argc, char *argv[])
-{
-	int				i;
-	unsigned int	nb;
-
-	i = 1;
-	nb = 0;
-	while (i < argc)
-	{
-		if (!(argv[i][0] == '-' || ft_isdigit(argv[i][0])))
-			nb++;
-		i++;
-	}
-	return ((nb >= 4) ? 4 : nb);
-}
-
-t_bool			check_flag(int argc, char **argv, unsigned char *mem,
-t_env *env)
-{
-	if (argc > 1)
-	{
-		env->nbp = get_nbp(argc, argv);
-		ft_init(mem, env, argc, argv);
-	}
-	else
-	{
-		ft_print_option();
-		return (0);
-	}
-	return (1);
 }
 
 int				main(int argc, char *argv[])

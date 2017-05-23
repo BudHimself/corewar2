@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   fill.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 11:39:58 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 11:46:27 by jjourdai         ###   ########.fr       */
+/*   Updated: 2017/05/23 15:47:32 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "libft.h"
-#include "op.h"
-#include "tyassine.h"
+#include "fhenry.h"
 
 void						ft_fill_name(t_env *env, unsigned char *buf, int fd)
 {
@@ -108,57 +105,7 @@ void						init_proc2(t_proc *proc, int nb, int start)
 	proc->lives_in_period = 0;
 	proc->cycle_to_exec = 0;
 	proc->last_pc = 0;
-	proc->last_color = 0;
 	proc->last_op = 0;
 	proc->next = NULL;
 	proc->carry = 0;
-}
-
-void						ft_init_proc(t_env *env, int start, int nb)
-{
-	unsigned int	i;
-	t_proc			*proc;
-	t_proc			*tmp;
-
-	i = 0;
-	if (!(proc = ft_memalloc(sizeof(t_proc))))
-		exit(0);
-	ft_int_to_reg(proc->reg[0], nb);
-	i = 1;
-	while (i < REG_NUMBER)
-		ft_int_to_reg(proc->reg[i++], 0);
-	init_proc2(proc, nb, start);
-	if (env->proc == NULL)
-	{
-		env->proc = proc;
-		env->begin = proc;
-	}
-	else
-	{
-		tmp = env->proc;
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-		tmp->next = proc;
-	}
-}
-
-void						ft_fill_arena(t_env *env, unsigned char *buf,
-int fd, int nb)
-{
-	unsigned int	i;
-	int				start;
-
-	start = ft_pos_arena(env->nbp, env);
-	i = 0;
-	lseek(fd, 3, SEEK_CUR);
-	while (i < env->players[env->no].mem_size)
-	{
-		if (read(fd, buf, 1))
-			env->mem[start + i] = buf[0];
-		else
-			ft_exit_error("Invalid Champion Size.", 12);
-		++i;
-	}
-	env->players[env->no].num_players = nb;
-	ft_init_proc(env, start, nb);
 }

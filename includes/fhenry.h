@@ -20,5 +20,10 @@ void	check_window(WINDOW *win);
 void	draw_cycle_s(t_env *env, int ch);
 void	message_cw2(t_env *env, char *message);
 void	message_cw(t_env *env, char *message, int num, char *name);
+void	draw_header(WINDOW *win, char **header);
+void	load_header(WINDOW *win);
+void	draw_column(WINDOW *win);
+void	draw_line(WINDOW *win);
+void	draw_corner(WINDOW *win);
 
 #endif

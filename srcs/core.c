@@ -6,11 +6,10 @@
 /*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 14:39:24 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 12:44:48 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/23 15:49:52 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tyassine.h"
 #include "fhenry.h"
 
 unsigned int	get_nb_porc(t_env *env)
@@ -86,7 +85,7 @@ void			init_params(t_params *params)
 
 void			update_proc(t_env *env, t_proc *proc)
 {
-	draw_prompt(env, proc->pc, proc->num_players * -1);
+	switch_on_prompt(env, proc->pc, proc->num_players * -1);
 	proc->op = return_op_tab(&env->mem[proc->pc], env);
 	if (proc->op.num != 0)
 	{
@@ -101,200 +100,11 @@ void			update_proc(t_env *env, t_proc *proc)
 			else
 				proc->pc += 1;
 			proc->op = g_op_tab[16];
-			// mvwprintw(env->arena.win, HEADER_SIZE + 35 + proc->num_players * -1, MID_COLS + 3, "     pc 1 : %4d", proc->pc - 2048);
 		}
 	}
 	else
 	{
 		env->proc->cycle_to_exec = env->cycle + 1;
 		init_params(&env->proc->params);
-	}
-	// mvwprintw(env->arena.win, HEADER_SIZE + 40 + proc->num_players * -1, MID_COLS + 3, "     pc 2 : %4d | op.num : %2d", proc->pc - 2048, proc->op.num);
-	// draw_prompt(env, env->proc->pc, env->proc->num_players * -1);
-}
-
-void			if_times_are_come(t_env *env, t_proc *begin)
-{
-	if (env->debug > 3)
-	{
-		ft_print_proc(env->proc);
-		test_op(&env->proc->op);
-	}
-	if (env->proc->op.name)
-	{
-		g_op[env->proc->op.num - 1](env, env->proc);
-		print_champ(env, env->proc->pc, env->proc->params.size_total,
-		(env->proc->num_players) * -1);
-	}
-	if (env->proc->pc_inc == 0)
-	{
-		if (env->proc->params.size_total > 0)
-			env->proc->pc += env->proc->params.size_total;
-		if (env->proc->pc > MEM_SIZE)
-			env->proc->pc = env->proc->pc % MEM_SIZE;
-		(env->debug == 6) ? ft_printf("PC :%4d\n", env->proc->pc) : 42;
-	}
-	else
-		env->proc->pc_inc = 0;
-	update_proc(env, env->proc);
-}
-
-void			forward_pc(t_env *env, t_proc *begin)
-{
-	int			fd;
-
-	fd = 0;
-	if (env->proc->cycle_to_exec <= env->cycle && env->proc)
-		if_times_are_come(env, begin);
-	if (env->proc->next)
-		env->proc = env->proc->next;
-	else
-	{
-		env->cycle += 1;
-		if (env->ncurses == 1)
-		{
-			slow_machine(env);
-			draw_cycle(env);
-		}
-		env->proc = begin;
-	}
-}
-
-size_t			list_size(t_proc *begin)
-{
-	int		size;
-	t_proc	*tmp;
-
-	if (!begin)
-		return (0);
-	size = 0;
-	tmp = begin;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		size++;
-	}
-	return (size);
-}
-
-t_proc			*kill_proc(t_proc *proc, t_proc *begin)
-{
-	t_proc	*prev;
-
-	prev = begin;
-	if (begin == proc)
-	{
-		if (begin->next)
-			begin = begin->next;
-		else
-			begin = NULL;
-		ft_memdel((void**)&proc);
-		return (begin);
-	}
-	while (prev->next != proc)
-		prev = prev->next;
-	prev->next = proc->next;
-	ft_memdel((void**)&proc);
-	return (begin);
-}
-
-unsigned int	check_proc_live(t_proc *proc)
-{
-	unsigned int	nb_proc_live;
-
-	nb_proc_live = 0;
-	nb_proc_live = proc->lives_in_period;
-	proc->lives_in_period = 0;
-	return (nb_proc_live);
-}
-
-void			check_check(t_env *env)
-{
-	if (env->checks == MAX_CHECKS)
-	{
-		env->checks = 0;
-		draw_max_check(env);
-		env->cycle_to_inc -= CYCLE_DELTA;
-		env->cycle_to_die += env->cycle_to_inc;
-		draw_cycle_to_die(env);
-	}
-	else
-	{
-		env->checks++;
-		if (env->nb_live_full)
-		{
-			env->checks = 0;
-			env->nb_live_full = 0;
-		}
-		draw_max_check(env);
-		env->cycle_to_die += env->cycle_to_inc;
-		draw_cycle_to_die(env);
-	}
-}
-
-void			end_of_time(t_env *env)
-{
-	if (env->nb_live >= NBR_LIVE)
-	{
-		env->checks = 0;
-		env->nb_live = 0;
-		draw_max_check(env);
-		env->cycle_to_inc -= CYCLE_DELTA;
-		env->nb_live_full = 1;
-	}
-	while (env->proc)
-	{
-		if (!env->proc->lives_in_period)
-		{
-			env->begin = kill_proc(env->proc, env->begin);
-			draw_processes(env);
-		}
-		else
-			env->proc->lives_in_period = 0;
-		env->proc = env->proc->next;
-	}
-	env->proc = env->begin;
-	check_check(env);
-}
-
-void			init_game(t_env *env)
-{
-	env->cycle_to_die = CYCLE_TO_DIE;
-	env->cycle_to_inc = CYCLE_TO_DIE;
-	draw_cycle_to_die(env);
-	while (env->proc)
-	{
-		update_proc(env, env->proc);
-		env->proc = env->proc->next;
-	}
-	env->proc = env->begin;
-}
-
-void			core(t_env *env)
-{
-	int				ch;
-	t_bool			dump;
-
-	dump = 1;
-	init_game(env);
-	while (env->begin != NULL)
-	{
-		if (env->dump == env->cycle && env->dump && dump == 1)
-		{
-			ft_print_arena(env->mem);
-			dump = 0;
-		}
-		ch = wgetch(env->arena.win);
-		if (ch)
-			control_vm(env, ch);
-		if (env->cycle >= env->cycle_to_die)
-			end_of_time(env);
-		else
-			forward_pc(env, env->begin);
-		if (env->debug > 1)
-		{
-			ft_printf("we are in cycle :%6d, Next periode at :%6d, nb proc:%d\n"
-			, env->cycle, env->cycle_to_die, get_nb_porc(env));
-		}
 	}
 }

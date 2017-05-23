@@ -108,13 +108,3 @@ void	draw_corner(WINDOW *win)
 		}
 	}
 }
-
-void	draw_border(t_env *env)
-{
-	wattron(env->arena.win, A_STANDOUT);
-	draw_corner(env->arena.win);
-	draw_line(env->arena.win);
-	draw_column(env->arena.win);
-	load_header(env->arena.win);
-	wattroff(env->arena.win, A_STANDOUT);
-}

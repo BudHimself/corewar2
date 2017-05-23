@@ -3,28 +3,36 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/21 19:01:09 by jjourdai          #+#    #+#              #
-#    Updated: 2017/05/22 20:49:38 by syusof           ###   ########.fr        #
+#    Updated: 2017/05/23 16:07:26 by fhenry           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_PATH = ./srcs/
 
 SRC_NAME = fill.c \
+		fill2.c \
 		vm_init.c \
+		vm_init2.c \
 		vm.c \
+		vm2.c \
 		debug.c \
+		debug2.c \
 		init_display.c \
 		draw_border.c \
+		draw_border2.c \
 		francois.c \
+		francois2.c \
 		ft_int_to_char.c \
 		ft_int_to_reg.c \
 		op.c \
 		ft_conv_to_int.c  \
 		ft_powmod.c \
 		core.c \
+		core2.c \
+		core3.c \
 		function_op1.c \
 		function_op2.c \
 		function_op3.c \

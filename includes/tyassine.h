@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tyassine.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tyassine <tyassine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:55:48 by tyassine          #+#    #+#             */
-/*   Updated: 2017/05/22 15:04:31 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 16:02:38 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <ncurses.h>
 # include <string.h>
 # include <limits.h>
+#include <unistd.h>
 
 # define CEM	COREWAR_EXEC_MAGIC
 # define CEM_0	(unsigned char)(CEM >> 24)
@@ -76,7 +77,6 @@ typedef struct		s_proc
 	unsigned int 	lives_in_period;
 	int				carry;
 	int				last_pc;
-	int				last_color;
 	int				last_op;
 	t_op			op;
 	struct s_proc	*next;
@@ -112,6 +112,7 @@ typedef struct		s_env
 	t_proc			*proc; //!!! add in here
 	t_proc			*begin; // debut des procs
 	t_arena			arena;
+	int				color[MEM_SIZE];
 }					t_env;
 
 /*
@@ -119,20 +120,20 @@ typedef struct		s_env
 */
 int 				(*g_op[16])(t_env *, t_proc *);
 t_op				g_op_tab[17];
-void				ft_print_arena(unsigned char *arena);
-void				ft_print_champion(t_env *env);
-void				ft_exit_error(char *msg, char nb_error);
+//void				ft_print_arena(unsigned char *arena);
+//void				ft_print_champion(t_env *env);
+//void				ft_exit_error(char *msg, char nb_error);
 
 void				ft_fill_name(t_env *env, unsigned char *buf, int fd);
 void				ft_fill_comment(t_env *env, unsigned char *buf, int fd);
 void				ft_fill_memsize(t_env *env, unsigned char *buf, int fd);
 void				ft_fill_arena(t_env *env, unsigned char *buf, int fd, int nb);
-void				ft_init_players(t_env *env, int argc, char *argv[],
-									unsigned char *mem);
-void				core(t_env *env);
-t_op				return_op_tab(unsigned char *memory, t_env *env);
-t_params			*fill_struct_param(t_params *params, t_op *op, unsigned char *memory);
-void				size_params(t_params *params, t_op op, int nb_arg);
+//void				ft_init_players(t_env *env, int argc, char *argv[],
+//									unsigned char *mem);
+//void				core(t_env *env);
+//t_op				return_op_tab(unsigned char *memory, t_env *env);
+//t_params			*fill_struct_param(t_params *params, t_op *op, unsigned char *memory);
+//void				size_params(t_params *params, t_op op, int nb_arg);
 void				ft_int_to_reg(unsigned char reg[], unsigned int nb);
 unsigned int		ft_conv_to_int(unsigned char *s, unsigned int i);
 unsigned int		ft_conv_to_int_memod(unsigned char *s, unsigned int i);
@@ -142,10 +143,8 @@ unsigned int		ft_powmod_idx(unsigned int a, unsigned int n);
 unsigned int		ft_powmod_mem(unsigned int a, unsigned int n);
 unsigned int		ft_pow(unsigned int a, unsigned int n);
 unsigned int	ft_powmod_256(unsigned int a, unsigned int n);
-void				ft_print_procs(t_env *env);
-void				ft_print_proc(t_proc *proc);
-int					ft_do_st(unsigned char *s, t_proc *proc1);
-int					ft_do_sti(unsigned char *s, t_proc *proc1);
+//void				ft_print_procs(t_env *env);
+//void				ft_print_proc(t_proc *proc);
 void				control_vm(t_env *env, int ch);
 void				print_champ(t_env *env, int start, int size, int color);
 void				draw_cycle(t_env *env);
@@ -206,22 +205,75 @@ int		ft_ld(t_env *env, t_proc *proc1);
 int		ft_lld(t_env *env, t_proc *proc1);
 int		ft_aff(t_env *env, t_proc *proc1);
 int		ft_live(t_env *env, t_proc *proc);
-/*
-int		    ft_live(t_env *env, t_proc *proc);
-int         ft_lfork(t_env *env, t_proc *proc);
-int         ft_fork(t_env *env, t_proc *proc);
-int			ft_zjmp(t_env *env, t_proc *proc1);
-int			ft_and(t_env *env, t_proc *proc1);
-int			ft_xor(t_env *env, t_proc *proc1);
-int			ft_or(t_env *env, t_proc *proc1);
-int			ft_sub(t_env *env, t_proc *proc1);
-int			ft_add(t_env *env, t_proc *proc1);
-int			ft_sti(t_env *env, t_proc *proc1);
-int			ft_ldi(t_env *env, t_proc *proc1);
-int			ft_lldi(t_env *env, t_proc *proc1);
-int			ft_ld(t_env *env, t_proc *proc1);
-int			ft_lld(t_env *env, t_proc *proc1);
-int			ft_aff(t_env *env, t_proc *proc1);
-int			ft_st(t_env *env, t_proc *proc1);
-*/
+
+
+unsigned int	get_nb_porc(t_env *env);
+void			test_params(t_params *params);
+void			test_op(t_op *op);
+void			init_params(t_params *params);
+void			update_proc(t_env *env, t_proc *proc);
+void			if_times_are_come(t_env *env, t_proc *begin);
+void			forward_pc(t_env *env, t_proc *begin);
+size_t			list_size(t_proc *begin);
+t_proc			*kill_proc(t_proc *proc, t_proc *begin);
+unsigned int	check_proc_live(t_proc *proc);
+void			check_check(t_env *env);
+void			end_of_time(t_env *env);
+void			init_game(t_env *env);
+void			core(t_env *env);
+
+void		ft_print_arena(unsigned char *arena);
+void		ft_print_champions(t_env *env);
+void		ft_exit_error(char *msg, char nb_error);
+void		ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE]);
+void		test_params2(t_params *params);
+void		ft_print_proc(t_proc *proc);
+void		ft_print_procs(t_env *env);
+
+void						ft_fill_name(t_env *env, unsigned char *buf, int fd);
+void						ft_fill_comment(t_env *env, unsigned char *buf,
+int fd);
+void						ft_fill_memsize(t_env *env, unsigned char *buf,
+int fd);
+int							ft_pos_arena(int num_players, t_env *env);
+void						init_proc2(t_proc *proc, int nb, int start);
+void						ft_init_proc(t_env *env, int start, int nb);
+void						ft_fill_arena(t_env *env, unsigned char *buf,
+int fd, int nb);
+
+t_op		return_op_tab(unsigned char *memory, t_env *env);
+int			return_size_params(t_params *params, t_op *op, int nb_arg,
+char bytecode);
+t_bool		check_bytecode(char *bytecode, unsigned char *memory,
+t_params *params);
+t_bool		fill_params_if_bytecode_exist(t_params *params, t_op *op,
+unsigned char *memory);
+void		fill_params_if_bytecode_dont_exist(t_params *params, t_op *op,
+unsigned char *memory);
+t_params	*fill_struct_param(t_params *params, t_op *op,
+unsigned char *memory);
+
+
+unsigned int	get_winer(t_env *env);
+void			ft_print_option(void);
+void			ft_init(unsigned char *arena, t_env *env, int argc,
+char *argv[]);
+void			ft_init_env(t_env *env);
+unsigned int	get_nbp(int argc, char *argv[]);
+t_bool			check_flag(int argc, char **argv, unsigned char *mem,
+t_env *env);
+
+
+int					diff_nbplayer(t_env *env, int nb);
+unsigned int		ft_get_nbafter(char *argv[], int i);
+int					is_cor_suffix(char *str);
+int					if_n_is_in_flag(t_env *env, char **argv, int i);
+int					ft_init_options(t_env *env, char *argv[], int i);
+int					ft_access(char *str);
+void				ft_add_player(t_env *env, int fd, unsigned char arena[],
+unsigned int num_players);
+void				ft_init_players(t_env *env, int argc, char *argv[],
+unsigned char *mem);
+
+
 #endif

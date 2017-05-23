@@ -6,11 +6,10 @@
 /*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 11:44:26 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 12:41:44 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/23 13:44:42 by syusof           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "op.h"
 #include "tyassine.h"
 
 t_op		return_op_tab(unsigned char *memory, t_env *env)
@@ -20,7 +19,6 @@ t_op		return_op_tab(unsigned char *memory, t_env *env)
 	number_op = ft_conv_to_int((unsigned char *)memory, 1);
 	if (number_op < 1 || number_op > 16)
 	{
-		// if (env->proc->last_op == 0)
 		env->proc->pc += 1;
 		return (g_op_tab[16]);
 	}
@@ -113,18 +111,4 @@ unsigned char *memory)
 	params->arg[0] = memory + params->size_total;
 	params->type[0] = (unsigned char)T_DIR;
 	params->size_total += op->size;
-}
-
-t_params	*fill_struct_param(t_params *params, t_op *op,
-unsigned char *memory)
-{
-	if (op->byte_codage)
-	{
-		if (fill_params_if_bytecode_exist(params, op, memory) == -1)
-			return (params);
-	}
-	else
-		fill_params_if_bytecode_dont_exist(params, op, memory);
-	params->nb_arg = op->nb_arg;
-	return (params);
 }
