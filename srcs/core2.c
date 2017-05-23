@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   core2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: syusof <syusof@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 12:56:14 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/23 13:34:22 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 16:21:17 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fhenry.h"
 
-void			if_times_are_come(t_env *env, t_proc *begin)
+void			if_times_are_come(t_env *env)
 {
 	if (env->debug > 3)
 	{
@@ -44,7 +44,7 @@ void			forward_pc(t_env *env, t_proc *begin)
 
 	fd = 0;
 	if (env->proc->cycle_to_exec <= env->cycle && env->proc)
-		if_times_are_come(env, begin);
+		if_times_are_come(env);
 	if (env->proc->next)
 		env->proc = env->proc->next;
 	else

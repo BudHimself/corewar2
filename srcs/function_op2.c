@@ -6,7 +6,7 @@
 /*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 14:09:47 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 14:07:04 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 16:19:28 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,12 @@ int		ft_aff(t_env *env, t_proc *proc1)
 			if (env->ncurses)
 			{
 				message_cw(env, "le processus %d affiche : %c",
-				proc1->num_players, c);
+				proc1->num_players, &c);
 			}
 			else
 			{
 				ft_printf("Le processus %d affiche : %c\n",
-				proc1->num_players, c);
+				proc1->num_players, &c);
 			}
 			return (1);
 		}

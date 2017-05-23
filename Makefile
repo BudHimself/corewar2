@@ -6,7 +6,7 @@
 #    By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/21 19:01:09 by jjourdai          #+#    #+#              #
-#    Updated: 2017/05/23 16:07:26 by fhenry           ###   ########.fr        #
+#    Updated: 2017/05/23 16:24:00 by fhenry           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ NAME = corewar
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra -Werror -g
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
