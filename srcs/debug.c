@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/27 21:50:32 by tyassine          #+#    #+#             */
-/*   Updated: 2017/04/27 21:50:36 by tyassine         ###   ########.fr       */
+/*   Created: 2017/05/23 11:48:21 by jjourdai          #+#    #+#             */
+/*   Updated: 2017/05/23 11:50:37 by jjourdai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,13 @@ void		ft_print_champions(t_env *env)
 	int		i;
 
 	i = -1;
-	while (i++ < env->no -1)
+	while (i++ < env->no - 1)
 	{
 		ft_printf("* player %d, ", env->players[i].num_players);
 		ft_printf("weighing %d bytes, ", env->players[env->no].mem_size);
 		ft_printf("\"%s\" ", env->players[env->no].header.prog_name);
 		ft_printf("(%s) !\n", env->players[env->no].header.comment);
 	}
-
 }
 
 void		ft_exit_error(char *msg, char nb_error)
@@ -54,7 +53,7 @@ void		ft_exit_error(char *msg, char nb_error)
 	exit(nb_error);
 }
 
-void			ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
+void		ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
 {
 	size_t			i;
 	size_t			j;
@@ -73,7 +72,7 @@ void			ft_print_register(unsigned char reg[REG_NUMBER][REG_SIZE])
 	}
 }
 
-void			test_params2(t_params *params)
+void		test_params2(t_params *params)
 {
 	size_t			i;
 	size_t			j;
@@ -85,7 +84,7 @@ void			test_params2(t_params *params)
 		ft_printf("       param->type[%d] : %d \n", i, params->type[i]);
 		j = -1;
 		while (++j < params->size_params[i])
-			ft_printf("    param->arg[%d][%d] : %02x", i, j , params->arg[i][j]);
+			ft_printf("    param->arg[%d][%d] : %02x", i, j, params->arg[i][j]);
 		ft_printf("\n   size_params[%d] : %zu\n", i, params->size_params[i]);
 	}
 	ft_printf("    param->nb_arg : %zu\n", params->nb_arg);
@@ -93,7 +92,7 @@ void			test_params2(t_params *params)
 	ft_printf("param->size_total : %zu\n", params->size_total);
 }
 
-void	ft_print_proc(t_proc *proc)
+void		ft_print_proc(t_proc *proc)
 {
 	ft_putendl("\n\n********* print PROC *********\n");
 	ft_printf("    num du player :%5d\n", proc->num_players);
@@ -103,7 +102,7 @@ void	ft_print_proc(t_proc *proc)
 	ft_print_register(proc->reg);
 }
 
-void	ft_print_procs(t_env *env)
+void		ft_print_procs(t_env *env)
 {
 	t_proc	*begin;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/27 21:50:40 by tyassine          #+#    #+#             */
-/*   Updated: 2017/04/27 21:50:45 by tyassine         ###   ########.fr       */
+/*   Created: 2017/05/23 11:39:58 by jjourdai          #+#    #+#             */
+/*   Updated: 2017/05/23 11:46:27 by jjourdai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void						ft_fill_name(t_env *env, unsigned char *buf, int fd)
 	env->players[env->no].header.prog_name[i] = 0;
 }
 
-void						ft_fill_comment(t_env *env, unsigned char *buf, int fd)
+void						ft_fill_comment(t_env *env, unsigned char *buf,
+int fd)
 {
 	int						i;
 	int						n;
@@ -59,7 +60,8 @@ void						ft_fill_comment(t_env *env, unsigned char *buf, int fd)
 		ft_exit_error("Comment of champion not valid.", 10);
 }
 
-void						ft_fill_memsize(t_env *env, unsigned char *buf, int fd)
+void						ft_fill_memsize(t_env *env, unsigned char *buf,
+int fd)
 {
 	int						i;
 	int						n;
@@ -98,20 +100,8 @@ int							ft_pos_arena(int num_players, t_env *env)
 	return (0);
 }
 
-void 						ft_init_proc(t_env *env,int start, int nb)
+void						init_proc2(t_proc *proc, int nb, int start)
 {
-	unsigned int	i;
-	t_proc			*proc;
-	t_proc			*tmp;
-
-	i = 0;
-
-	if (!(proc = ft_memalloc(sizeof(t_proc))))
-		exit(0);
-	ft_int_to_reg(proc->reg[0], nb);
-	i = 1;
-	while (i < REG_NUMBER)
-		ft_int_to_reg(proc->reg[i++], 0);
 	proc->pc = start;
 	proc->pc_inc = 0;
 	proc->num_players = nb;
@@ -122,6 +112,22 @@ void 						ft_init_proc(t_env *env,int start, int nb)
 	proc->last_op = 0;
 	proc->next = NULL;
 	proc->carry = 0;
+}
+
+void						ft_init_proc(t_env *env, int start, int nb)
+{
+	unsigned int	i;
+	t_proc			*proc;
+	t_proc			*tmp;
+
+	i = 0;
+	if (!(proc = ft_memalloc(sizeof(t_proc))))
+		exit(0);
+	ft_int_to_reg(proc->reg[0], nb);
+	i = 1;
+	while (i < REG_NUMBER)
+		ft_int_to_reg(proc->reg[i++], 0);
+	init_proc2(proc, nb, start);
 	if (env->proc == NULL)
 	{
 		env->proc = proc;
@@ -136,10 +142,11 @@ void 						ft_init_proc(t_env *env,int start, int nb)
 	}
 }
 
-void						ft_fill_arena(t_env *env, unsigned char *buf, int fd, int nb)
+void						ft_fill_arena(t_env *env, unsigned char *buf,
+int fd, int nb)
 {
 	unsigned int	i;
-	int	start;
+	int				start;
 
 	start = ft_pos_arena(env->nbp, env);
 	i = 0;

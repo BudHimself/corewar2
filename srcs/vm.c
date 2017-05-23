@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyassine <tyassine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/27 21:50:51 by tyassine          #+#    #+#             */
-/*   Updated: 2017/05/23 10:18:58 by fhenry           ###   ########.fr       */
+/*   Created: 2017/05/23 10:48:36 by jjourdai          #+#    #+#             */
+/*   Updated: 2017/05/23 11:25:02 by jjourdai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,37 @@
 #include "fhenry.h"
 #include "libft.h"
 
-unsigned int 		get_winer(t_env *env)
+unsigned int	get_winer(t_env *env)
 {
-		unsigned int win;
+	unsigned int win;
 
-		win = env->no - 1;
-		while (--env->no >= 0)
+	win = env->no - 1;
+	while (--env->no >= 0)
+	{
+		if (env->players[env->no].num_players == env->winer)
 		{
-			if (env->players[env->no].num_players == env->winer)
-			{
-				win = env->no;
-				break;
-			}
+			win = env->no;
+			break ;
 		}
-		message_cw(env, "Contestant %d, \"%.20s...\", has won !",
-		env->players[win].num_players, env->players[win].header.prog_name);
-		message_cw2(env, "Pres Esc to quit.");
-		return (win);
+	}
+	message_cw(env, "Contestant %d, \"%.20s...\", has won !",
+			env->players[win].num_players, env->players[win].header.prog_name);
+	message_cw2(env, "Pres Esc to quit.");
+	return (win);
 }
 
-void		ft_print_option(void)
+void			ft_print_option(void)
 {
 	ft_printf("Options:\n");
 	ft_printf(" %-8.8s : Number of champion after N number positive\n", "-n N");
 	ft_printf(" %-8.8s : Ncurses output mode\n", "-nc");
-	ft_printf(" %-8.8s : Verbosity for debug with facultative N number\n", "-d N");
+	ft_printf(" %-8.8s : Verbosity for debug with facultative N number\n",
+	"-d N");
 	ft_printf(" %-8.8s : Dumps memory after N cycles then exit\n", "-dump N");
 }
 
-void		ft_init(unsigned char *arena, t_env *env, int argc, char *argv[])
+void			ft_init(unsigned char *arena, t_env *env, int argc,
+char *argv[])
 {
 	int		i;
 
@@ -52,7 +54,7 @@ void		ft_init(unsigned char *arena, t_env *env, int argc, char *argv[])
 	ft_init_players(env, argc, argv, arena);
 }
 
-void		ft_init_env(t_env *env)
+void			ft_init_env(t_env *env)
 {
 	env->debug = 0;
 	env->dump = 0;
@@ -70,10 +72,10 @@ void		ft_init_env(t_env *env)
 	env->checks = 0;
 }
 
-unsigned int get_nbp(int argc, char *argv[])
+unsigned int	get_nbp(int argc, char *argv[])
 {
-	int i;
-	unsigned int nb;
+	int				i;
+	unsigned int	nb;
 
 	i = 1;
 	nb = 0;
@@ -83,41 +85,49 @@ unsigned int get_nbp(int argc, char *argv[])
 			nb++;
 		i++;
 	}
-	return ((nb >= 4)? 4 : nb);
+	return ((nb >= 4) ? 4 : nb);
 }
 
-int			main(int argc, char *argv[])
+t_bool			check_flag(int argc, char **argv, unsigned char *mem,
+t_env *env)
 {
-	t_env			env;
-	unsigned char	mem[MEM_SIZE];
-
-
-	ft_init_env(&env);
 	if (argc > 1)
 	{
-		env.nbp = get_nbp(argc, argv);
-		ft_init(mem, &env, argc, argv);
+		env->nbp = get_nbp(argc, argv);
+		ft_init(mem, env, argc, argv);
 	}
 	else
 	{
 		ft_print_option();
 		return (0);
 	}
+	return (1);
+}
+
+int				main(int argc, char *argv[])
+{
+	t_env			env;
+	unsigned char	mem[MEM_SIZE];
+
+	ft_init_env(&env);
+	if (check_flag(argc, argv, mem, &env) == 0)
+		return (0);
 	if (env.ncurses == 1 && env.debug == 1)
 	{
 		ft_printf("Introducing contestants...\n");
 		ft_print_champions(&env);
 		ft_print_arena(mem);
-		return(0);
+		return (0);
 	}
 	if (env.no > 0)
 	{
-		(env.ncurses == 1 && env.debug < 1) ? init_window(&env): 42;
+		(env.ncurses == 1 && env.debug < 1) ? init_window(&env) : 42;
 		core(&env);
 	}
 	else
-		ft_exit_error("No Champions input",14);
-	(env.debug > 1) ? ft_putendl("\n*********        end        *********"): 42;
+		ft_exit_error("No Champions input", 14);
+	(env.debug > 1) ?
+	ft_putendl("\n*********        end        *********") : 42;
 	get_winer(&env);
 	return (0);
 }

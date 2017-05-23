@@ -42,11 +42,13 @@ void	draw_prompt(t_env *env, int pc, int color)
 		line -= 63;
 	if (color < 0)
 		color *= -1;
-	which_color(env, pc, line, col);
+	// mvwprintw(env->arena.win, HEADER_SIZE + 40 + color, MID_COLS + 3, "last_pc : %4d | line : %2d | last_color : %2d", env->proc->last_pc, line, env->proc->last_color);
+	which_color(env, env->proc->last_pc, line, col);
 	col = ((pc % 64) * 3) + 3;
 	line = (pc / 64) + 1;
 	if (line > 64)
 		line -= 63;
+	// mvwprintw(env->arena.win, HEADER_SIZE + 45 + color, MID_COLS + 3, "     pc : %4d | line : %2d |      color : %2d", pc, line, color);
 	wattron(env->arena.win, A_STANDOUT | COLOR_PAIR(color));
 	mvwprintw(env->arena.win, line, col, "%02x", env->mem[pc]);
 	wattroff(env->arena.win, A_STANDOUT | COLOR_PAIR(color));
@@ -66,8 +68,8 @@ void	print_champ(t_env *env, int start, int size, int color)
 	i = start;
 	if (color < 0)
 		color *= -1;
-	mvwprintw(env->arena.win, HEADER_SIZE + 55 + color, MID_COLS + 3, "start : %4d | size : %d", start, size);
-	mvwprintw(env->arena.win, HEADER_SIZE + 59 + color, MID_COLS + 3, "line : %4d | col : %d", line, col);
+	// mvwprintw(env->arena.win, HEADER_SIZE + 55 + color, MID_COLS + 3, "start : %4d | size : %d", start, size);
+	// mvwprintw(env->arena.win, HEADER_SIZE + 59 + color, MID_COLS + 3, "line : %4d | col : %d", line, col);
 	while (i < size + start)
 	{
 		while (col < MID_COLS)
@@ -272,6 +274,7 @@ void	init_window(t_env *env)
 	arena = initscr();
 	noecho();
 	nodelay(arena, 1);
+	keypad(arena, 1);
 	curs_set(0);
 	start_color();
 	check_window(arena);
@@ -283,7 +286,7 @@ void	init_window(t_env *env)
 	{
 		if (tmp->num_players < 0)
 			tmp->num_players *= -1;
-		mvwprintw(env->arena.win, HEADER_SIZE + 50 + i, MID_COLS + 3, "pc : %4d", tmp->pc);
+		// mvwprintw(env->arena.win, HEADER_SIZE + 50 + i, MID_COLS + 3, "pc : %4d", tmp->pc);
 		print_champ(env, tmp->pc, env->players[i].mem_size, tmp->num_players);
 		tmp = tmp->next;
 	}
