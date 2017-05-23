@@ -6,7 +6,7 @@
 /*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 10:48:36 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 19:14:59 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/23 19:45:34 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,15 @@ unsigned int	get_winer(t_env *env)
 			break ;
 		}
 	}
-	message_cw(env, "Contestant %d, \"%.16s...\", has won !",
+	message_cw(env, "Contestant %d, \"% .16s...\", has won !",
 			env->players[win].num_players, env->players[win].header.prog_name);
 	message_cw2(env, "Pres Esc to quit.");
-	env->arena.pause = 1;
-	env->fin = 1;
-	draw_status(env);
+	if (env->ncurses)
+	{
+		env->arena.pause = 1;
+		env->fin = 1;
+		draw_status(env);
+	}
 	return (win);
 }
 
@@ -92,6 +95,7 @@ int				main(int argc, char *argv[])
 	if (env.no > 0)
 	{
 		(env.ncurses == 1 && env.debug < 1) ? init_window(&env) : 42;
+		(env.ncurses == 0) ? ft_print_champions(&env) : 42;
 		core(&env);
 	}
 	else

@@ -107,7 +107,7 @@ void	print_champ(t_env *env, int start, int size, int color)
 
 void	draw_processes(t_env *env)
 {
-	// mvwprintw(env->arena.win, HEADER_SIZE + 6, MID_COLS + 3, "Processes : %4d", list_size(env->begin));
+	mvwprintw(env->arena.win, HEADER_SIZE + 6, MID_COLS + 3, "Processes : %4d", list_size(env->begin));
 	wrefresh(env->arena.win);
 }
 
@@ -143,7 +143,6 @@ void	draw_status(t_env *env)
 
 	tmp = NULL;
 	ch = 0;
-	mvwprintw(env->arena.win, HEADER_SIZE + 60, MID_COLS + 3, "fin %d ", env->fin);
 	if (env->arena.pause == 0 && !env->fin)
 	{
 		tmp = "Start";

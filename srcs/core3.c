@@ -6,7 +6,7 @@
 /*   By: syusof <syusof@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 12:58:08 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/23 18:58:42 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/23 19:49:37 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void			core(t_env *env)
 	{
 		if (env->dump == env->cycle && env->dump && dump == 1)
 		{
-			ft_print_champions(env);
 			ft_print_arena(env->mem);
 			exit(0);
 		}
