@@ -6,7 +6,7 @@
 /*   By: fhenry <fhenry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 20:47:47 by fhenry            #+#    #+#             */
-/*   Updated: 2017/05/23 20:47:48 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/23 21:16:53 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ void		control_vm(t_env *env, int ch)
 	{
 		endwin();
 		exit(0);
+	}
+	if (ch == KEY_RESIZE)
+	{
+		init_window(env);
+		wrefresh(env->arena.win);
 	}
 	else if (ch == ' ')
 		draw_status(env);

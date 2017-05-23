@@ -6,31 +6,11 @@
 /*   By: fhenry <fhenry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 20:37:18 by fhenry            #+#    #+#             */
-/*   Updated: 2017/05/23 20:43:22 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/23 21:30:04 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fhenry.h"
-
-void		check_window(WINDOW *win)
-{
-	int	y;
-	int	x;
-
-	getmaxyx(stdscr, y, x);
-	if (x < MAX_COLS || y < MAX_LINES)
-	{
-		if (x < MAX_COLS)
-			ft_putendl("la fenetre n'est pas suffisament large");
-		if (y < MAX_LINES)
-			ft_putendl("la fenetre n'est pas suffisament haute");
-		wrefresh(win);
-		getch();
-		endwin();
-		free(win);
-		exit(0);
-	}
-}
 
 void		init_window(t_env *env)
 {
@@ -45,10 +25,9 @@ void		init_window(t_env *env)
 	keypad(arena, 1);
 	curs_set(0);
 	start_color();
-	check_window(arena);
 	init_tab_color(env);
 	init_struct(env, arena);
-	load_display(env);
+	init_display(env);
 	tmp = env->proc;
 	while (++i < env->no)
 	{
