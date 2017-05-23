@@ -6,7 +6,7 @@
 /*   By: tyassine <tyassine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:55:48 by tyassine          #+#    #+#             */
-/*   Updated: 2017/05/23 16:23:31 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/23 16:43:46 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ typedef struct		s_env
 	t_proc			*begin;
 	t_arena			arena;
 	int				color[MEM_SIZE];
+	int				fin;
 }					t_env;
 
 int					(*g_op[16])(t_env *, t_proc *);
@@ -289,5 +290,6 @@ void				draw_max_check(t_env *env);
 void				draw_cycle_to_die(t_env *env);
 void				draw_processes(t_env *env);
 void				draw_nbr_live(t_env *env);
+void				draw_status(t_env *env);
 
 #endif

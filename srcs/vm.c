@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   vm.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 10:48:36 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 13:52:25 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 17:00:18 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "tyassine.h"
 #include "fhenry.h"
 
 unsigned int	get_winer(t_env *env)
@@ -25,9 +26,13 @@ unsigned int	get_winer(t_env *env)
 			break ;
 		}
 	}
-	message_cw(env, "Contestant %d, \"%.20s...\", has won !",
+	if (ft_strlen(env->players))
+	message_cw(env, "Contestant %d, \"%.16s...\", has won !",
 			env->players[win].num_players, env->players[win].header.prog_name);
 	message_cw2(env, "Pres Esc to quit.");
+	env->arena.pause = 1;
+	env->fin = 1;
+	draw_status(env);
 	return (win);
 }
 
@@ -68,6 +73,7 @@ void			ft_init_env(t_env *env)
 	env->cycle_to_inc = 0;
 	env->cycle_to_die = CYCLE_TO_DIE;
 	env->checks = 0;
+	env->fin = 0;
 }
 
 int				main(int argc, char *argv[])

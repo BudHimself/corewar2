@@ -1,28 +1,5 @@
 #include "fhenry.h"
 
-// void    init_tab_color(t_env *env)
-// {
-//         int     **tab;
-//         int     line;
-//         int     col;
-//
-//         line = -1;
-//         if (!(tab = ft_memalloc(sizeof(int *) * 64)))
-//                 exit(0);
-//         while (++line < 64)
-//         {
-//                 col = -1;
-//                 if (!(tab[line] = ft_memalloc(sizeof(int) * 64)))
-//                         exit(0);
-//                 while (++col < 64)
-//                 {
-//                         tab[line][col] = 8;
-//                 }
-//         }
-//         env->tab_color = tab;
-// }
-
-
 void    init_tab_color(t_env *env)
 {
 	int	i;
@@ -34,13 +11,14 @@ void    init_tab_color(t_env *env)
 
 void	message_cw2(t_env *env, char *message)
 {
-	mvwprintw(env->arena.win, HEADER_SIZE + 33, MID_COLS + 3, message);
+	mvwprintw(env->arena.win, HEADER_SIZE + 21, MID_COLS + 3, message);
 }
 
 void	message_cw(t_env *env, char *message, int num, char *name)
 {
+	mvwprintw(env->arena.win, HEADER_SIZE + 18, MID_COLS + 3, "Message process :");
 	if (env->ncurses)
-		mvwprintw(env->arena.win, HEADER_SIZE + 30, MID_COLS + 3, message, num, name);
+		mvwprintw(env->arena.win, HEADER_SIZE + 19, MID_COLS + 3, message, num, name);
 	else
 	{
 		ft_printf(message, num, name);
@@ -161,7 +139,8 @@ void	draw_status(t_env *env)
 
 	tmp = NULL;
 	ch = 0;
-	if (env->arena.pause == 0)
+	mvwprintw(env->arena.win, HEADER_SIZE + 60, MID_COLS + 3, "fin %d ", env->fin);
+	if (env->arena.pause == 0 && !env->fin)
 	{
 		tmp = "Start";
 		env->arena.pause = 1;
@@ -175,7 +154,7 @@ void	draw_status(t_env *env)
 	wrefresh(env->arena.win);
 	while (env->arena.pause == 0)
 	{
-		if ((ch = wgetch(env->arena.win)) == ' ')
+		if ((ch = wgetch(env->arena.win)) == ' ' && !env->fin)
 			break;
 		control_vm(env, ch);
 	}
@@ -327,8 +306,8 @@ void	init_window(t_env *env)
 		tmp = tmp->next;
 	}
 	draw_status(env);
-	endwin();
-	free(arena);
+	// endwin();
+	// free(arena);
 }
 
 void	check_window(WINDOW *win)
