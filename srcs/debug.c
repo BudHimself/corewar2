@@ -6,7 +6,7 @@
 /*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 11:48:21 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 16:01:13 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/23 19:06:14 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ void		ft_print_champions(t_env *env)
 	int		i;
 
 	i = -1;
+	ft_putendl("Introducing contestants...");
 	while (++i < env->no)
 	{
-		ft_printf("* player %d, ", env->players[i].num_players);
+		ft_printf("* Player %d, ", env->players[i].num_players * -1);
 		ft_printf("weighing %d bytes, ", env->players[i].mem_size);
 		ft_printf("\"%s\" ", env->players[i].header.prog_name);
-		ft_printf("(%s) !\n", env->players[i].header.comment);
+		ft_printf("(\"%s\") !\n", env->players[i].header.comment);
 	}
 }
 

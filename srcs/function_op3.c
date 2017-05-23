@@ -94,8 +94,7 @@ int		ft_lldi(t_env *env, t_proc *proc1)
 		if (s1 && s2 && s3)
 		{
 			s4 = ft_add2(s1, s2, sizeof(unsigned int), sizeof(unsigned int));
-			index = ft_get_index_without_idxmod(s4, sizeof(unsigned int),
-			proc1->pc);
+			index = ft_conv_to_int_memod(s4, sizeof(unsigned int));
 			ft_cp_in_s(REG_SIZE, s3, env->mem, index);
 			env->proc->carry = ft_getcarry(s3);
 			return (1);

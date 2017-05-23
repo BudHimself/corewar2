@@ -28,21 +28,6 @@ unsigned char	*ft_get_para_p1(unsigned char *s, t_proc *proc1, int x)
 	return (s1);
 }
 
-unsigned char	*ft_get_para_p2(unsigned char *s, t_proc *proc1, int x)
-{
-	unsigned char		*s1;
-	unsigned char		*si;
-	unsigned int		position;
-	unsigned int		index;
-
-	s1 = NULL;
-	position = get_position(proc1, x);
-	si = ft_new_s_on_sizeint(proc1->params.size_params[x], s, position);
-	index = ft_conv_to_int_memod(si, sizeof(unsigned int));
-	s1 = ft_new_s_on_sizeint(REG_SIZE, s, index);
-	return (s1);
-}
-
 unsigned char	*ft_get_para(unsigned char *s, t_proc *proc1, int x)
 {
 	unsigned char		*s1;
@@ -62,10 +47,7 @@ unsigned char	*ft_get_para(unsigned char *s, t_proc *proc1, int x)
 	}
 	else if (proc1->params.type[x] == T_DIR)
 		s1 = ft_new_s_on_sizeint(proc1->params.size_params[x], s, position);
-	else if (proc1->params.type[x] == T_IND
-			&& (proc1->op.num == 3 || proc1->op.num == 2))
-		s1 = ft_get_para_p1(s, proc1, x);
 	else if (proc1->params.type[x] == T_IND)
-		s1 = ft_get_para_p2(s, proc1, x);
+		s1 = ft_get_para_p1(s, proc1, x);
 	return (s1);
 }

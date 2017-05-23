@@ -11,18 +11,22 @@ void    init_tab_color(t_env *env)
 
 void	message_cw2(t_env *env, char *message)
 {
-	mvwprintw(env->arena.win, HEADER_SIZE + 21, MID_COLS + 3, message);
+	if (!env->dump)
+		mvwprintw(env->arena.win, HEADER_SIZE + 21, MID_COLS + 3, message);
 }
 
 void	message_cw(t_env *env, char *message, int num, char *name)
 {
 	mvwprintw(env->arena.win, HEADER_SIZE + 18, MID_COLS + 3, "Message process :");
-	if (env->ncurses)
-		mvwprintw(env->arena.win, HEADER_SIZE + 19, MID_COLS + 3, message, num, name);
-	else
+	if (!env->dump)
 	{
-		ft_printf(message, num, name);
-		ft_putchar('\n');
+		if (env->ncurses)
+			mvwprintw(env->arena.win, HEADER_SIZE + 19, MID_COLS + 3, message, num, name);
+		else
+		{
+			ft_printf(message, num, name);
+			ft_putchar('\n');
+		}
 	}
 }
 
@@ -103,7 +107,7 @@ void	print_champ(t_env *env, int start, int size, int color)
 
 void	draw_processes(t_env *env)
 {
-	mvwprintw(env->arena.win, HEADER_SIZE + 6, MID_COLS + 3, "Processes : %4d", list_size(env->begin));
+	// mvwprintw(env->arena.win, HEADER_SIZE + 6, MID_COLS + 3, "Processes : %4d", list_size(env->begin));
 	wrefresh(env->arena.win);
 }
 
@@ -128,7 +132,7 @@ void	draw_cycle_s(t_env *env, int ch)
 	if (ch == 'e')
 		if (env->cycle_s < 1000)
 			env->cycle_s += 1;
-	mvwprintw(env->arena.win, HEADER_SIZE + 2, MID_COLS + 3, "Cycle/Sec : %3d",
+	mvwprintw(env->arena.win, HEADER_SIZE + 2, MID_COLS + 3, "Cycle/Sec : %4d",
 		env->cycle_s);
 }
 
@@ -223,7 +227,7 @@ void	draw_max_check(t_env *env)
 
 void	draw_nbr_live(t_env *env)
 {
-	mvwprintw(env->arena.win, HEADER_SIZE + 12, MID_COLS + 3, "NBR_LIVE : %2d", env->nb_live);
+	mvwprintw(env->arena.win, HEADER_SIZE + 12, MID_COLS + 3, "NBR_LIVE : %10d", env->nb_live);
 	wrefresh(env->arena.win);
 }
 

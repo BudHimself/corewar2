@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: syusof <syusof@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 12:58:08 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/23 13:36:27 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 18:58:42 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,9 @@ void			core(t_env *env)
 	{
 		if (env->dump == env->cycle && env->dump && dump == 1)
 		{
+			ft_print_champions(env);
 			ft_print_arena(env->mem);
-			dump = 0;
+			exit(0);
 		}
 		ch = wgetch(env->arena.win);
 		if (ch)
