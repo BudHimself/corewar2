@@ -6,13 +6,14 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 15:03:07 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/22 15:05:21 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 12:05:46 by jjourdai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tyassine.h"
 
-unsigned char   *ft_get_para_without_idxmod_p1(unsigned char *s, t_proc *proc1, int x)
+unsigned char	*ft_get_para_without_idxmod_p1(unsigned char *s, t_proc *proc1,
+int x)
 {
 	unsigned char		*s1;
 	unsigned char		*si;
@@ -21,15 +22,15 @@ unsigned char   *ft_get_para_without_idxmod_p1(unsigned char *s, t_proc *proc1, 
 
 	s1 = NULL;
 	position = get_position(proc1, x);
-	si = ft_new_s_on_sizeint( proc1->params.size_params[x], s, position);
+	si = ft_new_s_on_sizeint(proc1->params.size_params[x], s, position);
 	index = ft_get_index_without_idxmod(si, sizeof(unsigned int), proc1->pc);
 	s1 = (unsigned char*)malloc(sizeof(unsigned char) * REG_SIZE);
 	ft_int_to_reg(s1, index);
 	return (s1);
-
 }
 
-unsigned char   *ft_get_para_without_idxmod_p2(unsigned char *s, t_proc *proc1, int x)
+unsigned char	*ft_get_para_without_idxmod_p2(unsigned char *s, t_proc *proc1,
+int x)
 {
 	unsigned char		*s1;
 	unsigned char		*si;
@@ -42,10 +43,10 @@ unsigned char   *ft_get_para_without_idxmod_p2(unsigned char *s, t_proc *proc1, 
 	index = ft_conv_to_int_memod(si, sizeof(unsigned int));
 	s1 = ft_new_s_on_sizeint(REG_SIZE, s, index);
 	return (s1);
-
 }
 
-unsigned char   *ft_get_para_without_idxmod(unsigned char *s, t_proc *proc1, int x)
+unsigned char	*ft_get_para_without_idxmod(unsigned char *s, t_proc *proc1,
+int x)
 {
 	unsigned char		*s1;
 	unsigned int		position;
@@ -58,7 +59,7 @@ unsigned char   *ft_get_para_without_idxmod(unsigned char *s, t_proc *proc1, int
 		conv1 = ft_conv_to_int_nomod(proc1->params.arg[x],
 				proc1->params.size_params[x]);
 		if (conv1 <= REG_NUMBER && conv1 > 0)
-			s1 = proc1->reg[conv1- 1];
+			s1 = proc1->reg[conv1 - 1];
 		else
 			return (NULL);
 	}

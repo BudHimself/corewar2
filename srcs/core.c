@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 14:39:24 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/22 18:05:05 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 12:44:48 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tyassine.h"
+#include "fhenry.h"
 
 unsigned int	get_nb_porc(t_env *env)
 {
@@ -85,6 +86,7 @@ void			init_params(t_params *params)
 
 void			update_proc(t_env *env, t_proc *proc)
 {
+	draw_prompt(env, proc->pc, proc->num_players * -1);
 	proc->op = return_op_tab(&env->mem[proc->pc], env);
 	if (proc->op.num != 0)
 	{
@@ -99,7 +101,7 @@ void			update_proc(t_env *env, t_proc *proc)
 			else
 				proc->pc += 1;
 			proc->op = g_op_tab[16];
-			draw_prompt(env, proc->pc, proc->num_players * -1);
+			// mvwprintw(env->arena.win, HEADER_SIZE + 35 + proc->num_players * -1, MID_COLS + 3, "     pc 1 : %4d", proc->pc - 2048);
 		}
 	}
 	else
@@ -107,7 +109,8 @@ void			update_proc(t_env *env, t_proc *proc)
 		env->proc->cycle_to_exec = env->cycle + 1;
 		init_params(&env->proc->params);
 	}
-	draw_prompt(env, env->proc->pc, env->proc->num_players * -1);
+	// mvwprintw(env->arena.win, HEADER_SIZE + 40 + proc->num_players * -1, MID_COLS + 3, "     pc 2 : %4d | op.num : %2d", proc->pc - 2048, proc->op.num);
+	// draw_prompt(env, env->proc->pc, env->proc->num_players * -1);
 }
 
 void			if_times_are_come(t_env *env, t_proc *begin)

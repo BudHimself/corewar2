@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   francois.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 11:44:26 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/22 17:41:11 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 12:41:44 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_op		return_op_tab(unsigned char *memory, t_env *env)
 	number_op = ft_conv_to_int((unsigned char *)memory, 1);
 	if (number_op < 1 || number_op > 16)
 	{
+		// if (env->proc->last_op == 0)
 		env->proc->pc += 1;
 		return (g_op_tab[16]);
 	}
@@ -56,6 +57,20 @@ char bytecode)
 	return (params->size_params[nb_arg]);
 }
 
+t_bool		check_bytecode(char *bytecode, unsigned char *memory,
+t_params *params)
+{
+	*bytecode = memory[1];
+	*bytecode = ((*bytecode & 0xc0) >> 6) | ((*bytecode & 0x30) >> 2) |
+	((*bytecode & 0xc) << 2) | ((*bytecode & 0x3) << 6);
+	if (!*bytecode)
+	{
+		params->size_total = 0;
+		return (-1);
+	}
+	return (0);
+}
+
 t_bool		fill_params_if_bytecode_exist(t_params *params, t_op *op,
 unsigned char *memory)
 {
@@ -67,14 +82,8 @@ unsigned char *memory)
 	ret_size = 0;
 	params->size_total = 1;
 	params->size_total++;
-	bytecode = memory[1];
-	bytecode = ((bytecode & 0xc0) >> 6) | ((bytecode & 0x30) >> 2) |
-	((bytecode & 0xc) << 2) | ((bytecode & 0x3) << 6);
-	if (!bytecode)
-	{
-		params->size_total = 0;
+	if (check_bytecode(&bytecode, memory, params) == -1)
 		return (-1);
-	}
 	while (bytecode && i < 3)
 	{
 		++i;

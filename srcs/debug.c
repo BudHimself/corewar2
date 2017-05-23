@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 11:48:21 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 11:50:37 by jjourdai         ###   ########.fr       */
+/*   Updated: 2017/05/23 12:53:13 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void		ft_print_champions(t_env *env)
 	int		i;
 
 	i = -1;
-	while (i++ < env->no - 1)
+	while (++i < env->no)
 	{
 		ft_printf("* player %d, ", env->players[i].num_players);
-		ft_printf("weighing %d bytes, ", env->players[env->no].mem_size);
-		ft_printf("\"%s\" ", env->players[env->no].header.prog_name);
-		ft_printf("(%s) !\n", env->players[env->no].header.comment);
+		ft_printf("weighing %d bytes, ", env->players[i].mem_size);
+		ft_printf("\"%s\" ", env->players[i].header.prog_name);
+		ft_printf("(%s) !\n", env->players[i].header.comment);
 	}
 }
 

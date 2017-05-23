@@ -48,7 +48,7 @@ void	draw_prompt(t_env *env, int pc, int color)
 	line = (pc / 64) + 1;
 	if (line > 64)
 		line -= 63;
-	// mvwprintw(env->arena.win, HEADER_SIZE + 45 + color, MID_COLS + 3, "     pc : %4d | line : %2d |      color : %2d", pc, line, color);
+	mvwprintw(env->arena.win, HEADER_SIZE + 45 + color, MID_COLS + 3, "     pc 3 : %4d | line : %2d |      color : %2d", pc - 2048, line, color);
 	wattron(env->arena.win, A_STANDOUT | COLOR_PAIR(color));
 	mvwprintw(env->arena.win, line, col, "%02x", env->mem[pc]);
 	wattroff(env->arena.win, A_STANDOUT | COLOR_PAIR(color));
@@ -107,13 +107,13 @@ void	draw_cycle_s(t_env *env, int ch)
 		if (env->cycle_s > 10)
 			env->cycle_s -= 10;
 	if (ch == 'r')
-		if (env->cycle_s < 90)
+		if (env->cycle_s < 990)
 			env->cycle_s += 10;
 	if (ch == 'w')
 		if (env->cycle_s > 2)
 			env->cycle_s -= 1;
 	if (ch == 'e')
-		if (env->cycle_s < 100)
+		if (env->cycle_s < 1000)
 			env->cycle_s += 1;
 	mvwprintw(env->arena.win, HEADER_SIZE + 2, MID_COLS + 3, "Cycle/Sec : %3d",
 		env->cycle_s);
@@ -221,6 +221,7 @@ void	load_display(t_env *env)
 	line = HEADER_SIZE;
 	col = MID_COLS + 3;
 	draw_border(env);
+	print_memory(env);
 	draw_cycle_s(env, 0);
 	draw_cycle_to_die(env);
 	draw_cycle(env);
@@ -280,7 +281,6 @@ void	init_window(t_env *env)
 	check_window(arena);
 	init_struct(env, arena);
 	load_display(env);
-	print_memory(env);
 	tmp = env->proc;
 	while (++i < env->no)
 	{

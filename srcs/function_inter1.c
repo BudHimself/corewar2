@@ -6,7 +6,7 @@
 /*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 15:10:37 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/22 15:12:29 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 12:07:38 by jjourdai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ unsigned int	get_position(t_proc *proc1, int x)
 	return (proc1->pc + 1 + proc1->op.byte_codage + res);
 }
 
-int		ft_get_sign(unsigned char *s1)
+int				ft_get_sign(unsigned char *s1)
 {
 	if (!(s1[2] & (1 << (8 - 1))))
 		return (1);
@@ -35,7 +35,8 @@ int		ft_get_sign(unsigned char *s1)
 	return (0);
 }
 
-void		ft_cp_r_to_stack(unsigned int i, unsigned char *s, unsigned int pos, unsigned char r[REG_SIZE])
+void			ft_cp_r_to_stack(unsigned int i, unsigned char *s,
+unsigned int pos, unsigned char r[REG_SIZE])
 {
 	while (i > 0)
 	{
@@ -44,7 +45,8 @@ void		ft_cp_r_to_stack(unsigned int i, unsigned char *s, unsigned int pos, unsig
 	}
 }
 
-void		ft_cp_in_s(unsigned int i, unsigned char *s1, unsigned char *s, unsigned int j)
+void			ft_cp_in_s(unsigned int i, unsigned char *s1, unsigned char *s,
+unsigned int j)
 {
 	while (i > 0)
 	{
@@ -53,7 +55,8 @@ void		ft_cp_in_s(unsigned int i, unsigned char *s1, unsigned char *s, unsigned i
 	}
 }
 
-void		ft_cp_in_s_for_lld(unsigned int i, unsigned char *s1, unsigned char *s, unsigned int j)
+void			ft_cp_in_s_for_lld(unsigned int i, unsigned char *s1,
+unsigned char *s, unsigned int j)
 {
 	while (i > 2)
 	{
