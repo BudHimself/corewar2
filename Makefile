@@ -6,7 +6,7 @@
 #    By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/21 19:01:09 by jjourdai          #+#    #+#              #
-#    Updated: 2017/05/23 16:24:00 by fhenry           ###   ########.fr        #
+#    Updated: 2017/05/23 20:46:18 by fhenry           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,10 @@ SRC_NAME = fill.c \
 		debug.c \
 		debug2.c \
 		init_display.c \
+		init_display2.c \
+		init_display3.c \
+		init_display4.c \
+		init_display5.c \
 		draw_border.c \
 		draw_border2.c \
 		francois.c \

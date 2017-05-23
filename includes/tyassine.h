@@ -6,7 +6,7 @@
 /*   By: tyassine <tyassine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:55:48 by tyassine          #+#    #+#             */
-/*   Updated: 2017/05/23 16:43:46 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/23 20:47:03 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,5 +291,9 @@ void				draw_cycle_to_die(t_env *env);
 void				draw_processes(t_env *env);
 void				draw_nbr_live(t_env *env);
 void				draw_status(t_env *env);
+void				init_tab_color(t_env *env);
+void				init_struct(t_env *env, WINDOW *arena);
+void				load_display(t_env *env);
+void				print_memory(t_env *env);
 
 #endif
