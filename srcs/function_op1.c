@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function_op1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: syusof <syusof@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 15:18:39 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/22 15:50:00 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 10:27:58 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int		ft_st(t_env *env, t_proc *proc1)
 			{
 				ind1 = ft_conv_to_int_memod(s2, sizeof(unsigned int));
 				ft_cp_r_to_stack(REG_SIZE, env->mem, ind1, s1);
+				print_champ(env, ind1, REG_SIZE, proc1->num_players);
 			}
 			return (1);
 		}

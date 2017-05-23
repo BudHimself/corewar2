@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tyassine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tyassine <tyassine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:50:51 by tyassine          #+#    #+#             */
-/*   Updated: 2017/05/22 20:50:52 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 10:18:58 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ unsigned int 		get_winer(t_env *env)
 				break;
 			}
 		}
-		message_cw(env, "Contestant %d, \"%s\", has won !",
+		message_cw(env, "Contestant %d, \"%.20s...\", has won !",
 		env->players[win].num_players, env->players[win].header.prog_name);
+		message_cw2(env, "Pres Esc to quit.");
 		return (win);
 }
 

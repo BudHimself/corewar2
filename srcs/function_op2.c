@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function_op2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 14:09:47 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/22 20:52:14 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/23 10:29:44 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int		ft_sti(t_env *env, t_proc *proc1)
 			s4 = ft_add2(s2, s3, sizeof(unsigned int), sizeof(unsigned int));
 			index = ft_get_index_t(s4, sizeof(unsigned int), proc1->pc);
 			ft_cp_r_to_stack(REG_SIZE, env->mem, index, s1);
+			print_champ(env, index, REG_SIZE, proc1->num_players);
 			return (1);
 		}
 	}
@@ -101,7 +102,16 @@ int		ft_aff(t_env *env, t_proc *proc1)
 		{
 			ind1 = ft_conv_to_int_mod256(s1, sizeof(unsigned int));
 			c = ind1;
-			write(1, &c, 1);
+			if (env->ncurses)
+			{
+				message_cw(env, "le processus %d affiche : %c",
+				proc1->num_players, c);
+			}
+			else
+			{
+				ft_printf("Le processus %d affiche : %c\n",
+				proc1->num_players, c);
+			}
 			return (1);
 		}
 	}
@@ -125,7 +135,7 @@ int		ft_live(t_env *env, t_proc *proc)
 		{
 			env->players[i].last_live = env->cycle;
 			env->winer = num_p;
-			message_cw(env, "un processus dit que le joueur %d(%s) est en vie",
+			message_cw(env, "un processus dit que le joueur %d(%.5s...) est en vie",
 			env->players[i].num_players, env->players[i].header.prog_name);
 			break ;
 		}

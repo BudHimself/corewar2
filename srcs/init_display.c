@@ -1,5 +1,10 @@
 #include "fhenry.h"
 
+void	message_cw2(t_env *env, char *message)
+{
+	mvwprintw(env->arena.win, HEADER_SIZE + 33, MID_COLS + 3, message);
+}
+
 void	message_cw(t_env *env, char *message, int num, char *name)
 {
 	if (env->ncurses)
@@ -55,21 +60,18 @@ void	print_champ(t_env *env, int start, int size, int color)
 	int	line;
 	int	col;
 	int	i;
-	int	fd;
 
-	col = ((start / 64) * 3) + 3;
+	col = ((start % 64) * 3) + 3;
 	line = (start / 64) + 1;
 	i = start;
-	// fd = open("lol", O_CREAT | O_APPEND | O_RDWR | O_TRUNC);
-	// ft_fprintf(fd, "start : %d | size : %d | color : %d\n", start, size, color);
 	if (color < 0)
 		color *= -1;
+	mvwprintw(env->arena.win, HEADER_SIZE + 55 + color, MID_COLS + 3, "start : %4d | size : %d", start, size);
+	mvwprintw(env->arena.win, HEADER_SIZE + 59 + color, MID_COLS + 3, "line : %4d | col : %d", line, col);
 	while (i < size + start)
 	{
 		while (col < MID_COLS)
 		{
-			// ft_fprintf(fd, "LINE : %d | COL : %d\n", line, col);
-			// ft_fprintf(fd, "%s\n", "lol");
 			wattron(env->arena.win, COLOR_PAIR(color));
 			mvwprintw(env->arena.win, line, col, "%02x ", env->mem[i++ % MEM_SIZE]);
 			wattroff(env->arena.win, COLOR_PAIR(color));
@@ -281,6 +283,7 @@ void	init_window(t_env *env)
 	{
 		if (tmp->num_players < 0)
 			tmp->num_players *= -1;
+		mvwprintw(env->arena.win, HEADER_SIZE + 50 + i, MID_COLS + 3, "pc : %4d", tmp->pc);
 		print_champ(env, tmp->pc, env->players[i].mem_size, tmp->num_players);
 		tmp = tmp->next;
 	}
