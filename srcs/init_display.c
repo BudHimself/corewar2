@@ -27,7 +27,7 @@ void		init_window(t_env *env)
 	start_color();
 	init_tab_color(env);
 	init_struct(env, arena);
-	init_display(env);
+	load_display(env);
 	tmp = env->proc;
 	while (++i < env->no)
 	{
