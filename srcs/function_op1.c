@@ -6,7 +6,7 @@
 /*   By: syusof <syusof@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 15:18:39 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/23 10:27:58 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/24 10:46:50 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void	ft_fork_p1(int addr_target, t_env *env, t_proc *new_proc, t_proc *proc)
 	new_proc->next = env->begin;
 	env->begin = new_proc;
 	draw_processes(env);
-	update_proc(env, env->begin);
 }
 
 int		ft_fork(t_env *env, t_proc *proc)

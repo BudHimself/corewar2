@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_para.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: syusof <syusof@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 15:01:26 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/23 12:02:57 by jjourdai         ###   ########.fr       */
+/*   Updated: 2017/05/24 10:48:07 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ unsigned char	*ft_get_para(unsigned char *s, t_proc *proc1, int x)
 	}
 	else if (proc1->params.type[x] == T_DIR)
 		s1 = ft_new_s_on_sizeint(proc1->params.size_params[x], s, position);
-	else if (proc1->params.type[x] == T_IND && proc1->op.num == 10)
+	else if (proc1->params.type[x] == T_IND && (proc1->op.num == 10 ||
+		proc1->op.num == 11))
 		s1 = ft_get_para_p2(s, proc1, x);
 	else if (proc1->params.type[x] == T_IND)
 		s1 = ft_get_para_p1(s, proc1, x);

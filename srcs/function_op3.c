@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function_op3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: syusof <syusof@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 15:19:44 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/22 15:26:56 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/24 10:46:42 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	ft_lfork_p1(int addr_target, t_env *env, t_proc *new_proc, t_proc *proc)
 	new_proc->cycle_to_exec = 0;
 	new_proc->next = env->begin;
 	env->begin = new_proc;
-	update_proc(env, env->begin);
 	draw_processes(env);
 }
 
