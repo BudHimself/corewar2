@@ -6,7 +6,7 @@
 /*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 14:09:47 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 19:45:54 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/24 11:23:16 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,12 @@ int		ft_live(t_env *env, t_proc *proc)
 		if (env->players[i].num_players == num_p)
 		{
 			env->players[i].last_live = env->cycle;
+			env->players[i].nb_live_p += 1;
 			env->winer = num_p;
 			message_cw(env,
 					"un processus dit que le joueur %d(%.5s...) est en vie",
 			env->players[i].num_players, env->players[i].header.prog_name);
+			draw_alive(env);
 			break ;
 		}
 	}

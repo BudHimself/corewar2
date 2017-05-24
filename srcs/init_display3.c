@@ -6,7 +6,7 @@
 /*   By: fhenry <fhenry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 20:47:45 by fhenry            #+#    #+#             */
-/*   Updated: 2017/05/23 20:47:46 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/24 11:05:59 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ void		print_champ(t_env *env, int start, int size, int color)
 
 void		draw_processes(t_env *env)
 {
+	if (env->cycle < 2)
+		env->nb_proc = list_size(env->begin);
 	mvwprintw(env->arena.win, HEADER_SIZE + 6, MID_COLS + 3, "Processes : %4d",
-	list_size(env->begin));
+	env->nb_proc);
 	wrefresh(env->arena.win);
 }
 

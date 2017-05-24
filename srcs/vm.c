@@ -6,7 +6,7 @@
 /*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 10:48:36 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 19:45:34 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/24 11:06:52 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void			ft_init_env(t_env *env)
 	env->cycle_to_die = CYCLE_TO_DIE;
 	env->checks = 0;
 	env->fin = 0;
+	env->nb_proc = 0;
 }
 
 int				main(int argc, char *argv[])

@@ -6,7 +6,7 @@
 /*   By: syusof <syusof@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 15:18:39 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/24 10:46:50 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/24 11:04:06 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,6 @@ int		ft_fork(t_env *env, t_proc *proc)
 			new_proc->reg[i][j] = proc->reg[i][j];
 	}
 	ft_fork_p1(addr_target, env, new_proc, proc);
+	env->nb_proc += 1;
 	return (1);
 }

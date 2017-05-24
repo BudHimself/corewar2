@@ -6,7 +6,7 @@
 /*   By: tyassine <tyassine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 21:55:48 by tyassine          #+#    #+#             */
-/*   Updated: 2017/05/23 20:47:03 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/24 11:44:53 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct		s_players
 {
 	int				num_players;
 	unsigned int	last_live;
+	int				nb_live_p;
 	t_header		header;
 	unsigned int	mem_size;
 }					t_players;
@@ -110,6 +111,7 @@ typedef struct		s_env
 	t_arena			arena;
 	int				color[MEM_SIZE];
 	int				fin;
+	int				nb_proc;
 }					t_env;
 
 int					(*g_op[16])(t_env *, t_proc *);
@@ -295,5 +297,6 @@ void				init_tab_color(t_env *env);
 void				init_struct(t_env *env, WINDOW *arena);
 void				load_display(t_env *env);
 void				print_memory(t_env *env);
+void				draw_alive(t_env *env);
 
 #endif

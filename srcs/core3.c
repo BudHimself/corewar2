@@ -6,7 +6,7 @@
 /*   By: syusof <syusof@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 12:58:08 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/23 19:49:37 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/24 11:08:12 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void			end_of_time(t_env *env)
 		if (!env->proc->lives_in_period)
 		{
 			env->begin = kill_proc(env->proc, env->begin);
+			env->nb_proc -= 1;
 			draw_processes(env);
 		}
 		else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_init2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syusof <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: syusof <syusof@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 13:59:53 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/23 14:05:18 by syusof           ###   ########.fr       */
+/*   Updated: 2017/05/24 11:16:03 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ unsigned int num_players)
 	env->mem = arena;
 	ft_fill_arena(env, buf, fd, num_players);
 	env->players[env->no].last_live = 0;
+	env->players[env->no].nb_live_p = 0;
 	env->winer = num_players;
 	++env->no;
 }
