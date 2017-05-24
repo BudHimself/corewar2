@@ -46,7 +46,7 @@ unsigned int i, unsigned int pc)
 {
 	unsigned int	conv1;
 
-	conv1 = ft_conv_to_int_memod(si, i);
+	conv1 = ft_conv_to_int_nomod(si, i);
 	return ((pc + conv1) % MEM_SIZE);
 }
 

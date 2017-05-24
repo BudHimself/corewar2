@@ -6,7 +6,7 @@
 /*   By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/22 14:09:47 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/05/23 20:10:39 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/23 19:45:54 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int		ft_lld(t_env *env, t_proc *proc1)
 {
 	unsigned char	*s1;
 	unsigned char	*s2;
-	unsigned int	ind1;
 
 	if (IND_SIZE <= REG_SIZE)
 	{
@@ -78,10 +77,8 @@ int		ft_lld(t_env *env, t_proc *proc1)
 			if (proc1->params.type[0] == T_DIR)
 				ft_cp_s_to_s(s2, s1, REG_SIZE, REG_SIZE);
 			else
-			{
-				ind1 = ft_conv_to_int_memod(s1, sizeof(unsigned int));
-				ft_cp_in_s_for_lld(REG_SIZE, s2, env->mem, ind1);
-			}
+				ft_cp_s_to_s(s2, s1, sizeof(unsigned int),
+				sizeof(unsigned int));
 			env->proc->carry = ft_getcarry(s2);
 			return (1);
 		}
