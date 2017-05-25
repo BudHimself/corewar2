@@ -6,11 +6,23 @@
 /*   By: syusof <syusof@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 12:58:08 by syusof            #+#    #+#             */
-/*   Updated: 2017/05/24 11:08:12 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/24 12:15:46 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fhenry.h"
+
+static void		reset_nb_live_p(t_env *env)
+{
+	int			i;
+
+	if (env->no < 0)
+		i = env->no * -1;
+	else
+		i = env->no;
+	while (--i > -1)
+		env->players[i].nb_live_p = 0;
+}
 
 void			check_check(t_env *env)
 {
@@ -42,6 +54,7 @@ void			end_of_time(t_env *env)
 	{
 		env->checks = 0;
 		env->nb_live = 0;
+		reset_nb_live_p(env);
 		draw_max_check(env);
 		env->cycle_to_inc -= CYCLE_DELTA;
 		env->nb_live_full = 1;

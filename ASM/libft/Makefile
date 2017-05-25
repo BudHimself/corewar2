@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jjourdai <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: jjourdai <jjourdai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#*   Updated: 2017/03/09 16:07:46 by jjourdai         ###   ########.fr       *#
+#    Updated: 2017/05/24 12:18:19 by fhenry           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ NAME = libft.a
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -Werror
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
@@ -64,18 +64,18 @@ OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@ar rc $(NAME) $(OBJ)
-	@ranlib $(NAME)
+	ar rc $(NAME) $(OBJ)
+	ranlib $(NAME)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
-	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
 clean:
-	@rm -fv $(OBJ)
+	rm -fv $(OBJ)
 	@rmdir $(OBJ_PATH) 2> dev/null || true
 
 fclean: clean
-	@rm -fv $(NAME)
+	rm -fv $(NAME)
 
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: fhenry <fhenry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 20:47:41 by fhenry            #+#    #+#             */
-/*   Updated: 2017/05/23 20:47:43 by fhenry           ###   ########.fr       */
+/*   Updated: 2017/05/24 12:03:10 by fhenry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,12 @@ void		message_cw(t_env *env, char *message, int num, char *name)
 	if (!env->dump)
 	{
 		if (env->ncurses)
+		{
+			mvwprintw(env->arena.win, HEADER_SIZE + 19, MID_COLS + 3, "%.55s",
+			"                                                            ");
 			mvwprintw(env->arena.win, HEADER_SIZE + 19, MID_COLS + 3, message,
 				num, name);
+		}
 		else
 		{
 			ft_printf(message, num, name);
